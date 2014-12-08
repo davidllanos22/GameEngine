@@ -1,38 +1,26 @@
-var meter;
-
-
-
-Utils = {};
-
-Utils.log = function (x){		
-	console.log("%c [GAME ENGINE - LOG]: "+x,'color: #1010DD');
-}
-
-Utils.logObj = function (x){		
-	console.log(x);
-}
-
-Renderer = function(game){
-	this.game = game;
-	this.ctx = this.game.ctx;
-}
-
-Renderer.prototype = {
-
-	drawRect: function(x,y,w,h,color){
-		this.ctx.fillStyle=color;
-		this.ctx.fillRect(x,y,w,h);
-	},
-	clearScreen: function(color){
-		this.ctx.fillStyle=color;
-		this.ctx.fillRect(0,0,this.game.width,this.game.height);
-	}
-}
-
 Game = function(width,height){
 	this.cvs = document.createElement("canvas");
+	this.cvs.tabIndex = 1;
 	this.ctx = this.cvs.getContext("2d");
+	this.focused = false;
+	this.showPauseWhenNotFocused = true;
+	this.fillScreen = true;
+	this.meter;
 
+	var game = this;
+
+	this.cvs.onfocus = function(){
+		game.onFocusInternal();
+	}
+	this.cvs.onblur = function(){
+		game.onBlurInternal();
+	}
+	window.onresize = function(){
+		game.onResizeInternal();
+	}
+
+	if(width == 0 || height == 0) Utils.logErr("Width and Height can't be 0.");
+	
 	this.width = width;
 	this.height = height;
 
@@ -41,17 +29,23 @@ Game = function(width,height){
 
 	document.body.appendChild(this.cvs);   
 
-	Utils.logObj(this);
-
-	this.init();
+	this.preInit();
+	
 }
 
 Game.prototype = {
 
-	init: function (){
+	preInit: function (){
 		Utils.log("init");
+
+		this.initDone = false;
 		
+		this.loader = new Loader();
 		this.renderer = new Renderer(this);
+		this.input = new Input(this);
+		
+
+		this.init();
 
 		this.run();
 
@@ -63,15 +57,14 @@ Game.prototype = {
 		this.fps = 60;
 		this.dt = 0;
 		this.start = new Date().getTime();
-		this.step = 1 / this.fps;
-		meter = new FPSMeter({position:"relative",width:100});
-		meter.set('graph', 1);
+		this.step = 10 / this.fps;
+		this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"});
 		this.loop(this);
 		
 	},
 
 	loop: function(game){
-		meter.tickStart();
+		this.meter.tickStart();
 		var now = new Date().getTime();
 		var elapsed = now - game.start;
 		
@@ -80,23 +73,68 @@ Game.prototype = {
 		
 		while(game.dt > game.step){
 			game.dt -= game.step;
-			game.update();
+			game.preUpdate();
 		}
 
-		game.render();
-		meter.tick();
+		game.preRender();
+		this.meter.tick();
 
 		window.requestAnimationFrame(function(){
 			game.loop(game);
 		});
 	},
 
+	preUpdate: function(){
+		if(!this.initDone){
+			this.initDone = true;
+			this.init();
+		}
+		this.cvs.width = this.width;
+		this.cvs.height = this.height
+
+		if(!this.showPauseWhenNotFocused || this.focused)this.update();
+	},
+	
+	init: function(){
+	},
+	preRender: function (){
+
+		this.render();
+		if(this.showPauseWhenNotFocused && !this.focused){
+			this.renderer.drawRect(0,0,this.width,this.height,"rgba(0,0,0,0.8)");
+			this.renderer.drawString("- PAUSED - ",this.width/2,this.height/2,20,"white");
+		}
+	},
 	render: function (){
-		this.renderer.clearScreen("black");
-		this.renderer.drawRect(0,0,16,16,"red");
 	},
 
 	update: function (){
+	},
 
+	setSize: function(w,h){
+		if(w == 0 || h == 0) Utils.logErr("Width and Height can't be 0.");
+		this.width = w;
+		this.height = h;
+
+		Utils.log("Size set to "+w+", "+h);
+	},
+	onFocusInternal: function(){
+		this.focused = true;
+		this.onFocus();
+	},
+	onBlurInternal: function(){
+		this.focused = false;
+		this.onBlur();
+	},
+	onResizeInternal: function(){
+		if(this.fillScreen) this.setSize(window.innerWidth,window.innerHeight);
+	},
+	onFocus: function(){
+		//
+	},
+	onBlur: function(){
+		//
 	}
+
 }
+
