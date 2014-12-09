@@ -7,8 +7,8 @@ var items = new Array();
 
 game.init = function(){
 	//this.setSize(1000,700);
-	monk = this.loader.loadImage("../test/monk.png");
-	shoot = this. loader.loadSound("../test/sound01.wav");
+	monk = this.loader.loadImage("test01/monk.png");
+	shoot = this. loader.loadSound("test01/sound01.wav");
 
 	for(var i = 0; i < 2000; i++){
 		items.push(new Item(Utils.random(game.width),Utils.random(game.height)));
