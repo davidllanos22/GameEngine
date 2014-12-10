@@ -6,8 +6,6 @@ var items = new Array();
 
 
 game.init = function(){
-	this.fillScreen = false;
-	this.setSize(640,480);
 	monk = this.loader.loadImage("monk.png");
 	shoot = this. loader.loadSound("sound02.wav");
 

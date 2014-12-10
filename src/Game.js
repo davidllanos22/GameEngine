@@ -8,12 +8,23 @@ Game = function(width,height){
 	this.cvs = document.createElement("canvas"); // Create canvas Element.
 	this.cvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
 	this.ctx = this.cvs.getContext("2d"); // Get context from canvas.
+
+	this.ctx.imageSmoothingEnabled = false;
+	this.ctx.webkitImageSmoothingEnabled = false;
+	this.ctx.mozImageSmoothingEnabled = false;
+
 	this.focused = false; // 
 	this.showPauseWhenNotFocused = true; // Show a pause screen when blur.
-	this.fillScreen = true; // Set the width and height to fill the screen.
+	this.fillScreen = false; // Set the width and height to fill the screen.
 	this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"}); // Create a new FPSMeter instance.
-	this.meter.hide();
-	this.showFps = true;
+	this.meter.hide(); // Hide FPSMeter.
+	this.showFps = true; // Set showFps.
+	this.scale = 1; // Set initial scale for the game.
+	this.fillScreenWithRatio = true; // Set the width and height to fill the screen conserving the original ratio (with borders).
+	this.ratio = 4/3;
+
+	this.pixelart = true;
+
 	var game = this; // Local variable to use on the next events.
 
 	this.cvs.onfocus = function(){game.onFocusInternal();} // Add event listener to onfocus. 
@@ -48,6 +59,8 @@ Game.prototype = {
 		this.renderer = new Renderer(this); // Create a new instance of the Renderer.
 		this.input = new Input(this); // Create a new instance of the Input.
 		
+		this.onResizeInternal();
+
 		Utils.log("running"); // Log running.
 
 		this.fps = 60; // Set fps.
@@ -101,12 +114,15 @@ Game.prototype = {
 	* Internal render function used by the engine. Do not use this function in your game. Use render instead.
 	*/
 	renderInternal: function (){
+
+		this.ctx.save()
+		this.ctx.scale(this.scale,this.scale);
 		this.renderer.renderCounter=0; // Reset the render call count.
 		this.render(); // Call render function.
-
+		this.ctx.restore();
 		if(this.showPauseWhenNotFocused && !this.focused){ // Show Pause when blur and showPauseWhenNotFocused = true.
 			this.renderer.drawRect(0,0,this.width,this.height,"rgba(0,0,0,0.8)"); // Fill screen with alpha rect.
-			this.renderer.drawString("- PAUSED - ",this.width/2,this.height/2,20,"white"); // Draw pause text.
+			this.renderer.drawString("- PAUSED - ",this.width/2-40,this.height/2-20,20,"white"); // Draw pause text.
 		}
 
 		this.renderer.drawString("fps "+Math.round(this.meter.fps),0,0,20,"white");
@@ -145,6 +161,26 @@ Game.prototype = {
 	*/
 	onResizeInternal: function(){
 		if(this.fillScreen)this.setSize(window.innerWidth,window.innerHeight); // Fill screen if fillScreen = true.
+		else if(this.fillScreenWithRatio){
+			var nWidth = window.innerWidth/this.ratio;
+			var nHeight = nWidth/this.ratio;
+			if(nHeight>window.innerHeight){
+				nHeight = window.innerHeight;
+				nWidth = nHeight*this.ratio;
+			}
+			if(nHeight<window.innerHeight){
+				nHeight = window.innerHeight;
+				nWidth = nHeight*this.ratio;
+			}
+			if(nWidth>window.innerWidth){
+				nWidth = window.innerWidth;
+				nHeight = nWidth/this.ratio;
+			}
+			this.scale = nWidth/320;
+
+			this.setSize(nWidth,nHeight); // Fill screen if fillScreen = true.
+			if(this.pixelart)this.ctx.webkitImageSmoothingEnabled = false;
+		}
 	},
 	/**
 	* Function triggered when the game takes focus.
@@ -173,8 +209,6 @@ Game.prototype = {
 
 		this.cvs.width = this.width; // Set canvas width.
 		this.cvs.height = this.height // Set canvas height.
-
-		Utils.log("Size set to "+width+", "+height);
 	}
 
 }
