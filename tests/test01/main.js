@@ -6,15 +6,14 @@ var items = new Array();
 
 
 game.init = function(){
-	//this.setSize(1000,700);
-	monk = this.loader.loadImage("test01/monk.png");
-	shoot = this. loader.loadSound("test01/sound01.wav");
+	this.fillScreen = false;
+	this.setSize(640,480);
+	monk = this.loader.loadImage("monk.png");
+	shoot = this. loader.loadSound("sound02.wav");
 
 	for(var i = 0; i < 2000; i++){
 		items.push(new Item(Utils.random(game.width),Utils.random(game.height)));
 	}
-
-	shoot.play();
 }
 
 game.render = function(){
@@ -30,15 +29,14 @@ game.update = function(){
 	}
 
 	if(this.input.keyDown[Keys.space])Utils.log("pressing space");
+
+	if(this.input.mouseClick){
+		shoot = shoot.cloneNode()
+		shoot.play();
+		Utils.log("click");
+	}
 	
 }
-game.onFocus = function(){
-	Utils.log("Canvas focused");
-}
-game.onBlur = function(){
-	Utils.log("Canvas not focused");
-}
-
 
 Item = function(x,y){
 	this.x = x;

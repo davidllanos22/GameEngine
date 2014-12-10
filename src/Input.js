@@ -12,14 +12,19 @@ Keys = {
 Input = function(game){
 	this.game = game;
 	this.keyDown = {};
+	this.mouseX = 0;
+	this.mouseY = 0;
+	this.mouseClick = false;
+	this.mouseRelease = false;
+	this.mouseHold = false;
 
 	var input = this;
-	this.game.cvs.onkeydown = function(e){
-		input.onKeyDown(e);
-	}
-	this.game.cvs.onkeyup = function(e){
-		input.onKeyUp(e);
-	}
+
+	this.game.cvs.onkeydown = function(e){input.onKeyDown(e);}
+	this.game.cvs.onkeyup = function(e){input.onKeyUp(e);}
+	this.game.cvs.onmousemove = function(e){input.onMouseMove(this, e);}
+	this.game.cvs.onmousedown = function(e){input.onMouseDown(this, e);}
+	this.game.cvs.onmouseup = function(e){input.onMouseUp(this, e);}
 
 }
 
@@ -31,5 +36,17 @@ Input.prototype = {
 	},
 	onKeyUp: function(e){
 		delete this.keyDown[e.keyCode];
+	},
+	onMouseMove: function(input, e){
+		input.mouseX = e.x;
+		input.mouseY = e.y;	
+	},
+	onMouseDown: function(input, e){
+		this.mouseClick = true;
+		this.mouseHold = true;
+	},
+	onMouseUp: function(input, e){
+		this.mouseRelease = true;
+		this.mouseHold = false;
 	}
 }

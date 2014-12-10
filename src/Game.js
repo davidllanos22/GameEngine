@@ -12,7 +12,8 @@ Game = function(width,height){
 	this.showPauseWhenNotFocused = true; // Show a pause screen when blur.
 	this.fillScreen = true; // Set the width and height to fill the screen.
 	this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"}); // Create a new FPSMeter instance.
-
+	this.meter.hide();
+	this.showFps = true;
 	var game = this; // Local variable to use on the next events.
 
 	this.cvs.onfocus = function(){game.onFocusInternal();} // Add event listener to onfocus. 
@@ -91,6 +92,10 @@ Game.prototype = {
 		}
 		//--
 		if(!this.showPauseWhenNotFocused || this.focused)this.update(); // Call update function when focused.
+
+		this.input.mouseClick = false;
+		this.input.mouseRelease = false;
+		
 	},
 	/**
 	* Internal render function used by the engine. Do not use this function in your game. Use render instead.
@@ -103,6 +108,8 @@ Game.prototype = {
 			this.renderer.drawRect(0,0,this.width,this.height,"rgba(0,0,0,0.8)"); // Fill screen with alpha rect.
 			this.renderer.drawString("- PAUSED - ",this.width/2,this.height/2,20,"white"); // Draw pause text.
 		}
+
+		this.renderer.drawString("fps "+Math.round(this.meter.fps),0,0,20,"white");
 	},
 	/**
 	* Main init function.
