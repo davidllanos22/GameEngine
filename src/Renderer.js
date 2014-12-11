@@ -28,7 +28,7 @@ Renderer.prototype = {
 	},
 	drawImageRot: function(src,x,y,xo,yo,s,rot){
 		this.ctx.save();
-		this.ctx.translate(x,y);
+		this.ctx.translate(x+s/2,y+s/2);
 		this.ctx.rotate(rot);
 		this.ctx.drawImage(src,xo*s,yo*s,s,s,-s/2,-s/2,s,s);
 		this.ctx.restore();

@@ -7,6 +7,7 @@
 Game = function(width,height){
 	this.cvs = document.createElement("canvas"); // Create canvas Element.
 	this.cvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
+	this.cvs.style.outline = "none";
 	this.ctx = this.cvs.getContext("2d"); // Get context from canvas.
 
 	this.ctx.imageSmoothingEnabled = false;
@@ -22,8 +23,6 @@ Game = function(width,height){
 	this.scale = 1; // Set initial scale for the game.
 	this.fillScreenWithRatio = true; // Set the width and height to fill the screen conserving the original ratio (with borders).
 	this.ratio = 4/3;
-
-	this.currentScene = new Scene(this,"Scene 01");
 
 	this.pixelart = true;
 
@@ -61,6 +60,8 @@ Game.prototype = {
 		this.renderer = new Renderer(this); // Create a new instance of the Renderer.
 		this.input = new Input(this); // Create a new instance of the Input.
 		
+		this.currentScene = new Scene(this,"Scene 01");
+
 		this.onResizeInternal();
 
 		Utils.log("running"); // Log running.
@@ -71,6 +72,8 @@ Game.prototype = {
 
 		this.step = 10 / this.fps; // Set step.
 		
+
+
 		this.loop(this); // Call loop function to start game loop.
 		
 	},

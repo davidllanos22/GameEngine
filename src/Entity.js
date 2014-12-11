@@ -2,7 +2,7 @@ Entity = function(x,y){
 	this.x = x;
 	this.y = y;
 	this.sprite;
-	this.rectangle;
+	this.rect;
 	this.childs = new Array();
 	this.game;
 }

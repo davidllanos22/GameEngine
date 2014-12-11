@@ -5,13 +5,16 @@ var s1,s2;
 var items = new Array();
 var scene;
 
+var player;
+
 game.init = function(){
 	monk = this.loader.loadImage("monk.png");
 	s1 = this.loader.loadSound("sound01.wav");
 	s2 = this.loader.loadSound("sound02.wav");
 
-
+	player = new Player(10,10);
 	for(var i = 0; i<10; i++)this.currentScene.add(new Monkey(Utils.random(this.width/this.scale),Utils.random(this.height/this.scale)));
+	this.currentScene.add(player);
 	scene = this.currentScene;
 }
 
@@ -38,6 +41,8 @@ game.update = function(){
 Monkey = function(x,y){
 	Entity.call(this,x,y);
 	this.rot = 0;
+	this.rect = new Rectangle(24,24);
+	this.collides = false;
 }
 
 Monkey.prototype = Object.create(Entity.prototype);
@@ -45,8 +50,51 @@ Monkey.prototype.constructor = Monkey;
 
 Monkey.prototype.render = function(){
 	this.game.renderer.drawImageRot(monk,this.x,this.y,0,0,24,this.rot);
+	this.game.renderer.drawRect(this.rect.x,this.rect.y,this.rect.w,this.rect.h,this.collides ? "rgba(255,55,55,0.5)": "rgba(55,255,55,0.5)" );
 }
 
 Monkey.prototype.update = function(){
+	this.collides = false;
 	this.rot +=0.01;
+
+	this.rect.setPosition(this.x,this.y);
+	for(var i = 0; i<this.game.currentScene.childs.length;i++){
+		var e = this.game.currentScene.childs[i];
+		if(e != this){
+			this.collides = this.rect.collides(e.rect);
+		}
+	}
+	
+}
+
+Player = function(x,y){
+	Monkey.call(this,x,y);
+	Utils.logObj(this);
+}
+Player.prototype.render = function(){
+	this.game.renderer.drawImageRot(monk,this.x,this.y,0,0,24,0);
+	this.game.renderer.drawRect(this.rect.x,this.rect.y,this.rect.w,this.rect.h,this.collides ? "rgba(255,55,55,0.5)": "rgba(55,255,55,0.5)" );
+}
+
+Player.prototype = Object.create(Monkey.prototype);
+Player.prototype.constructor = Player;
+
+Player.prototype.update = function(){
+	this.collides = false;
+	
+	this.rect.setPosition(this.x,this.y);
+	for(var i = 0; i<this.game.currentScene.childs.length;i++){
+		var e = this.game.currentScene.childs[i];
+		if(e != this){
+			this.collides = this.rect.collides(e.rect);
+		}
+	}
+	if(this.game.input.keyDown[Keys.d])this.x++;
+	if(this.game.input.keyDown[Keys.a])this.x--;
+	if(this.game.input.keyDown[Keys.w])this.y--;
+	if(this.game.input.keyDown[Keys.s])this.y++;
+
+	console.log(this.collides);
+	
+	
 }
