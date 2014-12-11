@@ -23,6 +23,8 @@ Game = function(width,height){
 	this.fillScreenWithRatio = true; // Set the width and height to fill the screen conserving the original ratio (with borders).
 	this.ratio = 4/3;
 
+	this.currentScene = new Scene(this,"Scene 01");
+
 	this.pixelart = true;
 
 	var game = this; // Local variable to use on the next events.
@@ -30,7 +32,7 @@ Game = function(width,height){
 	this.cvs.onfocus = function(){game.onFocusInternal();} // Add event listener to onfocus. 
 	this.cvs.onblur = function(){game.onBlurInternal();} // Add event listener to onblur. 
 	window.onresize = function(){game.onResizeInternal();} // Add event listener to onresize. 
-
+	this.cvs.oncontextmenu = function (e) {e.preventDefault();};
 
 	if(width == 0 || height == 0) Utils.logErr("Width and Height can't be 0."); // Throw an error if w or h = 0.
 	
@@ -106,8 +108,8 @@ Game.prototype = {
 		//--
 		if(!this.showPauseWhenNotFocused || this.focused)this.update(); // Call update function when focused.
 
-		this.input.mouseClick = false;
-		this.input.mouseRelease = false;
+		this.input.mouseClick = [false,false,false];
+		this.input.mouseRelease = [false,false,false];
 		
 	},
 	/**
@@ -118,6 +120,7 @@ Game.prototype = {
 		this.ctx.save()
 		this.ctx.scale(this.scale,this.scale);
 		this.renderer.renderCounter=0; // Reset the render call count.
+		this.currentScene.render();
 		this.render(); // Call render function.
 		this.ctx.restore();
 		if(this.showPauseWhenNotFocused && !this.focused){ // Show Pause when blur and showPauseWhenNotFocused = true.
@@ -125,7 +128,7 @@ Game.prototype = {
 			this.renderer.drawString("- PAUSED - ",this.width/2-40,this.height/2-20,20,"white"); // Draw pause text.
 		}
 
-		this.renderer.drawString("fps "+Math.round(this.meter.fps),0,0,20,"white");
+		if(this.showFps)this.renderer.drawString("fps "+Math.round(this.meter.fps),8,8,20,"white");
 	},
 	/**
 	* Main init function.

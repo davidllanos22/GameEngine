@@ -18,3 +18,8 @@ Utils.logErr = function (x){
 Utils.logObj = function (x){
 	console.log(x);
 }
+
+Utils.playSound = function(sound){
+	sound = sound.cloneNode()
+	sound.play();
+}

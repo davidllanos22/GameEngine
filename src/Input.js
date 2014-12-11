@@ -14,10 +14,9 @@ Input = function(game){
 	this.keyDown = {};
 	this.mouseX = 0;
 	this.mouseY = 0;
-	this.mouseClick = false;
-	this.mouseRelease = false;
-	this.mouseHold = false;
-
+	this.mouseClick = [false,false,false];
+	this.mouseRelease = [false,false,false];
+	this.mouseHold = [false,false,false];
 	var input = this;
 
 	this.game.cvs.onkeydown = function(e){input.onKeyDown(e);}
@@ -42,11 +41,13 @@ Input.prototype = {
 		input.mouseY = e.y;	
 	},
 	onMouseDown: function(input, e){
-		this.mouseClick = true;
-		this.mouseHold = true;
+		this.mouseClick[e.button] = true;
+		this.mouseHold[e.button] = true;
+		
 	},
 	onMouseUp: function(input, e){
-		this.mouseRelease = true;
-		this.mouseHold = false;
+		this.mouseRelease[e.button] = true;
+		this.mouseHold[e.button] = false;
+		
 	}
 }
