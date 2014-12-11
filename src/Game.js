@@ -106,8 +106,10 @@ Game.prototype = {
 			this.init(); // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
 		}
 		//--
-		if(!this.showPauseWhenNotFocused || this.focused)this.update(); // Call update function when focused.
-
+		if(!this.showPauseWhenNotFocused || this.focused){
+			this.currentScene.updateInternal();
+			this.update(); // Call update function when focused.
+		}
 		this.input.mouseClick = [false,false,false];
 		this.input.mouseRelease = [false,false,false];
 		
@@ -120,8 +122,8 @@ Game.prototype = {
 		this.ctx.save()
 		this.ctx.scale(this.scale,this.scale);
 		this.renderer.renderCounter=0; // Reset the render call count.
-		this.currentScene.render();
 		this.render(); // Call render function.
+		this.currentScene.renderInternal();
 		this.ctx.restore();
 		if(this.showPauseWhenNotFocused && !this.focused){ // Show Pause when blur and showPauseWhenNotFocused = true.
 			this.renderer.drawRect(0,0,this.width,this.height,"rgba(0,0,0,0.8)"); // Fill screen with alpha rect.

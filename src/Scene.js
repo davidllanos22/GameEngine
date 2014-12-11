@@ -6,3 +6,28 @@ Scene = function(game,name){
 
 Scene.prototype = Object.create(Entity.prototype);
 Scene.prototype.constructor = Scene;
+Scene.prototype.add = function(child){
+	child.game = this.game;
+	this.childs.push(child);
+}
+Scene.prototype.remove = function(child){
+	//this.childs.push(child);
+}
+
+Scene.prototype.renderInternal = function(){
+	for(var i = 0; i<this.childs.length; i++){
+		this.childs[i].render();
+	}
+	this.render();
+}
+
+Scene.prototype.updateInternal = function(){
+	for(var i = 0; i<this.childs.length; i++){
+		this.childs[i].update();
+	}
+	this.update();
+}
+
+Scene.prototype.changeScene = function(scene){
+	this.game.currentScene = scene;
+}

@@ -13,13 +13,13 @@ Entity.prototype = {
 		this.x=x;
 		this.y=y;
 	},
-	addChild: function(child){
+	add: function(child){
 
 	},
-	removeChild: function(child){
+	remove: function(child){
 
 	},
-	removeChild: function(id){
+	remove: function(id){
 
 	},
 	destroy: function(){
