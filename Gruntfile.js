@@ -14,8 +14,8 @@ module.exports = function(grunt) {
 	    connect: {
 	    	server: {
 	      		options: {
+	      			livereload: true,
 	        		port: 8888,
-	        		keepalive: true,
 	        		base: 'examples'
 	      		}
 	    	}
@@ -26,15 +26,27 @@ module.exports = function(grunt) {
 		    	dest: 'examples/GameEngine.min.js',
 		  	}
 		},
+  		watch: {
+  			src: {
+                options: {
+        			livereload: true
+    			},
+    			files: ['src/*'],
+    			tasks: ['build']
+            }
+  			
+  		}
   	});
 
   	grunt.loadNpmTasks('grunt-contrib-uglify');
   	grunt.loadNpmTasks('grunt-contrib-connect');
   	grunt.loadNpmTasks('grunt-contrib-copy');
+  	grunt.loadNpmTasks('grunt-contrib-watch');
+
 
 	grunt.registerTask('default', ['build']);
 
   	grunt.registerTask('build', ['uglify','copy']);
-  	grunt.registerTask('serve', ['connect']);
+  	grunt.registerTask('serve', ['connect','watch']);
 
 };

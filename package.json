@@ -17,6 +17,7 @@
     "grunt": "*",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-connect": "*",
-    "grunt-contrib-copy": "*"
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-watch": "*"
   }
 }
