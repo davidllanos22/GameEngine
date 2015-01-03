@@ -3,12 +3,12 @@ Keys = {
 	right: 39,
 	up: 38,
 	down: 40,
-	space: 32,
-	w: 87,
-	a: 65,
-	s: 83,
-	d: 68, 
-	b: 88,
+	Space: 32,
+	W: 87,
+	A: 65,
+	S: 83,
+	D: 68, 
+	B: 88,
 	start: 13
 }
 

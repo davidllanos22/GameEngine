@@ -1,4 +1,4 @@
-var game = new Game(window.innerWidth,window.innerHeight);
+var game = new Game(320,240);
 
 var monk;
 var s1,s2;
@@ -19,7 +19,7 @@ game.init = function(){
 }
 
 game.render = function(){
-	this.renderer.clearScreen("black");
+	this.renderer.clearScreen((this.currentScene.name == "Scene 01") ? "#aaa" : "#eee");
 	this.renderer.drawString(this.currentScene.name,4,12,10,"white");
 	
 }
@@ -50,7 +50,7 @@ Monkey.prototype.constructor = Monkey;
 
 Monkey.prototype.render = function(){
 	this.game.renderer.drawImageRot(monk,this.x,this.y,0,0,24,this.rot);
-	this.game.renderer.drawRect(this.rect.x,this.rect.y,this.rect.w,this.rect.h,this.collides ? "rgba(255,55,55,0.5)": "rgba(55,255,55,0.5)" );
+	//this.game.renderer.drawRect(this.rect.x,this.rect.y,this.rect.w,this.rect.h,this.collides ? "rgba(255,55,55,0.5)": "rgba(55,255,55,0.5)" );
 }
 
 Monkey.prototype.update = function(){
@@ -94,10 +94,10 @@ Player.prototype.update = function(){
 		}
 	}
 	var v = 0.8;
-	if(this.game.input.keyDown[Keys.d])this.x+=v;
-	if(this.game.input.keyDown[Keys.a])this.x-=v;
-	if(this.game.input.keyDown[Keys.w])this.y-=v;
-	if(this.game.input.keyDown[Keys.s])this.y+=v;
+	if(this.game.input.keyDown[Keys.D])this.x+=v;
+	if(this.game.input.keyDown[Keys.A])this.x-=v;
+	if(this.game.input.keyDown[Keys.W])this.y-=v;
+	if(this.game.input.keyDown[Keys.S])this.y+=v;
 
 	
 	

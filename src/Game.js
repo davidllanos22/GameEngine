@@ -10,18 +10,15 @@ Game = function(width,height){
 	this.cvs.style.outline = "none";
 	this.ctx = this.cvs.getContext("2d"); // Get context from canvas.
 
-	this.ctx.imageSmoothingEnabled = false;
-	this.ctx.webkitImageSmoothingEnabled = false;
-	this.ctx.mozImageSmoothingEnabled = false;
 
-	this.focused = false; // 
-	this.showPauseWhenNotFocused = true; // Show a pause screen when blur.
+	this.focused = false; //
+	this.showPauseWhenNotFocused = false; // Show a pause screen when blur.
 	this.fillScreen = false; // Set the width and height to fill the screen.
 	this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"}); // Create a new FPSMeter instance.
 	this.meter.hide(); // Hide FPSMeter.
-	this.showFps = true; // Set showFps.
+	this.showFps = false; // Set showFps.
 	this.scale = 1; // Set initial scale for the game.
-	this.fillScreenWithRatio = true; // Set the width and height to fill the screen conserving the original ratio (with borders).
+	this.fillScreenWithRatio = false; // Set the width and height to fill the screen conserving the original ratio (with borders).
 	this.ratio = 4/3;
 
 	this.pixelart = true;
@@ -78,7 +75,7 @@ Game.prototype = {
 		
 	},
 	/**
-	* Game loop. Calls internal render and uodate.
+	* Game loop. Calls internal render and update.
 	* @param {Game} game - Instance of game class.
 	*/
 	loop: function(game){
@@ -121,7 +118,16 @@ Game.prototype = {
 	* Internal render function used by the engine. Do not use this function in your game. Use render instead.
 	*/
 	renderInternal: function (){
-
+		//todo change to a function
+			if(this.pixelart){
+				this.ctx.imageSmoothingEnabled = false;
+				this.ctx.webkitImageSmoothingEnabled = false;
+				this.ctx.mozImageSmoothingEnabled = false;
+			}else{
+				this.ctx.imageSmoothingEnabled = true;
+				this.ctx.webkitImageSmoothingEnabled = true;
+				this.ctx.mozImageSmoothingEnabled = true;
+			}
 		this.ctx.save()
 		this.ctx.scale(this.scale,this.scale);
 		this.renderer.renderCounter=0; // Reset the render call count.
@@ -134,6 +140,7 @@ Game.prototype = {
 		}
 
 		if(this.showFps)this.renderer.drawString("fps "+Math.round(this.meter.fps),8,8,20,"white");
+
 	},
 	/**
 	* Main init function.
@@ -187,7 +194,8 @@ Game.prototype = {
 			this.scale = nWidth/320;
 
 			this.setSize(nWidth,nHeight); // Fill screen if fillScreen = true.
-			if(this.pixelart)this.ctx.webkitImageSmoothingEnabled = false;
+
+
 		}
 	},
 	/**
