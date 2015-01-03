@@ -1,0 +1,20 @@
+{
+  "name": "GameEngine",
+  "version": "1.0.0",
+  "description": "GameEngine\r ==========",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidllanos22/GameEngine"
+  },
+  "author": "davidllanos22",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidllanos22/GameEngine/issues"
+  },
+  "homepage": "https://github.com/davidllanos22/GameEngine",
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-uglify": "*"
+  }
+}

@@ -18,7 +18,7 @@ game.update = function(){
 	if(this.input.keyDown[Keys.Space]){
 		if(canPlay){
 			Utils.playSound(Utils.random(4) < 2 ? sound01 : sound02); // play a random sound
-			canPlay = false;
+			canPlay = false; 
 		}
 		canPlay = false;
 	}
