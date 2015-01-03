@@ -13,6 +13,10 @@ Entity.prototype = {
 		this.x=x;
 		this.y=y;
 	},
+	inScreen: function(){
+		this.x=x;
+		this.y=y;
+	},
 	add: function(child){
 
 	},

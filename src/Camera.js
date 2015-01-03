@@ -1,1 +1,3 @@
-Camera.js
+var Camera = function(){
+	
+}
