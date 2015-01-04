@@ -27,12 +27,16 @@ module.exports = function(grunt) {
 		  	}
 		},
   		watch: {
+  			options: {
+      			livereload: true,
+    		},
   			src: {
-                options: {
-        			livereload: true
-    			},
     			files: ['src/*'],
     			tasks: ['build']
+            },
+            examples: {
+    			files: ['examples/**/*'],
+    			tasks: []
             }
   			
   		}
