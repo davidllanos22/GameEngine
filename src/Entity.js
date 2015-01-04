@@ -1,6 +1,7 @@
 Entity = function(x,y){
 	this.x = x;
 	this.y = y;
+	this.parent;
 	this.sprite;
 	this.rect;
 	this.childs = new Array();
@@ -27,7 +28,8 @@ Entity.prototype = {
 
 	},
 	destroy: function(){
-
+		//change to remove from parent. make the reference
+		this.game.currentScene.remove(this);
 	},
 	render: function(){
 

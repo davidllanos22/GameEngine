@@ -11,7 +11,7 @@ Scene.prototype.add = function(child){
 	this.childs.push(child);
 }
 Scene.prototype.remove = function(child){
-	//this.childs.push(child);
+	this.childs.splice(this.childs.indexOf(child),1);
 }
 
 Scene.prototype.renderInternal = function(){

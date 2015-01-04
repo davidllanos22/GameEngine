@@ -1,20 +1,20 @@
-Rectangle = function(w,h){
-	this.x;
-	this.y;
-	this.w=w;
-	this.h=h;
+Rectangle = function(x,y,w,h){
+	this.x = x
+	this.y = y;
+	this.w = w;
+	this.h = h;
 }
 
 Rectangle.prototype = {
 
 	setPosition: function(x,y){
-		this.x=x;
-		this.y=y;
+		this.x = x;
+		this.y = y;
 	},
 	
 	setSize: function(w,h){
-		this.w=w;
-		this.h=h;
+		this.w = w;
+		this.h = h;
 	},
 
 	collides: function(rect){

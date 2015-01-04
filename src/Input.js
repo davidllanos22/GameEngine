@@ -40,8 +40,12 @@ Input.prototype = {
 		delete this.keyDown[e.keyCode];
 	},
 	onMouseMove: function(input, e){
-		input.mouseX = e.x;
-		input.mouseY = e.y;	
+		//this.mouseX = e.x;
+		//this.mouseY = e.y;
+		var rect = this.game.cvs.getBoundingClientRect();
+		this.mouseX = Math.round((e.clientX-rect.left)/(rect.right-rect.left)*this.game.cvs.width);
+		this.mouseY = Math.round((e.clientY-rect.top)/(rect.bottom-rect.top)*this.game.cvs.height);
+
 	},
 	onMouseDown: function(input, e){
 		this.mouseClick[e.button] = true;

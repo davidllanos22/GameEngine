@@ -11,7 +11,7 @@ Game = function(width,height){
 	this.ctx = this.cvs.getContext("2d"); // Get context from canvas.
 
 
-	this.focused = false; //
+	this.focused = true; //
 	this.showPauseWhenNotFocused = false; // Show a pause screen when blur.
 	this.fillScreen = false; // Set the width and height to fill the screen.
 	this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"}); // Create a new FPSMeter instance.
@@ -123,17 +123,23 @@ Game.prototype = {
 				this.ctx.imageSmoothingEnabled = false;
 				this.ctx.webkitImageSmoothingEnabled = false;
 				this.ctx.mozImageSmoothingEnabled = false;
+				this.ctx.msImageSmoothingEnabled = false;
 			}else{
 				this.ctx.imageSmoothingEnabled = true;
 				this.ctx.webkitImageSmoothingEnabled = true;
 				this.ctx.mozImageSmoothingEnabled = true;
+				this.ctx.msImageSmoothingEnabled = true;
 			}
 		this.ctx.save()
+
 		this.ctx.scale(this.scale,this.scale);
 		this.renderer.renderCounter=0; // Reset the render call count.
+
 		this.render(); // Call render function.
+
 		this.currentScene.renderInternal();
 		this.ctx.restore();
+
 		if(this.showPauseWhenNotFocused && !this.focused){ // Show Pause when blur and showPauseWhenNotFocused = true.
 			this.renderer.drawRect(0,0,this.width,this.height,"rgba(0,0,0,0.8)"); // Fill screen with alpha rect.
 			this.renderer.drawString("- PAUSED - ",this.width/2-40,this.height/2-20,20,"white"); // Draw pause text.
