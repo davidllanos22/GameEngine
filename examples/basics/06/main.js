@@ -4,7 +4,7 @@ var timer;
 
 var pos = {
 	x: 0,
-	y: 120
+	y: 80
 }
 var speed = {
 	x: 1,

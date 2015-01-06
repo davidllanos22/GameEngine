@@ -8,7 +8,6 @@ Timer = function(time, repeat, onStart, onTick, onFinish){
 	this.count = -1;
 	
 	this.done = false;
-
 }
 
 Timer.prototype = {

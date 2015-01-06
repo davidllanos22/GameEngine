@@ -1,6 +1,6 @@
 ##GameEngine
 
-Work in progess. Testing done in Google Chrome. Some features may not work on other browsers.
+Work in progess. Testing done in Google Chrome. Some features may not work with other browsers.
 
 ###Build
 

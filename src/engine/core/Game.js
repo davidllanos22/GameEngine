@@ -19,7 +19,7 @@ Game = function(width,height){
 	this.showFps = false; // Set showFps.
 	this.scale = 1; // Set initial scale for the game.
 	this.fillScreenWithRatio = false; // Set the width and height to fill the screen conserving the original ratio (with borders).
-	this.ratio = 4/3;
+	this.ratio = 0;
 
 	this.pixelart = true;
 
@@ -61,7 +61,7 @@ Game.prototype = {
 		
 		this.currentScene = new Scene(this,"Scene 01");
 
-		this.onResizeInternal();
+		
 
 		Utils.log("running"); // Log running.
 
@@ -106,6 +106,7 @@ Game.prototype = {
 		if(!this.initDone){ // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
 			this.initDone = true; // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
 			this.init(); // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
+			this.onResizeInternal();
 		}
 		//--
 		if(!this.showPauseWhenNotFocused || this.focused){
@@ -186,6 +187,7 @@ Game.prototype = {
 	onResizeInternal: function(){
 		if(this.fillScreen)this.setSize(window.innerWidth,window.innerHeight); // Fill screen if fillScreen = true.
 		else if(this.fillScreenWithRatio){
+			this.ratio = this.width/this.height;
 			var nWidth = window.innerWidth/this.ratio;
 			var nHeight = nWidth/this.ratio;
 			if(nHeight>window.innerHeight){
@@ -200,9 +202,9 @@ Game.prototype = {
 				nWidth = window.innerWidth;
 				nHeight = nWidth/this.ratio;
 			}
-			this.scale = nWidth/320;
+			this.scale = nWidth/320; //original width
 
-			this.setSize(nWidth,nHeight); // Fill screen if fillScreen = true.
+			this.setSize(Math.floor(nWidth),Math.floor(nHeight)); // Fill screen if fillScreen = true.
 
 
 		}

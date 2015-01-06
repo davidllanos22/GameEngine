@@ -5,9 +5,9 @@ game.init = function(){
 }
 game.render = function(){
 	this.renderer.clearScreen("black"); // clear screen with black color
-	this.renderer.drawString("HI",10,440,20,"white"); // draw string 
+	this.renderer.drawString("Editor",10,440,20,"white"); // draw string 
 }
 
 game.update = function(){
-	
+
 }

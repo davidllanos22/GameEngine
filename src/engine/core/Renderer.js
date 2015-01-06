@@ -18,7 +18,7 @@ Renderer.prototype = {
 	},
 	clearScreen: function(color){
 		this.ctx.fillStyle=color;
-		this.ctx.fillRect(0,0,this.game.width,this.game.height);
+		this.ctx.fillRect(0,0,this.game.cvs.width,this.game.cvs.height);
 		this.renderCounter++;
 	},
 	drawString: function(text,x,y,size,color){

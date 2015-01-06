@@ -7,7 +7,11 @@ module.exports = function(grunt) {
 	        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 	      },
 	      build: {
-	        src: 'src/*.js',
+	        src: [	'src/engine/objects/*.js',
+	        		'src/engine/core/*.js',
+	        		'src/engine/utils/*.js',
+	        		'src/engine/vendor/*.js'
+	        	],
 	        dest: 'build/<%= pkg.name %>.min.js'
 	      }
 	    },
@@ -24,14 +28,22 @@ module.exports = function(grunt) {
 			main: {
 		    	src: 'build/*',
 		    	dest: 'examples/GameEngine.min.js',
+		  	},
+		  	editor: {
+		    	src: 'src/editor/**/*',
+		    	dest: 'examples/basics/07/'
 		  	}
 		},
   		watch: {
   			options: {
       			livereload: true,
     		},
-  			src: {
-    			files: ['src/*'],
+  			engine: {
+    			files: ['src/engine/**/*'],
+    			tasks: ['build']
+            },
+            editor: {
+    			files: ['src/editor/**/*'],
     			tasks: ['build']
             },
             examples: {
