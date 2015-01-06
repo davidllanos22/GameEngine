@@ -2,6 +2,7 @@ Renderer = function(game){
 	this.game = game;
 	this.ctx = this.game.ctx;
 	this.renderCounter = 0;
+	this.clearColor = "black";
 }
 
 Renderer.prototype = {
@@ -13,7 +14,7 @@ Renderer.prototype = {
 	},
 	//todo 
 	setClearColor: function(color){
-
+		this.clearColor = color;
 	},
 	clearScreen: function(color){
 		this.ctx.fillStyle=color;

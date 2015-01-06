@@ -12,7 +12,7 @@ $ grunt build
 
 ###View examples
 
-Use the command below to serve a web server on localhost:8888 to explore the examples.
+Use the command below to start a web server on localhost:8888 to explore the examples.
 
 ```bash
 $ grunt serve

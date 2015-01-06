@@ -37,6 +37,8 @@ Game = function(width,height){
 
 	this.cvs.width = this.width; // Set width.
 	this.cvs.height = this.height; // Set height.
+	this.cvs.style.width = this.width;
+	this.cvs.style.height = this.height;
 
 	document.body.appendChild(this.cvs); // Append the canvas to the body.
 
@@ -133,6 +135,7 @@ Game.prototype = {
 		this.ctx.save()
 
 		this.ctx.scale(this.scale,this.scale);
+		this.ctx.scale(this.HDratio, this.HDratio);
 		this.renderer.renderCounter=0; // Reset the render call count.
 
 		this.render(); // Call render function.

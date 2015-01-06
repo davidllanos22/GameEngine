@@ -21,7 +21,6 @@ game.init = function() {
 game.reset = function() {
 	this.currentScene = new Scene(this,"game");
 
-	// Set colors
 	this.moves = 0;
 	this.cardCount = 0;
 	this.actionCardTimer = 0;
@@ -112,8 +111,7 @@ Card = function(x,y,color,cardSize) {
 	this.flipped = false;
 	this.alreadyFlipped = false;
 	this.flipN = 0;
-	this.color = "grey";
-	this.generatedColor = color;
+	this.color = color;
 	this.cardSize = cardSize
 	this.width = cardSize;
 	this.height = cardSize;
@@ -125,17 +123,15 @@ Card.prototype = Object.create(Entity.prototype);
 Card.prototype.constructor = Card;
 
 Card.prototype.render = function() {
-	if(this.hover)this.game.renderer.drawRect(this.x-2,this.y-2,this.width+4,this.height+4, "white");
-	this.game.renderer.drawRect(this.x,this.y,this.width,this.height,this.color);
+	if(this.hover)game.renderer.drawRect(this.x-2,this.y-2,this.width+4,this.height+4, "white");
+	game.renderer.drawRect(this.x,this.y,this.width,this.height,this.flipped ? this.color : "grey");
 }
 
 Card.prototype.update = function() {
 
-	this.color = this.flipped ? this.generatedColor : "grey" ;
-
-	if(this.rect.collides(new Rectangle(this.game.input.mouseX,this.game.input.mouseY,1,1))){
+	if(this.rect.collides(new Rectangle(game.input.mouseX,game.input.mouseY,1,1))){
 		this.hover = true;
-		if(this.game.input.mouseClick[0] && !this.flipped) this.flip();
+		if(game.input.mouseClick[0] && !this.flipped && !game.actionCard) this.flip();
 	}else{
 		this.hover = false;
 	}
@@ -143,11 +139,11 @@ Card.prototype.update = function() {
 	if(this.flipping){
 		this.flipN += this.flipRate;
 		this.width -= this.flipN;
-		this.x = this.oX + this.game.cardSize/2 - this.width/2;
+		this.x = this.oX + game.cardSize/2 - this.width/2;
 
 		if(this.width < 0){
 			if(!this.alreadyFlipped){
-				if(!this.flipped)this.game.setSelected(this);
+				if(!this.flipped )game.setSelected(this);
 				this.flipped = !this.flipped;
 
 				this.alreadyFlipped = true;
@@ -167,8 +163,6 @@ Card.prototype.update = function() {
 
 Card.prototype.flip = function() {
 	if(!this.flipping){
-
-		console.log(this.generatedColor)
 		this.flipping = true;
 		this.alreadyFlipped = false;
 		this.flipN = 0;
