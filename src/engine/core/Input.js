@@ -1,20 +1,53 @@
 Keys = {
-	left: 37,
-	right: 39,
-	up: 38,
-	down: 40,
-	Space: 32,
-	W: 87,
+	NUM_0: 48,
+	NUM_1: 49,
+	NUM_2: 50,
+	NUM_3: 51,
+	NUM_4: 52,
+	NUM_5: 53,
+	NUM_6: 54,
+	NUM_7: 55,
+	NUM_8: 56,
+	NUM_9: 57,
 	A: 65,
+	B: 66,
+	C: 67,
+	D: 68,
+	E: 69,
+	F: 70,
+	G: 71,
+	H: 72,
+	I: 73,
+	J: 74,
+	K: 75,
+	L: 76,
+	M: 77,
+	N: 78,
+	O: 79,
+	P: 80,
+	Q: 81,
+	R: 82,
 	S: 83,
-	D: 68, 
-	B: 88,
-	start: 13
+	T: 84,
+	U: 85,
+	V: 86,
+	W: 87,
+	X: 88,
+	Y: 89,
+	Z: 90,
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40,
+	SPACE: 32,
+	ENTER: 13
 }
 
 Input = function(game){
 	this.game = game;
 	this.keyDown = {};
+	this.keyJustDown = {};
+	this.keyJustReleased = {};
 	this.mouseX = 0;
 	this.mouseY = 0;
 	this.mouseClick = [false,false,false];
@@ -30,14 +63,37 @@ Input = function(game){
 
 }
 
-
 Input.prototype = {
 
 	onKeyDown: function(e){
 		this.keyDown[e.keyCode] = true;
+		if(this.keyJustDown[e.keyCode] != 0)this.keyJustDown[e.keyCode] = true;
+		delete this.keyJustReleased[e.keyCode];
 	},
 	onKeyUp: function(e){
+		if(this.keyJustReleased[e.keyCode] != 0)this.keyJustReleased[e.keyCode] = true;
 		delete this.keyDown[e.keyCode];
+		delete this.keyJustDown[e.keyCode];
+	},
+
+	check: function(key){
+		return this.keyDown[key];
+	},
+	pressed: function(key){
+		if(this.keyJustDown[key]){
+			this.keyJustDown[key] = 0;
+			return true;
+		}
+		else 
+			return false;
+	},
+	released: function(key){
+		if(this.keyJustReleased[key]){
+			this.keyJustReleased[key] = 0;
+			return true;
+		}
+		else 
+			return false;
 	},
 	onMouseMove: function(input, e){
 		//this.mouseX = e.x;

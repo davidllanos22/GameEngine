@@ -7,14 +7,14 @@ var pos = {
 var v = 1;
 
 game.render = function(){
-	this.renderer.clearScreen("black"); // clear screen with black color
-	this.renderer.drawRect(pos.x,pos.y,50,50,"red"); // draw rect
-	this.renderer.drawString("Use WASD to move",10,440,20,"white"); // draw string 
+	game.renderer.clearScreen("black"); // clear screen with black color
+	game.renderer.drawRect(pos.x,pos.y,50,50,"red"); // draw rect
+	game.renderer.drawString("Use WASD to move",10,440,20,"white"); // draw string 
 }
 
 game.update = function(){
-	if(this.input.keyDown[Keys.D]) pos.x += v;
-	if(this.input.keyDown[Keys.A]) pos.x -= v;
-	if(this.input.keyDown[Keys.W]) pos.y -= v;
-	if(this.input.keyDown[Keys.S]) pos.y += v;
+	if(game.input.check(Keys.D) || game.input.check(Keys.RIGHT)) pos.x += v;
+	if(game.input.check(Keys.A) || game.input.check(Keys.LEFT)) pos.x -= v;
+	if(game.input.check(Keys.W) || game.input.check(Keys.UP)) pos.y -= v;
+	if(game.input.check(Keys.S) || game.input.check(Keys.DOWN)) pos.y += v;
 }

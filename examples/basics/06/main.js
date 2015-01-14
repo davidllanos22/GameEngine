@@ -13,7 +13,7 @@ var speed = {
 
 
 game.init = function(){
-	timer = new Timer(200,true,start,tick,finish);
+	timer = new Timer(200,false,start,tick,finish);
 }
 game.render = function(){
 	this.renderer.clearScreen("black"); // clear screen with black color
@@ -21,8 +21,7 @@ game.render = function(){
 }
 
 game.update = function(){
-	timer.run();
-
+	if(!timer.isRunning)timer.start();
 }
 
 var start = function(){
