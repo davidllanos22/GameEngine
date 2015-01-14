@@ -2,16 +2,12 @@ var game = new Game(640,480); // create a new instance of the game
 
 // Basic match 2 game.
 
-var cardSize = 100;
-
-
 
 game.init = function() {
 	this.cardSize = 100;
-	this.actionCard = false;
-	this.finishedGame = false;
-	this.actionCardTimerMax = 100;
-	this.restartTimerMax = 300;
+
+	this.actionTimer = new Timer(100, false, null, null, actionCardFinish);
+	this.restartTimer = new Timer(300, false, null, null, actionRestartFinish);
 
 	// green purple magenta orange brown blue yellow red
 	this.colors = ["#77DD77","#966FD6","#F49AC2","#FFB347","#836953","#779ECB","#FDFD96","#FF6961"]
@@ -23,9 +19,6 @@ game.reset = function() {
 
 	this.moves = 0;
 	this.cardCount = 0;
-	this.actionCardTimer = 0;
-	this.restartTimer = 0;
-
 
 	this.colors2 = [];
 
@@ -50,6 +43,9 @@ game.setSelected = function(card){
 	this.actualCard = card;
 
 	this.moves ++;
+	if(this.lastCard != null && this.actualCard != null){	
+		this.actionTimer.start();
+	}
 
 }
 game.render = function() {
@@ -58,45 +54,35 @@ game.render = function() {
 }
 game.update = function(){
 	if(this.input.keyDown[Keys.Space])this.reset();
-
-
-	if(this.lastCard != null && this.actualCard != null){
-		this.actionCard = true;
-	}
-
-	if(this.actionCard){
-		if(this.actionCardTimer < this.actionCardTimerMax)this.actionCardTimer++;
-		else{
-			if(this.lastCard.color == this.actualCard.color){
-				this.lastCard.destroy();
-				this.actualCard.destroy();
-				this.cardCount-=2;
-				Utils.log(this.cardCount)
-				if(this.cardCount<=0){
-					this.finishedGame = true;
-				}
-			}else{
-				this.actualCard.flip();
-				this.lastCard.flip();
-			}
-
-			this.actualCard = null;
-			this.lastCard = null;
-
-			this.actionCard = false;
-			this.actionCardTimer = 0;
-		}
-		
-	}
-
-	if(this.finishedGame){
-		if(this.restartTimer < this.restartTimerMax)this.restartTimer++;
-		else{
-			this.finishedGame = false;
-			this.reset();
-		}
-	}
 }
+
+var actionCardFinish = function(){
+	if(game.lastCard.color == game.actualCard.color){
+		game.lastCard.destroy();
+		game.actualCard.destroy();
+		game.cardCount-=2;
+		if(game.cardCount<=0){
+			game.restartTimer.start();
+		}
+
+	}else{
+		game.actualCard.flip();
+		game.lastCard.flip();
+	}
+
+	game.actualCard = null;
+	game.lastCard = null;
+
+}
+
+var actionRestartFinish = function(){
+	game.reset();
+
+}
+
+
+
+
 
 
 /*
@@ -104,7 +90,7 @@ game.update = function(){
 */
 
 Card = function(x,y,color,cardSize) {
-	Entity.call(this,x,y);
+	Entity.call(this,x,y,"Card");
 	this.rect = new Rectangle(x,y,cardSize,cardSize);
 	this.hover = false;
 	this.flipping = false;
@@ -145,16 +131,14 @@ Card.prototype.update = function() {
 			if(!this.alreadyFlipped){
 				if(!this.flipped )game.setSelected(this);
 				this.flipped = !this.flipped;
-
 				this.alreadyFlipped = true;
-				
 			}
 			this.flipRate = -this.flipRate;
 		}
-		if(this.width < -cardSize ){
+		if(this.width < - this.cardSize ){
 			this.flipRate = -this.flipRate;
 			this.x = this.oX;
-			this.width = cardSize;
+			this.width = this.cardSize;
 			this.flipping = false;
 		}
 	}

@@ -1,6 +1,7 @@
-Entity = function(x,y){
+Entity = function(x, y, name){
 	this.x = x;
 	this.y = y;
+	this.name = name;
 	this.parent;
 	this.sprite;
 	this.rect;

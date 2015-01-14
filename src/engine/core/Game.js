@@ -58,8 +58,9 @@ Game.prototype = {
 		this.loader = new Loader(); // Create a new instance of the Loader.
 		this.renderer = new Renderer(this); // Create a new instance of the Renderer.
 		this.input = new Input(this); // Create a new instance of the Input.
-		
+		this.timerManager = new TimerManager(this);
 		this.currentScene = new Scene(this,"Scene 01");
+		this.currentCamera = new Camera(this,"Scene 01");
 
 		
 
@@ -110,7 +111,9 @@ Game.prototype = {
 		}
 		//--
 		if(!this.showPauseWhenNotFocused || this.focused){
+			this.timerManager.update();
 			this.currentScene.updateInternal();
+
 			this.update(); // Call update function when focused.
 		}
 		this.input.mouseClick = [false,false,false];
