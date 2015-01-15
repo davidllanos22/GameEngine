@@ -1,5 +1,10 @@
-Loader = function(){
+Resource = function(){
+	this.url;
+	this.type;
+}
 
+Loader = function(){
+	this.resources = [];
 }
 
 Loader.prototype = {
@@ -19,5 +24,8 @@ Loader.prototype = {
 	loadData: function(url){
 		Utils.logLoad("Loading Data " + url);
 		return 1;
+	},
+	loadAll: function(onFinish){
+
 	}
 }

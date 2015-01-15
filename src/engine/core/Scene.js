@@ -15,10 +15,11 @@ Scene.prototype.remove = function(child){
 }
 
 Scene.prototype.renderInternal = function(){
+	this.render();
 	for(var i = 0; i<this.childs.length; i++){
 		this.childs[i].render();
 	}
-	this.render();
+	
 }
 
 Scene.prototype.updateInternal = function(){

@@ -2,21 +2,57 @@ var game = new Game(640,480); // create a new instance of the game
 
 // Basic match 2 game.
 
+var menuScene = new Scene(game,"Menu");
+var gameScene = new Scene(game,"Game");
+
+menuScene.render = function(){
+	game.renderer.clearScreen("black");
+	game.renderer.drawString("Click to play!",8,4,20,"white");
+}
+menuScene.update = function(){
+	if(game.input.mouseClick[0]){
+		game.currentScene = gameScene;
+		game.moves = 0;
+		game.cardCount = 0;
+
+		game.colors2 = [];
+
+		for (i = 0; i<game.colors.length;i++){
+			game.colors2.push(game.colors[i]);
+			game.colors2.push(game.colors[i]);
+		}
+
+		for (i = 0; i < 4; i++) {
+			for (j = 0; j < 4; j++) {
+				var n = Utils.random(game.colors2.length);
+				var card = new Card(110+i*(game.cardSize+10), 25+j*(game.cardSize+10),game.colors2[n],game.cardSize);
+				game.cardCount++;
+				game.colors2.splice(n,1);
+				game.currentScene.add(card);	
+			}		
+		}
+
+		}
+}
+gameScene.render = function(){
+	game.renderer.clearScreen("black");
+	game.renderer.drawString("Moves: "+game.moves,8,4,20,"white");
+}
 
 game.init = function() {
 	this.cardSize = 100;
 
+	this.currentScene = menuScene;
+
 	this.actionTimer = new Timer(100, false, null, null, actionCardFinish);
-	this.restartTimer = new Timer(300, false, null, null, actionRestartFinish);
+	this.restartTimer = new Timer(200, false, null, null, actionRestartFinish);
 
 	// green purple magenta orange brown blue yellow red
 	this.colors = ["#77DD77","#966FD6","#F49AC2","#FFB347","#836953","#779ECB","#FDFD96","#FF6961"]
-	this.reset();
+	//this.reset();
 }
 
 game.reset = function() {
-	this.currentScene = new Scene(this,"game");
-
 	this.moves = 0;
 	this.cardCount = 0;
 
@@ -48,13 +84,6 @@ game.setSelected = function(card){
 	}
 
 }
-game.render = function() {
-	this.renderer.clearScreen("black");
-	this.renderer.drawString("Moves: "+this.moves,8,4,20,"white");
-}
-game.update = function(){
-	if(this.input.keyDown[Keys.Space])this.reset();
-}
 
 var actionCardFinish = function(){
 	if(game.lastCard.color == game.actualCard.color){
@@ -76,7 +105,7 @@ var actionCardFinish = function(){
 }
 
 var actionRestartFinish = function(){
-	game.reset();
+	game.currentScene = menuScene;
 
 }
 
@@ -110,7 +139,7 @@ Card.prototype.constructor = Card;
 
 Card.prototype.render = function() {
 	if(this.hover)game.renderer.drawRect(this.x-2,this.y-2,this.width+4,this.height+4, "white");
-	game.renderer.drawRect(this.x,this.y,this.width,this.height,this.flipped ? this.color : "grey");
+	game.renderer.drawRect(this.x,this.y,this.width,this.height,this.flipped ? this.color : this.color);
 }
 
 Card.prototype.update = function() {
