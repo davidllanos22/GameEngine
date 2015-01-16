@@ -20,7 +20,6 @@ Game = function(width,height){
 	this.scale = 1; // Set initial scale for the game.
 	this.fillScreenWithRatio = false; // Set the width and height to fill the screen conserving the original ratio (with borders).
 	this.ratio = 0;
-
 	this.pixelart = true;
 
 	var game = this; // Local variable to use on the next events.
@@ -107,6 +106,7 @@ Game.prototype = {
 		if(!this.initDone){ // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
 			this.initDone = true; // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
 			this.init(); // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
+			this.originalWidth = this.width;
 			this.onResizeInternal();
 		}
 		//--
@@ -205,7 +205,7 @@ Game.prototype = {
 				nWidth = window.innerWidth;
 				nHeight = nWidth/this.ratio;
 			}
-			this.scale = nWidth/320; //original width
+			this.scale = nWidth/this.originalWidth; //original width
 
 			this.setSize(Math.floor(nWidth),Math.floor(nHeight)); // Fill screen if fillScreen = true.
 

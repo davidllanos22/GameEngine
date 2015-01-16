@@ -7,10 +7,12 @@ Entity = function(x, y, name){
 	this.rect;
 	this.childs = new Array();
 	this.game;
+	this.init();
 }
 
 Entity.prototype = {
-
+	init: function(){
+	},
 	setPosition: function(x,y){
 		this.x=x;
 		this.y=y;

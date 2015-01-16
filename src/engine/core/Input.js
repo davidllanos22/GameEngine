@@ -99,8 +99,8 @@ Input.prototype = {
 		//this.mouseX = e.x;
 		//this.mouseY = e.y;
 		var rect = this.game.cvs.getBoundingClientRect();
-		this.mouseX = Math.round((e.clientX-rect.left)/(rect.right-rect.left)*this.game.cvs.width);
-		this.mouseY = Math.round((e.clientY-rect.top)/(rect.bottom-rect.top)*this.game.cvs.height);
+		this.mouseX = Math.round(((e.clientX-rect.left)/(rect.right-rect.left)*this.game.cvs.width)/this.game.scale);
+		this.mouseY = Math.round(((e.clientY-rect.top)/(rect.bottom-rect.top)*this.game.cvs.height)/this.game.scale);
 
 	},
 	onMouseDown: function(input, e){

@@ -1,41 +1,41 @@
 var game = new Game(640,480); // create a new instance of the game
 
 // Basic match 2 game.
-
+var titleImage
 var menuScene = new Scene(game,"Menu");
 var gameScene = new Scene(game,"Game");
 
 menuScene.render = function(){
-	game.renderer.clearScreen("black");
-	game.renderer.drawString("Click to play!",8,4,20,"white");
+	game.renderer.drawImage(game.titleImage,60,0);
+	game.renderer.drawString("CLICK TO PLAY",170,300,40,"#5775b9")
 }
 menuScene.update = function(){
 	if(game.input.mouseClick[0]){
-		game.currentScene = gameScene;
-		game.moves = 0;
-		game.cardCount = 0;
+		game.currentScene.changeScene(new TransitionScene(game.currentScene,gameScene));
+	}
+}
+gameScene.init = function(){
+	game.moves = 0;
+	game.cardCount = 0;
 
-		game.colors2 = [];
+	game.colors2 = [];
 
-		for (i = 0; i<game.colors.length;i++){
-			game.colors2.push(game.colors[i]);
-			game.colors2.push(game.colors[i]);
-		}
+	for (i = 0; i<game.colors.length;i++){
+		game.colors2.push(game.colors[i]);
+		game.colors2.push(game.colors[i]);
+	}
 
-		for (i = 0; i < 4; i++) {
-			for (j = 0; j < 4; j++) {
-				var n = Utils.random(game.colors2.length);
-				var card = new Card(110+i*(game.cardSize+10), 25+j*(game.cardSize+10),game.colors2[n],game.cardSize);
-				game.cardCount++;
-				game.colors2.splice(n,1);
-				game.currentScene.add(card);	
-			}		
-		}
-
-		}
+	for (i = 0; i < 4; i++) {
+		for (j = 0; j < 4; j++) {
+			var n = Utils.random(game.colors2.length);
+			var card = new Card(110+i*(game.cardSize+10), 25+j*(game.cardSize+10),game.colors2[n],game.cardSize);
+			game.cardCount++;
+			game.colors2.splice(n,1);
+			this.add(card);	
+		}		
+	}
 }
 gameScene.render = function(){
-	game.renderer.clearScreen("black");
 	game.renderer.drawString("Moves: "+game.moves,8,4,20,"white");
 }
 
@@ -43,7 +43,7 @@ game.init = function() {
 	this.cardSize = 100;
 
 	this.currentScene = menuScene;
-
+	this.titleImage = game.loader.loadImage("title.png");
 	this.actionTimer = new Timer(100, false, null, null, actionCardFinish);
 	this.restartTimer = new Timer(200, false, null, null, actionRestartFinish);
 
@@ -51,7 +51,9 @@ game.init = function() {
 	this.colors = ["#77DD77","#966FD6","#F49AC2","#FFB347","#836953","#779ECB","#FDFD96","#FF6961"]
 	//this.reset();
 }
-
+game.render = function(){
+	game.renderer.clearScreen("#b7ceed");
+}
 game.reset = function() {
 	this.moves = 0;
 	this.cardCount = 0;
@@ -139,7 +141,7 @@ Card.prototype.constructor = Card;
 
 Card.prototype.render = function() {
 	if(this.hover)game.renderer.drawRect(this.x-2,this.y-2,this.width+4,this.height+4, "white");
-	game.renderer.drawRect(this.x,this.y,this.width,this.height,this.flipped ? this.color : this.color);
+	game.renderer.drawRect(this.x,this.y,this.width,this.height,this.flipped ? this.color : "grey");
 }
 
 Card.prototype.update = function() {
