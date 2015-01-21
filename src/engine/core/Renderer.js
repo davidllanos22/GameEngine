@@ -21,7 +21,7 @@ Renderer.prototype = {
 		this.clearColor = color;
 	},
 	clearScreen: function(color){
-		this.drawRect(0,0,this.game.width,this.game.height,color)
+		this.drawRect(0,0,this.game.width,this.game.height,this.clearColor)
 		
 	},
 	drawString: function(text,x,y,size,color){

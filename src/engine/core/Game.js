@@ -143,10 +143,12 @@ Game.prototype = {
 				this.ctx.msImageSmoothingEnabled = true;
 			}
 
+			this.renderer.clearScreen();
 			this.ctx.save()
 
 			this.renderer.renderCounter=0; // Reset the render call count.
-
+			this.ctx.translate(-this.currentCamera.x,-this.currentCamera.y);
+			//this.ctx.rotate(this.currentCamera.angle*Math.PI/180);
 			this.render(); // Call render function.
 
 			this.currentScene.renderInternal();
