@@ -15,6 +15,7 @@ menuScene.update = function(){
 	}
 }
 gameScene.init = function(){
+	
 	game.moves = 0;
 	game.cardCount = 0;
 
@@ -40,6 +41,7 @@ gameScene.render = function(){
 }
 
 game.init = function() {
+	game.renderer.clearColor = "#b7ceed";
 	this.cardSize = 100;
 
 	this.currentScene = menuScene;
@@ -50,9 +52,6 @@ game.init = function() {
 	// green purple magenta orange brown blue yellow red
 	this.colors = ["#77DD77","#966FD6","#F49AC2","#FFB347","#836953","#779ECB","#FDFD96","#FF6961"]
 	//this.reset();
-}
-game.render = function(){
-	game.renderer.clearScreen("#b7ceed");
 }
 game.reset = function() {
 	this.moves = 0;

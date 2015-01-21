@@ -21,7 +21,7 @@ Game = function(width,height){
 	this.showFps = false; // Set showFps.
 	this.gameScale = 1; // Set initial scale for the game.
 	this.scale = 1;
-	this.fillScreenWithRatio = true; // Set the width and height to fill the screen conserving the original ratio (with borders).
+	this.fillScreenWithRatio = false; // Set the width and height to fill the screen conserving the original ratio (with borders).
 	this.ratio = 0;
 	this.pixelart = true;
 
@@ -145,9 +145,9 @@ Game.prototype = {
 
 			this.renderer.clearScreen();
 			this.ctx.save()
-
+			this.ctx.scale(this.gameScale,this.gameScale);
 			this.renderer.renderCounter=0; // Reset the render call count.
-			this.ctx.translate(-this.currentCamera.x,-this.currentCamera.y);
+			this.ctx.translate(-this.currentCamera.position.x,-this.currentCamera.position.y);
 			//this.ctx.rotate(this.currentCamera.angle*Math.PI/180);
 			this.render(); // Call render function.
 
@@ -219,6 +219,7 @@ Game.prototype = {
 			this.ctx.scale(this.scale,this.scale);
 
 		}
+		
 	},
 	/**
 	* Function triggered when the game takes focus.

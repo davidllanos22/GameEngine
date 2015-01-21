@@ -63,6 +63,6 @@ TransitionScene.prototype.constructor = TransitionScene;
 
 TransitionScene.prototype.render = function(){
 	this.visible.renderInternal();
-	if(this.fadeIn.isRunning)this.game.renderer.clearScreen("rgba(255,255,255,"+this.fadeIn.count/this.time+")");
-	else this.game.renderer.clearScreen("rgba(255,255,255,"+(this.time-this.fadeOut.count)/this.time+")");
+	if(this.fadeIn.isRunning)this.game.renderer.drawRect(0,0,game.width,game.height,"rgba(255,255,255,"+this.fadeIn.count/this.time+")");
+	else this.game.renderer.drawRect(0,0,game.width,game.height,"rgba(255,255,255,"+(this.time-this.fadeOut.count)/this.time+")");
 }

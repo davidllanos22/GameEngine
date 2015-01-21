@@ -49,11 +49,6 @@ Renderer.prototype = {
 		this.ctx.drawImage(src,xx*w,yy*h,w,h,x,y,w,h);
 		this.renderCounter++;
 	},
-	//todo make draw part of an image
-	drawImageOld: function(src,x,y,xo,yo,s){
-		this.ctx.drawImage(src,xo*s,yo*s,s,s,x,y,s,s);
-		this.renderCounter++;
-	},
 	drawImageRot: function(src,x,y,xo,yo,s,rot){
 		this.ctx.save();
 		this.ctx.translate(x+s/2,y+s/2);
