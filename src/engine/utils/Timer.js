@@ -13,7 +13,8 @@ Timer = function(time, repeat, onStart, onTick, onFinish){
 
 Timer.prototype = {
 	start: function(){
-		this.reset();
+		this.count = -1;
+		this.done = false;
 		game.timerManager.add(this);
 		this.isRunning = true;
 	},
@@ -33,10 +34,5 @@ Timer.prototype = {
 				this.count ++;
 			}
 		}
-	},
-	reset: function(){
-		this.count = -1;
-		this.done = false;
-		
 	}
 }

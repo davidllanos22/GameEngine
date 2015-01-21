@@ -17,15 +17,15 @@ Scene.prototype.remove = function(child){
 Scene.prototype.renderInternal = function(){
 	this.render();
 	for(var i = 0; i<this.childs.length; i++){
-		this.childs[i].render();
+			this.childs[i].render();
 	}
-	
 }
 
 Scene.prototype.updateInternal = function(){
 	for(var i = 0; i<this.childs.length; i++){
 		this.childs[i].update();
 	}
+	
 	this.update();
 }
 

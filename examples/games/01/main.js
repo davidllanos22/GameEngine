@@ -1,7 +1,7 @@
 var game = new Game(640,480); // create a new instance of the game
 
 // Basic match 2 game.
-var titleImage
+var titleImage;
 var menuScene = new Scene(game,"Menu");
 var gameScene = new Scene(game,"Game");
 
@@ -36,7 +36,7 @@ gameScene.init = function(){
 	}
 }
 gameScene.render = function(){
-	game.renderer.drawString("Moves: "+game.moves,8,4,20,"white");
+	game.renderer.drawString("Moves: "+game.moves,8,4,20,"#5775b9");
 }
 
 game.init = function() {
@@ -141,7 +141,7 @@ Card.prototype.constructor = Card;
 
 Card.prototype.render = function() {
 	if(this.hover)game.renderer.drawRect(this.x-2,this.y-2,this.width+4,this.height+4, "white");
-	game.renderer.drawRect(this.x,this.y,this.width,this.height,this.flipped ? this.color : "grey");
+	game.renderer.drawRect(this.x,this.y,this.width,this.height,this.flipped ? this.color : "#5775b9");
 }
 
 Card.prototype.update = function() {

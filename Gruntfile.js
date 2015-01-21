@@ -4,10 +4,12 @@ module.exports = function(grunt) {
 	    pkg: grunt.file.readJSON('package.json'),
 	    uglify: {
 	      options: {
-	        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+	        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+          beautify: true
 	      },
 	      build: {
-	        src: [	'src/engine/objects/*.js',
+	        src: [	
+              'src/engine/objects/*.js',
 	        		'src/engine/core/*.js',
 	        		'src/engine/utils/*.js',
 	        		'src/engine/vendor/*.js'
@@ -59,8 +61,7 @@ module.exports = function(grunt) {
   	grunt.loadNpmTasks('grunt-contrib-copy');
   	grunt.loadNpmTasks('grunt-contrib-watch');
 
-
-	grunt.registerTask('default', ['build']);
+    grunt.registerTask('default', ['build']);
 
   	grunt.registerTask('build', ['uglify','copy']);
   	grunt.registerTask('serve', ['connect','watch']);

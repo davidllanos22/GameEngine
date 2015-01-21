@@ -5,11 +5,13 @@
 * @param {int} height - The height of the window.
 */
 Game = function(width,height){
+
 	this.cvs = document.createElement("canvas"); // Create canvas Element.
 	this.cvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
 	this.cvs.style.outline = "none";
 	this.ctx = this.cvs.getContext("2d"); // Get context from canvas.
 
+	document.body.appendChild(this.cvs); // Append the canvas to the body.
 
 	this.focused = true; //
 	this.showPauseWhenNotFocused = false; // Show a pause screen when blur.
@@ -17,8 +19,9 @@ Game = function(width,height){
 	this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"}); // Create a new FPSMeter instance.
 	this.meter.hide(); // Hide FPSMeter.
 	this.showFps = false; // Set showFps.
-	this.scale = 1; // Set initial scale for the game.
-	this.fillScreenWithRatio = false; // Set the width and height to fill the screen conserving the original ratio (with borders).
+	this.gameScale = 1; // Set initial scale for the game.
+	this.scale = 1;
+	this.fillScreenWithRatio = true; // Set the width and height to fill the screen conserving the original ratio (with borders).
 	this.ratio = 0;
 	this.pixelart = true;
 
@@ -39,7 +42,7 @@ Game = function(width,height){
 	this.cvs.style.width = this.width;
 	this.cvs.style.height = this.height;
 
-	document.body.appendChild(this.cvs); // Append the canvas to the body.
+	
 
 	this.initInternal(); // Call initInternal function.
 	
@@ -54,15 +57,17 @@ Game.prototype = {
 		//--
 		this.initDone = false; // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
 		
+
+
 		this.loader = new Loader(); // Create a new instance of the Loader.
 		this.renderer = new Renderer(this); // Create a new instance of the Renderer.
 		this.input = new Input(this); // Create a new instance of the Input.
 		this.timerManager = new TimerManager(this);
+
+		if(this.pixi)this.pixiStage.addChild(this.renderer.graphics);	
 		this.currentScene = new Scene(this,"Scene 01");
-		this.currentCamera = new Camera(this,"Scene 01");
-
-		
-
+		this.currentCamera = new Camera(this,"Camera 01");
+	
 		Utils.log("running"); // Log running.
 
 		this.fps = 60; // Set fps.
@@ -125,6 +130,7 @@ Game.prototype = {
 	*/
 	renderInternal: function (){
 		//todo change to a function
+		
 			if(this.pixelart){
 				this.ctx.imageSmoothingEnabled = false;
 				this.ctx.webkitImageSmoothingEnabled = false;
@@ -136,16 +142,16 @@ Game.prototype = {
 				this.ctx.mozImageSmoothingEnabled = true;
 				this.ctx.msImageSmoothingEnabled = true;
 			}
-		this.ctx.save()
 
-		this.ctx.scale(this.scale,this.scale);
-		this.ctx.scale(this.HDratio, this.HDratio);
-		this.renderer.renderCounter=0; // Reset the render call count.
+			this.ctx.save()
 
-		this.render(); // Call render function.
+			this.renderer.renderCounter=0; // Reset the render call count.
 
-		this.currentScene.renderInternal();
-		this.ctx.restore();
+			this.render(); // Call render function.
+
+			this.currentScene.renderInternal();
+			this.ctx.restore();
+		
 
 		if(this.showPauseWhenNotFocused && !this.focused){ // Show Pause when blur and showPauseWhenNotFocused = true.
 			this.renderer.drawRect(0,0,this.width,this.height,"rgba(0,0,0,0.8)"); // Fill screen with alpha rect.
@@ -206,9 +212,9 @@ Game.prototype = {
 				nHeight = nWidth/this.ratio;
 			}
 			this.scale = nWidth/this.originalWidth; //original width
-
+			this.scale *= this.gameScale;
 			this.setSize(Math.floor(nWidth),Math.floor(nHeight)); // Fill screen if fillScreen = true.
-
+			this.ctx.scale(this.scale,this.scale);
 
 		}
 	},
