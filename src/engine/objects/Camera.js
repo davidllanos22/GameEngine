@@ -26,12 +26,17 @@ Camera.prototype.setRotation = function(angle){
 Camera.prototype.shake = function(time,intensity){
 	if(!this.shaking){
 		var self = this;
+		var originalPos = this.position.copy(); // copy position vector
+		var originalAngle = this.angle;
+
 		this.shakeTimer = new Timer(time,false,null,function(){ // onTick
-			var r = Math.randomRange(-2,2);
-			self.setPosition(self.position.x-r/2,self.position.y-r/2,false);
+			var r = Math.randomRange(-intensity,intensity);
+			self.setPosition(self.position.x-r,self.position.y-r,false);
+			//self.setRotation(self.angle+r,self.angle+r)
 
 		},function(){ // onFinish
-			self.angle = 0;
+			self.position = originalPos;
+			self.angle = originalAngle;
 			self.shaking = false;
 		});
 		this.shakeTimer.start();

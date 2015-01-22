@@ -1,14 +1,11 @@
 var game = new Game(640,480);
 
 var player1;
-var player2;
 
 var sprites,
     xx,
     yy;
-for (var i = 0; i <10; i++) {
-  console.log(Math.randomRange(-500,100));
-};
+
 game.init = function(){
   game.renderer.clearColor = "grey";
   sprites = game.loader.loadImage("sprites.png");
@@ -17,13 +14,12 @@ game.init = function(){
   
 
   player1 = new Player(-10, -10, true);
-  player2 = new Player(0, 0, false);
   
   game.currentScene.add(player1);
+
   for (var i = 0; i <100; i++) {
     game.currentScene.add(new Player(Math.randomTo(game.width/2)-100, Math.randomTo(game.height/2)-100, false));
   };
-  
 
   xx = 8 + player1.position.x - (game.width / 2) / game.gameScale;
   yy = 8 + player1.position.y - (game.height / 2) / game.gameScale;
@@ -36,7 +32,7 @@ game.render = function(){
 }
 game.update = function(){
   if(game.input.check(Keys.SPACE)){
-    game.currentCamera.shake(10,10);
+    game.currentCamera.shake(400,1);
   } 
 }
 
@@ -52,7 +48,7 @@ Player = function(x,y,control) {
   Entity.call(this,x,y,"Player");
   this.control = control;
   this.rect = new Rectangle(x,y,16,16);
-  this.spd = new Math.Vector2(0.5, 0.5);
+  this.spd = new Math.Vector2(0.3, 0.3);
 
   this.anim = new Animation(100,[[0,0],[1,0]]);
 
