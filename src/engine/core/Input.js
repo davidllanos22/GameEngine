@@ -48,8 +48,7 @@ Input = function(game){
 	this.keyDown = {};
 	this.keyJustDown = {};
 	this.keyJustReleased = {};
-	this.mouseX = 0;
-	this.mouseY = 0;
+	this.mouse = new Math.Vector2(0,0);
 	this.mouseClick = [false,false,false];
 	this.mouseRelease = [false,false,false];
 	this.mouseHold = [false,false,false];
@@ -99,8 +98,8 @@ Input.prototype = {
 		//this.mouseX = e.x;
 		//this.mouseY = e.y;
 		var rect = this.game.cvs.getBoundingClientRect();
-		this.mouseX = Math.round(((e.clientX-rect.left)/(rect.right-rect.left)*this.game.cvs.width)/this.game.scale);
-		this.mouseY = Math.round(((e.clientY-rect.top)/(rect.bottom-rect.top)*this.game.cvs.height)/this.game.scale);
+		this.mouse.x = Math.round(((e.clientX-rect.left)/(rect.right-rect.left)*this.game.cvs.width)/this.game.scale);
+		this.mouse.y = Math.round(((e.clientY-rect.top)/(rect.bottom-rect.top)*this.game.cvs.height)/this.game.scale);
 
 	},
 	onMouseDown: function(input, e){

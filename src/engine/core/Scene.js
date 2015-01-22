@@ -17,7 +17,7 @@ Scene.prototype.remove = function(child){
 Scene.prototype.renderInternal = function(){
 	this.render();
 	for(var i = 0; i<this.childs.length; i++){
-			this.childs[i].render();
+			if(this.childs[i].onScreen())this.childs[i].render();
 	}
 }
 

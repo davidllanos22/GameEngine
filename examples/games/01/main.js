@@ -140,7 +140,7 @@ Card.prototype.render = function() {
 
 Card.prototype.update = function() {
 
-	if(this.rect.collides(new Rectangle(game.input.mouseX,game.input.mouseY,1,1))){
+	if(this.rect.collides(new Rectangle(game.input.mouse.x,game.input.mouse.y,1,1))){
 		this.hover = true;
 		if(game.input.mouseClick[0] && !this.flipped && !game.actionCard) this.flip();
 	}else{

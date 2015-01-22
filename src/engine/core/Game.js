@@ -149,9 +149,9 @@ Game.prototype = {
 		this.ctx.scale(this.gameScale,this.gameScale);
 		this.ctx.translate(-this.currentCamera.position.x,-this.currentCamera.position.y);
 		this.ctx.rotate(this.currentCamera.angle*Math.PI/180);
-
-		this.render(); // game.render
+		
 		this.currentScene.renderInternal(); // scene.render
+		this.render(); // game.render
 
 		this.ctx.restore();
 		
@@ -243,7 +243,7 @@ Game.prototype = {
 	*/
 	setSize: function(width,height){
 		if(width == 0 || height == 0) Utils.logErr("Width and Height can't be 0."); // Throw an error if w or h = 0.
-		
+
 		this.width = width; // Set width.
 		this.height = height; // Set height.
 
