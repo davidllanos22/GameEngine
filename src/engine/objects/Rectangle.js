@@ -1,23 +1,24 @@
 Rectangle = function(x,y,w,h){
-	this.x = x
-	this.y = y;
-	this.w = w;
-	this.h = h;
+	this.position = new Math.Vector2(x,y);
+	this.size = new Math.Vector2(w,h);
 }
 
 Rectangle.prototype = {
 
 	setPosition: function(x,y){
-		this.x = x;
-		this.y = y;
+		this.position.x = x;
+		this.position.y = y;
 	},
 	
 	setSize: function(w,h){
-		this.w = w;
-		this.h = h;
+		this.size.x = w;
+		this.size.y = h;
 	},
 
 	collides: function(rect){
-		return ( this.x < rect.x + rect.w && this.x + this.w > rect.x && this.y < rect.y + rect.h && this.y + this.h > rect.y);
+		return ( this.position.x < rect.position.x + rect.size.x &&
+						 this.position.x + this.size.x > rect.position.x && 
+						 this.position.y < rect.position.y + rect.size.y && 
+						 this.position.y + this.size.y > rect.position.y );
 	}
 }

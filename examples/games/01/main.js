@@ -111,10 +111,6 @@ var actionRestartFinish = function(){
 }
 
 
-
-
-
-
 /*
 	Card Entity Class
 */
@@ -122,15 +118,14 @@ var actionRestartFinish = function(){
 Card = function(x,y,color,cardSize) {
 	Entity.call(this,x,y,"Card");
 	this.rect = new Rectangle(x,y,cardSize,cardSize);
+	this.size = new Math.Vector2(cardSize,cardSize);
+	this.cardSize = cardSize;
 	this.hover = false;
 	this.flipping = false;
 	this.flipped = false;
 	this.alreadyFlipped = false;
 	this.flipN = 0;
 	this.color = color;
-	this.cardSize = cardSize
-	this.width = cardSize;
-	this.height = cardSize;
 	this.oX=x;
 	this.flipRate = 0.05;
 }
@@ -139,8 +134,8 @@ Card.prototype = Object.create(Entity.prototype);
 Card.prototype.constructor = Card;
 
 Card.prototype.render = function() {
-	if(this.hover)game.renderer.drawRect(this.x-2,this.y-2,this.width+4,this.height+4, "white");
-	game.renderer.drawRect(this.x,this.y,this.width,this.height,this.flipped ? this.color : "#5775b9");
+	if(this.hover)game.renderer.drawRect(this.position.x-2,this.position.y-2,this.size.x+4,this.size.y+4, "white");
+	game.renderer.drawRect(this.position.x,this.position.y,this.size.x,this.size.y,this.flipped ? this.color : "#5775b9");
 }
 
 Card.prototype.update = function() {
@@ -154,10 +149,10 @@ Card.prototype.update = function() {
 
 	if(this.flipping){
 		this.flipN += this.flipRate;
-		this.width -= this.flipN;
-		this.x = this.oX + game.cardSize/2 - this.width/2;
+		this.size.x -= this.flipN;
+		this.position.x = this.oX + this.cardSize/2 - this.size.x/2;
 
-		if(this.width < 0){
+		if(this.size.x< 0){
 			if(!this.alreadyFlipped){
 				if(!this.flipped )game.setSelected(this);
 				this.flipped = !this.flipped;
@@ -165,10 +160,10 @@ Card.prototype.update = function() {
 			}
 			this.flipRate = -this.flipRate;
 		}
-		if(this.width < - this.cardSize ){
-			this.flipRate = -this.flipRate;
-			this.x = this.oX;
-			this.width = this.cardSize;
+		if(this.size.x < - this.cardSize ){
+			this.flipRate = - this.flipRate;
+			this.position.x = this.oX;
+			this.size.x = this.cardSize;
 			this.flipping = false;
 		}
 	}

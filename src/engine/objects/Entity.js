@@ -1,6 +1,5 @@
 Entity = function(x, y, name){
-	this.x = x;
-	this.y = y;
+	this.position = new Math.Vector2(x,y);
 	this.name = name;
 	this.parent;
 	this.sprite;
@@ -14,8 +13,8 @@ Entity.prototype = {
 	init: function(){
 	},
 	setPosition: function(x,y){
-		this.x=x;
-		this.y=y;
+		this.position.x = x;
+		this.position.y = y;
 	},
 	inScreen: function(){
 		this.x=x;

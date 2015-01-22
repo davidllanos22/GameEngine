@@ -29,7 +29,7 @@ Math.Vector2.prototype = {
   },
   copy: function(){
     return new Math.Vector2(this.x,this.y);
-  }
+  },
   toString : function(){
     return "x: " + this.x + " y: " + this.y;
   }
