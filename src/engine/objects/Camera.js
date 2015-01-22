@@ -5,6 +5,7 @@ Camera = function(game, name){
 	this.size = new Math.Vector2((game.width / 2) / game.gameScale, (game.height / 2) / game.gameScale);
 	this.rect = new Rectangle(0,0,this.size.x,this.size.y);
 	this.angle = 0;
+	this.shaking = false;
 }
 
 Camera.prototype.setPosition = function(x, y, lerp){
@@ -20,6 +21,24 @@ Camera.prototype.setPosition = function(x, y, lerp){
 
 Camera.prototype.setRotation = function(angle){
 	this.angle = angle;
+}
+
+Camera.prototype.shake = function(time,intensity){
+	
+	if(!this.shaking){
+		var self = this;
+		this.shakeTimer = new Timer(time,false,null,function(){ // onTick
+			var r = Math.randomRange(-2,2);
+			self.setPosition(self.position.x-r/2,self.position.y-r/2,false);
+
+		},function(){ // onFinish
+			self.angle = 0;
+			self.shaking = false;
+		});
+		this.shakeTimer.start();
+		this.shaking = true;
+	}
+
 }
 
 

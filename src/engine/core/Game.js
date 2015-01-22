@@ -18,7 +18,7 @@ Game = function(width,height){
 	// Focus
 
 	this.focused = true;
-	this.showPauseWhenNotFocused = true;
+	this.showPauseWhenNotFocused = false;
 	if(this.focused) this.cvs.focus();
 
 
@@ -26,7 +26,7 @@ Game = function(width,height){
 
 	this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"});
 	this.meter.hide();
-	this.showFps = true;
+	this.showFps = false;
 
 	// Scaling 
 

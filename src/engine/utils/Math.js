@@ -4,6 +4,9 @@ Math.lerp = function(from, to, time){
 Math.randomTo = function(x){
   return Math.floor((Math.random()*x));
 }
+Math.randomRange = function(x, y){
+  return Math.floor((Math.random()*x)-y);
+}
 
 Math.Vector2 = function(x, y){
   this.x = x;

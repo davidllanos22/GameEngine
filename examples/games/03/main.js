@@ -28,12 +28,13 @@ game.init = function(){
 }
 
 game.render = function(){
-  game.renderer.drawRect( game.currentCamera.rect.position.x,game.currentCamera.rect.position.y,
-                          game.currentCamera.rect.size.x,game.currentCamera.rect.size.y,"rgba(255,0,0,0.5)");
 }
-
 game.update = function(){
-  console.log(player1.onScreen()+" "+player2.onScreen());
+  if(game.input.check(Keys.SPACE)){
+    game.currentCamera.shake(200,100);
+  } 
+
+  console.log(game.currentCamera.angle)
 }
 
 game.currentScene.update = function(){
@@ -51,6 +52,7 @@ Player = function(x,y,control) {
   this.spd = new Math.Vector2(0.5, 0.5);
 
   this.anim = new Animation(100,[[0,0],[1,0]]);
+
 }
 
 Player.prototype = Object.create(Entity.prototype);

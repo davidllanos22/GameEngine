@@ -2,6 +2,7 @@ Scene = function(game,name){
 	Entity.call(this,0,0,"Scene");
 	this.name = name;
 	this.game = game;
+	this.ySorting = true;
 }
 
 Scene.prototype = Object.create(Entity.prototype);
@@ -25,7 +26,7 @@ Scene.prototype.updateInternal = function(){
 	for(var i = 0; i<this.childs.length; i++){
 		this.childs[i].update();
 	}
-	
+	if(this.ySorting) this.childs.sort(function(a,b){return a.position.y-b.position.y;});
 	this.update();
 }
 
