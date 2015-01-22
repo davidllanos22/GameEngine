@@ -24,7 +24,6 @@ Camera.prototype.setRotation = function(angle){
 }
 
 Camera.prototype.shake = function(time,intensity){
-	
 	if(!this.shaking){
 		var self = this;
 		this.shakeTimer = new Timer(time,false,null,function(){ // onTick

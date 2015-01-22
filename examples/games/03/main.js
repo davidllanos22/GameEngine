@@ -6,7 +6,9 @@ var player2;
 var sprites,
     xx,
     yy;
-
+for (var i = 0; i <10; i++) {
+  console.log(Math.randomRange(-500,100));
+};
 game.init = function(){
   game.renderer.clearColor = "grey";
   sprites = game.loader.loadImage("sprites.png");
@@ -18,7 +20,10 @@ game.init = function(){
   player2 = new Player(0, 0, false);
   
   game.currentScene.add(player1);
-  game.currentScene.add(player2);
+  for (var i = 0; i <100; i++) {
+    game.currentScene.add(new Player(Math.randomTo(game.width/2)-100, Math.randomTo(game.height/2)-100, false));
+  };
+  
 
   xx = 8 + player1.position.x - (game.width / 2) / game.gameScale;
   yy = 8 + player1.position.y - (game.height / 2) / game.gameScale;
@@ -31,10 +36,8 @@ game.render = function(){
 }
 game.update = function(){
   if(game.input.check(Keys.SPACE)){
-    game.currentCamera.shake(200,100);
+    game.currentCamera.shake(10,10);
   } 
-
-  console.log(game.currentCamera.angle)
 }
 
 game.currentScene.update = function(){

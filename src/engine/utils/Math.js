@@ -1,11 +1,11 @@
 Math.lerp = function(from, to, time){
   return (to - from)*time;
 }
-Math.randomTo = function(x){
-  return Math.floor((Math.random()*x));
+Math.randomTo = function(x){ // From 0 to x 
+  return Math.floor((Math.random()*(x+1)));
 }
-Math.randomRange = function(x, y){
-  return Math.floor((Math.random()*x)-y);
+Math.randomRange = function(min, max){ // from min to max
+  return Math.randomTo((max-min))+min;
 }
 
 Math.Vector2 = function(x, y){
