@@ -6,24 +6,42 @@
 */
 Game = function(width,height){
 
-	this.cvs = document.createElement("canvas"); // Create canvas Element.
+	// Canvas creation.
+
+	this.cvs = document.createElement("canvas");
 	this.cvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
 	this.cvs.style.outline = "none";
-	this.ctx = this.cvs.getContext("2d"); // Get context from canvas.
+	this.ctx = this.cvs.getContext("2d");
 
-	document.body.appendChild(this.cvs); // Append the canvas to the body.
+	document.body.appendChild(this.cvs);
 
-	this.focused = true; //
-	this.showPauseWhenNotFocused = false; // Show a pause screen when blur.
+	// Focus
+
+	this.focused = true;
+	this.showPauseWhenNotFocused = true;
+	if(this.focused) this.cvs.focus();
+
+
+	// FPS
+
+	this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"});
+	this.meter.hide();
+	this.showFps = true;
+
+	// Scaling 
+
 	this.fillScreen = false; // Set the width and height to fill the screen.
-	this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"}); // Create a new FPSMeter instance.
-	this.meter.hide(); // Hide FPSMeter.
-	this.showFps = false; // Set showFps.
-	this.gameScale = 1; // Set initial scale for the game.
-	this.scale = 1;
+	this.gameScale = 1; // Scale for the game.
+	this.scale = 1; // Internal scale
 	this.fillScreenWithRatio = false; // Set the width and height to fill the screen conserving the original ratio (with borders).
 	this.ratio = 0;
-	this.pixelart = true;
+	this.pixelart = true; // imageSmoothingEnabled = false
+
+	// Size
+
+	this.setSize(width, height);
+
+	// Events
 
 	var game = this; // Local variable to use on the next events.
 
@@ -31,21 +49,8 @@ Game = function(width,height){
 	this.cvs.onblur = function(){game.onBlurInternal();} // Add event listener to onblur. 
 	window.onresize = function(){game.onResizeInternal();} // Add event listener to onresize. 
 	this.cvs.oncontextmenu = function (e) {e.preventDefault();};
-
-	if(width == 0 || height == 0) Utils.logErr("Width and Height can't be 0."); // Throw an error if w or h = 0.
 	
-	this.width = width; // Set width.
-	this.height = height; // Set height.
-
-	this.cvs.width = this.width; // Set width.
-	this.cvs.height = this.height; // Set height.
-	this.cvs.style.width = this.width;
-	this.cvs.style.height = this.height;
-
-	
-
 	this.initInternal(); // Call initInternal function.
-	
 }
 
 Game.prototype = {
@@ -53,33 +58,23 @@ Game.prototype = {
 	* Internal initialization.
  	*/
 	initInternal: function (){
-		Utils.log("init"); // Log init.
-		//--
 		this.initDone = false; // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
 		
-
-
 		this.loader = new Loader(); // Create a new instance of the Loader.
 		this.renderer = new Renderer(this); // Create a new instance of the Renderer.
 		this.input = new Input(this); // Create a new instance of the Input.
 		this.timerManager = new TimerManager(this);
 
-		if(this.pixi)this.pixiStage.addChild(this.renderer.graphics);	
-		this.currentScene = new Scene(this,"Scene 01");
-		this.currentCamera = new Camera(this,"Camera 01");
+		this.currentScene = new Scene(this,"Default Scene");
+		this.currentCamera = new Camera(this,"Default Camera");
 	
-		Utils.log("running"); // Log running.
-
 		this.fps = 60; // Set fps.
 		this.dt = 0; // Set dt.
 		this.start = new Date().getTime(); // Get actual time.
 
 		this.step = 10 / this.fps; // Set step.
 		
-
-
 		this.loop(this); // Call loop function to start game loop.
-		
 	},
 	/**
 	* Game loop. Calls internal render and update.
@@ -87,6 +82,7 @@ Game.prototype = {
 	*/
 	loop: function(game){
 		this.meter.tickStart(); // Start FPSMeter counter.
+
 		var now = new Date().getTime(); // Get actual time.
 		var elapsed = now - game.start; // Set elapsed time.
 		
@@ -121,6 +117,8 @@ Game.prototype = {
 
 			this.update(); // Call update function when focused.
 		}
+
+		//this shouldn't be here
 		this.input.mouseClick = [false,false,false];
 		this.input.mouseRelease = [false,false,false];
 		
@@ -131,36 +129,38 @@ Game.prototype = {
 	renderInternal: function (){
 		//todo change to a function
 		
-			if(this.pixelart){
-				this.ctx.imageSmoothingEnabled = false;
-				this.ctx.webkitImageSmoothingEnabled = false;
-				this.ctx.mozImageSmoothingEnabled = false;
-				this.ctx.msImageSmoothingEnabled = false;
-			}else{
-				this.ctx.imageSmoothingEnabled = true;
-				this.ctx.webkitImageSmoothingEnabled = true;
-				this.ctx.mozImageSmoothingEnabled = true;
-				this.ctx.msImageSmoothingEnabled = true;
-			}
-
-			this.renderer.clearScreen();
-			this.ctx.save()
-			this.ctx.scale(this.gameScale,this.gameScale);
-			this.renderer.renderCounter=0; // Reset the render call count.
-			this.ctx.translate(-this.currentCamera.position.x,-this.currentCamera.position.y);
-			//this.ctx.rotate(this.currentCamera.angle*Math.PI/180);
-			this.render(); // Call render function.
-
-			this.currentScene.renderInternal();
-			this.ctx.restore();
-		
-
-		if(this.showPauseWhenNotFocused && !this.focused){ // Show Pause when blur and showPauseWhenNotFocused = true.
-			this.renderer.drawRect(0,0,this.width,this.height,"rgba(0,0,0,0.8)"); // Fill screen with alpha rect.
-			this.renderer.drawString("- PAUSED - ",this.width/2-40,this.height/2-20,20,"white"); // Draw pause text.
+		if(this.pixelart){
+			this.ctx.imageSmoothingEnabled = false;
+			this.ctx.webkitImageSmoothingEnabled = false;
+			this.ctx.mozImageSmoothingEnabled = false;
+			this.ctx.msImageSmoothingEnabled = false;
+		}else{
+			this.ctx.imageSmoothingEnabled = true;
+			this.ctx.webkitImageSmoothingEnabled = true;
+			this.ctx.mozImageSmoothingEnabled = true;
+			this.ctx.msImageSmoothingEnabled = true;
 		}
 
-		if(this.showFps)this.renderer.drawString("fps "+Math.round(this.meter.fps),8,8,20,"white");
+		this.renderer.clearScreen();
+		this.renderer.renderCounter=0; 
+
+		this.ctx.save()
+
+		this.ctx.scale(this.gameScale,this.gameScale);
+		this.ctx.translate(-this.currentCamera.position.x,-this.currentCamera.position.y);
+		this.ctx.rotate(this.currentCamera.angle*Math.PI/180);
+
+		this.render(); // game.render
+		this.currentScene.renderInternal(); // scene.render
+
+		this.ctx.restore();
+		
+		if(this.showPauseWhenNotFocused && !this.focused){ // Show Pause when blur and showPauseWhenNotFocused = true.
+			this.renderer.drawRect(0,0,this.width,this.height,"rgba(0,0,0,0.8)"); // Fill screen with alpha rect.
+			this.renderer.drawString("- PAUSED - ",((this.width/2)-40)/this.scale,((this.height/2)-20)/this.scale,20,"white"); // Draw pause text.
+		}
+
+		if(this.showFps)this.renderer.drawString("FPS: "+Math.round(this.meter.fps),8,8,20,"white");
 
 	},
 	/**
@@ -243,11 +243,14 @@ Game.prototype = {
 	*/
 	setSize: function(width,height){
 		if(width == 0 || height == 0) Utils.logErr("Width and Height can't be 0."); // Throw an error if w or h = 0.
+		
 		this.width = width; // Set width.
 		this.height = height; // Set height.
 
 		this.cvs.width = this.width; // Set canvas width.
 		this.cvs.height = this.height // Set canvas height.
+		this.cvs.style.width = this.width;
+		this.cvs.style.height = this.height;
 	}
 
 }

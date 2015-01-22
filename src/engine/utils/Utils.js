@@ -1,8 +1,6 @@
 Utils = {};
 
-Utils.random = function(x){
-	return Math.floor((Math.random()*x));
-}
+
 
 //this log functions suck.
 Utils.log = function (x){

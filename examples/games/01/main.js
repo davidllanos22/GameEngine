@@ -28,7 +28,7 @@ gameScene.init = function(){
 
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {
-			var n = Utils.random(game.colors2.length);
+			var n = Math.randomTo(game.colors2.length);
 			var card = new Card(110+i*(game.cardSize+10), 25+j*(game.cardSize+10),game.colors2[n],game.cardSize);
 			game.cardCount++;
 			game.colors2.splice(n,1);

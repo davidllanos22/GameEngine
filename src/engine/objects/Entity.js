@@ -16,7 +16,7 @@ Entity.prototype = {
 		this.position.x = x;
 		this.position.y = y;
 	},
-	inScreen: function(){
+	onScreen: function(){
 		this.x=x;
 		this.y=y;
 	},

@@ -1,7 +1,5 @@
 Renderer = function(game){
 	this.game = game;
-	this.pixi = this.game.pixi;
-
 	this.ctx = this.game.ctx;
 
 	this.renderCounter = 0;
