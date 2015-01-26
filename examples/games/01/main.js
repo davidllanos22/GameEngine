@@ -7,7 +7,7 @@ var gameScene = new Scene(game,"Game");
 
 menuScene.render = function(){
 	game.graphics.image(game.titleImage,60,0);
-	game.graphics.print("CLICK TO PLAY",170,300,40,"#5775b9")
+	game.graphics.print("CLICK TO PLAY",170,300,40,"#5775b9");
 }
 menuScene.update = function(){
 	if(game.input.mouseClick[0]){

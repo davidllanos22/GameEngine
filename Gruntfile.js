@@ -42,30 +42,22 @@ module.exports = function(grunt) {
 	  	},
 	  	copy: {
 			main: {
-		    	src: 'build/*',
+		    	src: 'build/GameEngine.min.js',
 		    	dest: 'examples/GameEngine.min.js',
 		  	},
-		  	editor: {
-		    	src: 'src/editor/**/*',
-		    	dest: 'examples/basics/07/'
-		  	}
 		},
   		watch: {
   			options: {
       			livereload: true,
     		},
   			engine: {
-    			files: ['src/engine/**/*'],
+    			files: ['src/**/*'],
     			tasks: ['build']
-            },
-            editor: {
-    			files: ['src/editor/**/*'],
-    			tasks: ['build']
-            },
-            examples: {
+        },
+        examples: {
     			files: ['examples/**/*'],
     			tasks: []
-            }
+        }
   			
   		}
   	});
