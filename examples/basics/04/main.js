@@ -1,15 +1,12 @@
 var game = new Game(640,480); // create a new instance of the game
 
-var pos = {
-	x:0,
-	y:0
-}
+var pos = new Math.Vector2(0,0);
+
 var v = 1;
 
 game.render = function(){
-	game.renderer.clearScreen("black"); // clear screen with black color
-	game.renderer.drawRect(pos.x,pos.y,50,50,"red"); // draw rect
-	game.renderer.drawString("Use WASD to move",10,440,20,"white"); // draw string 
+	game.graphics.rect(pos.x,pos.y,50,50,"red"); // draw rect
+	game.graphics.print("Use WASD or direction keys to move",10,440,20,"white"); // draw string 
 }
 
 game.update = function(){

@@ -17,22 +17,34 @@ Math.Vector2.prototype = {
   add: function(vector){
     this.x += vector.x;
     this.y += vector.y;
+
+    return this;
   },
   addX: function(vector){
     this.x += vector.x;
+    return this;
   },
   addY: function(vector){
     this.y += vector.y;
+    return this;
   },
   subtract: function(vector){
     this.x -= vector.x;
     this.y -= vector.y;
+    return this;
   },
   subtractX: function(vector){
     this.x -= vector.x;
+    return this;
   },
   subtractY: function(vector){
     this.y -= vector.y;
+    return this;
+  },
+  lerp: function(vector, time){
+    this.x += Math.lerp(this.x, vector.x, time);
+    this.y += Math.lerp(this.y, vector.y, time);
+    return this;
   },
   angleBetween: function (vector) {
     return Math.atan2(vector.y - this.y, vector.x - this.x);

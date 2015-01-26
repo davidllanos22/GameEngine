@@ -9,13 +9,13 @@ Camera = function(game, name){
 }
 
 Camera.prototype.setPosition = function(x, y, lerp){
+	var newPos = new Math.Vector2(x,y);
 	if(lerp){
-		this.position.x += Math.lerp(this.position.x, x, 0.01);
-		this.position.y += Math.lerp(this.position.y, y, 0.01);
+		this.position.lerp(newPos,0.01);
 	}else{
-		this.position.x = x;
-		this.position.y = y;
+		this.position = newPos;
 	}
+
 	this.rect.position = this.position;
 }
 

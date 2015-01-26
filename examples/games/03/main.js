@@ -7,11 +7,10 @@ var sprites,
     yy;
 
 game.init = function(){
-  game.renderer.clearColor = "grey";
+  game.graphics.clearColor = "grey";
   sprites = game.loader.loadImage("sprites.png");
   game.gameScale = 3;
-
-  
+  game.showFps = true;
 
   player1 = new Player(-10, -10, true);
   
@@ -28,8 +27,6 @@ game.init = function(){
 
 }
 
-game.render = function(){
-}
 game.update = function(){
   if(game.input.check(Keys.SPACE)){
     game.currentCamera.shake(400,1);

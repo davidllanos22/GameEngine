@@ -9,7 +9,6 @@ Rectangle.prototype = {
 		this.position.x = x;
 		this.position.y = y;
 	},
-	
 	setSize: function(w,h){
 		this.size.x = w;
 		this.size.y = h;

@@ -18,7 +18,8 @@ Scene.prototype.remove = function(child){
 Scene.prototype.renderInternal = function(){
 	this.render();
 	for(var i = 0; i<this.childs.length; i++){
-			if(this.childs[i].onScreen())this.childs[i].render();
+			//if(this.childs[i].onScreen())
+			this.childs[i].render();
 	}
 }
 
@@ -26,7 +27,15 @@ Scene.prototype.updateInternal = function(){
 	for(var i = 0; i<this.childs.length; i++){
 		this.childs[i].update();
 	}
-	if(this.ySorting) this.childs.sort(function(a,b){return a.position.y-b.position.y;});
+	if(this.ySorting) this.childs.sort(function(a,b){
+		ay = Math.round(a.position.y);
+		by = Math.round(b.position.y);
+
+		if(ay == by){
+			return 0;
+		} 
+		return ay - by;
+	});
 	this.update();
 }
 
@@ -64,6 +73,6 @@ TransitionScene.prototype.constructor = TransitionScene;
 
 TransitionScene.prototype.render = function(){
 	this.visible.renderInternal();
-	if(this.fadeIn.isRunning)this.game.renderer.drawRect(0,0,game.width,game.height,"rgba(255,255,255,"+this.fadeIn.count/this.time+")");
-	else this.game.renderer.drawRect(0,0,game.width,game.height,"rgba(255,255,255,"+(this.time-this.fadeOut.count)/this.time+")");
+	if(this.fadeIn.isRunning)this.game.graphics.rect(0,0,game.width,game.height,"rgba(255,255,255,"+this.fadeIn.count/this.time+")");
+	else this.game.graphics.rect(0,0,game.width,game.height,"rgba(255,255,255,"+(this.time-this.fadeOut.count)/this.time+")");
 }

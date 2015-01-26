@@ -11,7 +11,7 @@ Animation = function(time, frames){
 
 Animation.prototype = {
   render: function(src,x,y,w,h){
-    game.renderer.drawImageSection(src,x,y,this.frames[this.actualFrame][0],this.frames[this.actualFrame][1],w,h);
+    game.graphics.imageSection(src,x,y,this.frames[this.actualFrame][0],this.frames[this.actualFrame][1],w,h);
   }
 
 }

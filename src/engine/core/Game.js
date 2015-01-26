@@ -6,14 +6,31 @@
 */
 Game = function(width,height){
 
+	this.useGL = false;
 	// Canvas creation.
 
 	this.cvs = document.createElement("canvas");
 	this.cvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
 	this.cvs.style.outline = "none";
-	this.ctx = this.cvs.getContext("2d");
+
+	if(!this.useGL)this.ctx = this.cvs.getContext("2d");
+	else {
+		this.gl = this.cvs.getContext("experimental-webgl") || this.cvs.getContext("webgl");
+		console.log(this.gl);
+
+		this.gl.canvas.width = width*2;
+		this.gl.canvas.height = height*2;
+		this.gl.viewport(0, 0, width, height);
+		this.gl.clearColor(1.0, 0.0, 0.0, 1.0);
+		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+
+	}
 
 	document.body.appendChild(this.cvs);
+
+	
+
+	
 
 	// Focus
 
@@ -50,7 +67,7 @@ Game = function(width,height){
 	window.onresize = function(){game.onResizeInternal();} // Add event listener to onresize. 
 	this.cvs.oncontextmenu = function (e) {e.preventDefault();};
 	
-	this.initInternal(); // Call initInternal function.
+	this.initInternal(); // Call initInternal function. 
 }
 
 Game.prototype = {
@@ -61,7 +78,7 @@ Game.prototype = {
 		this.initDone = false; // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
 		
 		this.loader = new Loader(); // Create a new instance of the Loader.
-		this.renderer = new Renderer(this); // Create a new instance of the Renderer.
+		this.graphics = new Graphics(this); // Create a new instance of the Renderer.
 		this.input = new Input(this); // Create a new instance of the Input.
 		this.timerManager = new TimerManager(this);
 
@@ -141,13 +158,13 @@ Game.prototype = {
 			this.ctx.msImageSmoothingEnabled = true;
 		}
 
-		this.renderer.clearScreen();
-		this.renderer.renderCounter=0; 
+		this.graphics.clear();
+		this.graphics.renderCounter=0; 
 
 		this.ctx.save()
 
 		this.ctx.scale(this.gameScale,this.gameScale);
-		this.ctx.translate(-this.currentCamera.position.x,-this.currentCamera.position.y);
+		this.ctx.translate(Math.floor(-this.currentCamera.position.x),Math.floor(-this.currentCamera.position.y));
 		this.ctx.rotate(this.currentCamera.angle*Math.PI/180);
 		
 		this.currentScene.renderInternal(); // scene.render
@@ -156,11 +173,11 @@ Game.prototype = {
 		this.ctx.restore();
 		
 		if(this.showPauseWhenNotFocused && !this.focused){ // Show Pause when blur and showPauseWhenNotFocused = true.
-			this.renderer.drawRect(0,0,this.width,this.height,"rgba(0,0,0,0.8)"); // Fill screen with alpha rect.
-			this.renderer.drawString("- PAUSED - ",((this.width/2)-40)/this.scale,((this.height/2)-20)/this.scale,20,"white"); // Draw pause text.
+			this.graphics.rect(0,0,this.width,this.height,"rgba(0,0,0,0.8)"); // Fill screen with alpha rect.
+			this.graphics.print("- PAUSED - ",((this.width/2)-40)/this.scale,((this.height/2)-20)/this.scale,20,"white"); // Draw pause text.
 		}
 
-		if(this.showFps)this.renderer.drawString("FPS: "+Math.round(this.meter.fps),8,8,20,"white");
+		if(this.showFps)this.graphics.print("FPS: "+Math.round(this.meter.fps),8,8,20,"white");
 
 	},
 	/**

@@ -6,8 +6,8 @@ var menuScene = new Scene(game,"Menu");
 var gameScene = new Scene(game,"Game");
 
 menuScene.render = function(){
-	game.renderer.drawImage(game.titleImage,60,0);
-	game.renderer.drawString("CLICK TO PLAY",170,300,40,"#5775b9")
+	game.graphics.image(game.titleImage,60,0);
+	game.graphics.print("CLICK TO PLAY",170,300,40,"#5775b9")
 }
 menuScene.update = function(){
 	if(game.input.mouseClick[0]){
@@ -28,7 +28,7 @@ gameScene.init = function(){
 
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 4; j++) {
-			var n = Math.randomTo(game.colors2.length);
+			var n = Math.randomTo(game.colors2.length-1);
 			var card = new Card(110+i*(game.cardSize+10), 25+j*(game.cardSize+10),game.colors2[n],game.cardSize);
 			game.cardCount++;
 			game.colors2.splice(n,1);
@@ -37,11 +37,11 @@ gameScene.init = function(){
 	}
 }
 gameScene.render = function(){
-	game.renderer.drawString("Moves: "+game.moves,8,4,20,"#5775b9");
+	game.graphics.print("Moves: "+game.moves,8,4,20,"#5775b9");
 }
 
 game.init = function() {
-	game.renderer.clearColor = "#b7ceed";
+	game.graphics.setClearColor("#b7ceed");
 	this.cardSize = 100;
 
 	this.currentScene = menuScene;
@@ -134,8 +134,8 @@ Card.prototype = Object.create(Entity.prototype);
 Card.prototype.constructor = Card;
 
 Card.prototype.render = function() {
-	if(this.hover)game.renderer.drawRect(this.position.x-2,this.position.y-2,this.size.x+4,this.size.y+4, "white");
-	game.renderer.drawRect(this.position.x,this.position.y,this.size.x,this.size.y,this.flipped ? this.color : "#5775b9");
+	if(this.hover)game.graphics.rect(this.position.x-2,this.position.y-2,this.size.x+4,this.size.y+4, "white");
+	game.graphics.rect(this.position.x,this.position.y,this.size.x,this.size.y,this.flipped ? this.color : "#5775b9");
 }
 
 Card.prototype.update = function() {

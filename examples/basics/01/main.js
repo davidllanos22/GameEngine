@@ -8,6 +8,5 @@ game.init = function(){
 }
 
 game.render = function(){
-	this.renderer.clearScreen("black"); // clear screen with black color
-	this.renderer.drawImage(image,this.width/2-image.width/2,this.height/2-image.height/2); // draw image
+	this.graphics.image(image,this.width/2-image.width/2,this.height/2-image.height/2); // draw image
 }
