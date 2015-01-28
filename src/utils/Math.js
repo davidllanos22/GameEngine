@@ -17,7 +17,6 @@ Math.Vector2.prototype = {
   add: function(vector){
     this.x += vector.x;
     this.y += vector.y;
-
     return this;
   },
   addX: function(vector){
@@ -56,8 +55,5 @@ Math.Vector2.prototype = {
   },
   copy: function(){
     return new Math.Vector2(this.x,this.y);
-  },
-  toString : function(){
-    return "x: " + this.x + " y: " + this.y;
   }
 }

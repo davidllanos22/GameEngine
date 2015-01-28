@@ -10,10 +10,10 @@ Graphics = function(game){
 Graphics.prototype = {
 
 	rect: function(x,y,w,h,color){
-		x = Math.floor(x);
-		y = Math.floor(y);
-		w = Math.floor(w);
-		h = Math.floor(h);
+		// x = Math.floor(x);
+		// y = Math.floor(y);
+		// w = Math.floor(w);
+		// h = Math.floor(h);
 		this.ctx.fillStyle=color;
 		this.ctx.fillRect(x,y,w,h);
 		this.renderCounter++;

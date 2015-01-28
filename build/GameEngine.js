@@ -144,8 +144,7 @@ Camera = function(a, b) {
     this.font = new Font();
 }, Graphics.prototype = {
     rect: function(a, b, c, d, e) {
-        a = Math.floor(a), b = Math.floor(b), c = Math.floor(c), d = Math.floor(d), this.ctx.fillStyle = e, 
-        this.ctx.fillRect(a, b, c, d), this.renderCounter++;
+        this.ctx.fillStyle = e, this.ctx.fillRect(a, b, c, d), this.renderCounter++;
     },
     setClearColor: function(a) {
         this.clearColor = a;
@@ -354,9 +353,6 @@ TransitionScene.prototype.render = function() {
     },
     copy: function() {
         return new Math.Vector2(this.x, this.y);
-    },
-    toString: function() {
-        return "x: " + this.x + " y: " + this.y;
     }
 }, Timer = function(a, b, c, d, e) {
     this.time = a, this.isRunning = !1, this.repeat = b, this.onStart = c, this.onTick = d, 
