@@ -4,7 +4,7 @@
 * @param {int} width - The width of the window.
 * @param {int} height - The height of the window.
 */
-Game = function(width,height){
+Game = function(width,height,element){
 
 	this.useGL = false;
 	// Canvas creation.
@@ -26,7 +26,11 @@ Game = function(width,height){
 
 	}
 
-	document.body.appendChild(this.cvs);
+	if(element != undefined){
+		element.appendChild(this.cvs);
+	}else{
+		document.body.appendChild(this.cvs);
+	}
 
 	
 

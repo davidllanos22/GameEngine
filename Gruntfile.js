@@ -11,10 +11,10 @@ module.exports = function(grunt) {
             beautify: true  
           },
 	        src: [	
-              'src/engine/objects/*.js',
-	        		'src/engine/core/*.js',
-	        		'src/engine/utils/*.js',
-	        		'src/engine/vendor/*.js'
+              'src/objects/*.js',
+	        		'src/core/*.js',
+	        		'src/utils/*.js',
+	        		'src/vendor/*.js'
 	        ],
 	        dest: 'build/<%= pkg.name %>.js'
 	      },
@@ -23,10 +23,10 @@ module.exports = function(grunt) {
             beautify: false  
           },
           src: [  
-              'src/engine/objects/*.js',
-              'src/engine/core/*.js',
-              'src/engine/utils/*.js',
-              'src/engine/vendor/*.js'
+              'src/objects/*.js',
+              'src/core/*.js',
+              'src/utils/*.js',
+              'src/vendor/*.js'
           ],
           dest: 'build/<%= pkg.name %>.min.js'
         }

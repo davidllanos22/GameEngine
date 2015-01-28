@@ -1,5 +1,5 @@
 Entity = function(x, y, name){
-	this.position = new Math.Vector2(x,y);
+	this.position = new Math.Vector2(x, y);
 	this.name = name;
 	this.parent;
 	this.sprite;
@@ -12,7 +12,7 @@ Entity = function(x, y, name){
 Entity.prototype = {
 	init: function(){
 	},
-	setPosition: function(x,y){
+	setPosition: function(x, y){
 		this.position.x = x;
 		this.position.y = y;
 	},

@@ -4,6 +4,7 @@ Graphics = function(game){
 
 	this.renderCounter = 0;
 	this.clearColor = "#000000";
+	this.font = new Font();
 }
 
 Graphics.prototype = {
@@ -29,8 +30,12 @@ Graphics.prototype = {
 		//x = Math.floor(x);
 		//y = Math.floor(y);
 		this.ctx.fillStyle=color;
-		this.ctx.font=size+"px pixel";
-		this.ctx.fillText(text,x,size+y);
+		for(i = 0; i< text.length; i++){
+			this.font.render(text.charAt(i),x+this.font.separation*i,y,game.graphics);	
+		}
+		
+		//this.ctx.font=size+"px pixel";
+		//this.ctx.fillText(text,x,size+y);
 		this.renderCounter++;
 	},
 	/*

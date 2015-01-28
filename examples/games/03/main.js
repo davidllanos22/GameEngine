@@ -9,8 +9,8 @@ var sprites,
 game.init = function(){
   game.graphics.clearColor = "grey";
   sprites = game.loader.loadImage("sprites.png");
-  game.gameScale = 3;
-  game.showFps = true;
+  game.gameScale = 2;
+  game.showFps = false;
 
   player1 = new Player(-10, -10, true);
   
