@@ -52,6 +52,10 @@ Input = function(game){
 	this.mouseClick = [false,false,false];
 	this.mouseRelease = [false,false,false];
 	this.mouseHold = [false,false,false];
+	
+	this.gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads;
+	this.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
+
 	var input = this;
 
 	this.game.cvs.onkeydown = function(e){input.onKeyDown(e);}
@@ -59,6 +63,8 @@ Input = function(game){
 	this.game.cvs.onmousemove = function(e){input.onMouseMove(this, e);}
 	this.game.cvs.onmousedown = function(e){input.onMouseDown(this, e);}
 	this.game.cvs.onmouseup = function(e){input.onMouseUp(this, e);}
+
+
 
 }
 

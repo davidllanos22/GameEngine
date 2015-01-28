@@ -6,6 +6,8 @@ Camera = function(game, name){
 	this.rect = new Rectangle(0,0,this.size.x,this.size.y);
 	this.angle = 0;
 	this.shaking = false;
+	this.limit = new Math.Vector2(0,0);
+	this.useLimit = false;
 }
 
 Camera.prototype.setPosition = function(x, y, lerp){
@@ -15,7 +17,12 @@ Camera.prototype.setPosition = function(x, y, lerp){
 	}else{
 		this.position = newPos;
 	}
-
+	if(this.useLimit){
+		if(this.position.x < 0) this.position.x = 0;
+		if(this.position.y < 0) this.position.y = 0;
+		if(this.position.x > this.limit.x) this.position.x = this.limit.x;
+		if(this.position.y > this.limit.y) this.position.y = this.limit.y;
+	}
 	this.rect.position = this.position;
 }
 

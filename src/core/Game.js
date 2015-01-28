@@ -135,11 +135,13 @@ Game.prototype = {
 		if(!this.showPauseWhenNotFocused || this.focused){
 			this.timerManager.update();
 			this.currentScene.updateInternal();
-
+			if(this.input.gamepad)this.input.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
+			//console.log(this.input.gamepad.axes);
 			this.update(); // Call update function when focused.
 		}
 
 		//this shouldn't be here
+
 		this.input.mouseClick = [false,false,false];
 		this.input.mouseRelease = [false,false,false];
 		

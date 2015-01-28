@@ -17,14 +17,10 @@ function getBase64Image(img) {
  
     var ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0);
- 
-    // Firefox supports PNG and JPEG. You could check img.src to
-    // guess the original format, but be aware the using "image/jpg"
-    // will re-encode the image.
-    var dataURL = canvas.toDataURL("image/png");
- 
-    return dataURL/*.replace(/^data:image\/(png|jpg);base64,/, "")*/;
+
+    return canvas.toDataURL("image/png");
 }
+
 game.init = function(){
   game.graphics.clearColor = "#6fbc73";
   player = game.loader.loadImage("player.png");
@@ -34,23 +30,22 @@ game.init = function(){
   game.gameScale = 2;
   game.showFps = true;
   game.fillScreen = true;
-
-  player1 = new Player(-10, -10, true);
+  game.currentCamera.useLimit = true;
+  game.currentCamera.limit = new Math.Vector2(game.width,game.height);
+  player1 = new Player(200, 200, true);
   
   game.currentScene.add(player1);
 
   for (var i = 0; i <10; i++) {
-    game.currentScene.add(new Player(Math.randomTo(game.width)-100, Math.randomTo(game.height)-100, false));
+    game.currentScene.add(new Player(Math.randomTo(game.width*3), Math.randomTo(game.height*3), false));
   };
   for (var i = 0; i <100; i++) {
-    game.currentScene.add(new Tree(Math.randomTo(game.width*2)-100, Math.randomTo(game.height*2)-100));
+    game.currentScene.add(new Tree(Math.randomTo(game.width*3), Math.randomTo(game.height*3)));
   };
 
   for (var i = 0; i <400; i++) {
-    game.currentScene.add(new Grass(Math.randomTo(game.width*2)-100, Math.randomTo(game.height*2)-100));
+    game.currentScene.add(new Grass(Math.randomTo(game.width*3), Math.randomTo(game.height*3)));
   };
-
-  game.currentScene.add(new Tree(30, 20));
 
   xx = 22 + player1.position.x - (game.width / 2) / game.gameScale;
   yy = 22 + player1.position.y - (game.height / 2) / game.gameScale;
@@ -66,6 +61,7 @@ game.update = function(){
 }
 game.render = function(){
   game.graphics.print("David",player1.position.x,player1.position.y-20,20,"red");
+  game.graphics.print("David",Math.floor(game.currentCamera.position.x),Math.floor(game.currentCamera.position.y)+20,20,"red");
 }
 game.currentScene.update = function(){
   xx = 22 + player1.position.x - (game.width / 2) / game.gameScale;
@@ -94,6 +90,7 @@ Player.prototype.render = function(){
 }
 
 Player.prototype.update = function(){
+  //console.log(game.input.gamepad)
   this.direction = 0;
 
   if(this.control ){
@@ -102,6 +99,21 @@ Player.prototype.update = function(){
     var down = this.willCollide(0,this.spd.y);
     var left = this.willCollide(-this.spd.x,0);
     var right = this.willCollide(this.spd.x,0);
+
+    if(game.input.gamepad && game.input.gamepad.connected){
+      var xxx = parseFloat(game.input.gamepad.axes[0]);
+      var yyy = parseFloat(game.input.gamepad.axes[1]);
+      xxx = xxx.toFixed(1);
+      yyy = yyy.toFixed(1);
+
+      var vX = this.spd.x*(1.5*xxx);
+      var vY = this.spd.y*(1.5*yyy);
+      var col = this.willCollide(vX, vY);
+      if(!col)this.position.add(new Math.Vector2(vX,vY));
+    }
+    
+
+
 
     if(game.input.check(Keys.LEFT) || game.input.check(Keys.A)){
       if(!left)this.position.subtractX(this.spd);

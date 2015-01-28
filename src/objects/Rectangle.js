@@ -15,9 +15,10 @@ Rectangle.prototype = {
 	},
 
 	collides: function(rect){
-		return ( this.position.x < rect.position.x + rect.size.x &&
-						 this.position.x + this.size.x > rect.position.x && 
-						 this.position.y < rect.position.y + rect.size.y && 
-						 this.position.y + this.size.y > rect.position.y );
+		if(rect != null)
+			return ( 	this.position.x < rect.position.x + rect.size.x &&
+						 		this.position.x + this.size.x > rect.position.x && 
+						 		this.position.y < rect.position.y + rect.size.y && 
+						 		this.position.y + this.size.y > rect.position.y );
 	}
 }

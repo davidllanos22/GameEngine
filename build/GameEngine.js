@@ -1,10 +1,13 @@
 /*! GameEngine 2015-01-28 */
 Camera = function(a, b) {
     this.game = a, this.name = b, this.position = new Math.Vector2(0, 0), this.size = new Math.Vector2(a.width / 2 / a.gameScale, a.height / 2 / a.gameScale), 
-    this.rect = new Rectangle(0, 0, this.size.x, this.size.y), this.angle = 0, this.shaking = !1;
+    this.rect = new Rectangle(0, 0, this.size.x, this.size.y), this.angle = 0, this.shaking = !1, 
+    this.limit = new Math.Vector2(0, 0), this.useLimit = !1;
 }, Camera.prototype.setPosition = function(a, b, c) {
     var d = new Math.Vector2(a, b);
-    c ? this.position.lerp(d, .01) : this.position = d, this.rect.position = this.position;
+    c ? this.position.lerp(d, .01) : this.position = d, this.useLimit && (this.position.x < 0 && (this.position.x = 0), 
+    this.position.y < 0 && (this.position.y = 0), this.position.x > this.limit.x && (this.position.x = this.limit.x), 
+    this.position.y > this.limit.y && (this.position.y = this.limit.y)), this.rect.position = this.position;
 }, Camera.prototype.setRotation = function(a) {
     this.angle = a;
 }, Camera.prototype.shake = function(a, b) {
@@ -26,7 +29,7 @@ Camera = function(a, b) {
         this.position.x = a, this.position.y = b;
     },
     onScreen: function() {
-        return this.rect.collides(game.currentCamera.rect);
+        return null != this.rect ? this.rect.collides(game.currentCamera.rect) : void 0;
     },
     add: function() {},
     remove: function() {},
@@ -46,7 +49,7 @@ Camera = function(a, b) {
         this.size.x = a, this.size.y = b;
     },
     collides: function(a) {
-        return this.position.x < a.position.x + a.size.x && this.position.x + this.size.x > a.position.x && this.position.y < a.position.y + a.size.y && this.position.y + this.size.y > a.position.y;
+        return null != a ? this.position.x < a.position.x + a.size.x && this.position.x + this.size.x > a.position.x && this.position.y < a.position.y + a.size.y && this.position.y + this.size.y > a.position.y : void 0;
     }
 }, Font = function() {
     this.chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ  0123456789    !?.;:()       ", this.size = 14, 
@@ -98,8 +101,8 @@ Camera = function(a, b) {
     updateInternal: function() {
         this.initDone || (this.initDone = !0, this.init(), this.originalWidth = this.width, 
         this.onResizeInternal()), (!this.showPauseWhenNotFocused || this.focused) && (this.timerManager.update(), 
-        this.currentScene.updateInternal(), this.update()), this.input.mouseClick = [ !1, !1, !1 ], 
-        this.input.mouseRelease = [ !1, !1, !1 ];
+        this.currentScene.updateInternal(), this.input.gamepad && (this.input.gamepad = navigator.getGamepads && navigator.getGamepads()[0]), 
+        this.update()), this.input.mouseClick = [ !1, !1, !1 ], this.input.mouseRelease = [ !1, !1, !1 ];
     },
     renderInternal: function() {
         this.pixelart ? (this.ctx.imageSmoothingEnabled = !1, this.ctx.webkitImageSmoothingEnabled = !1, 
@@ -214,7 +217,8 @@ Camera = function(a, b) {
 }, Input = function(a) {
     this.game = a, this.keyDown = {}, this.keyJustDown = {}, this.keyJustReleased = {}, 
     this.mouse = new Math.Vector2(0, 0), this.mouseClick = [ !1, !1, !1 ], this.mouseRelease = [ !1, !1, !1 ], 
-    this.mouseHold = [ !1, !1, !1 ];
+    this.mouseHold = [ !1, !1, !1 ], this.gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads, 
+    this.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
     var b = this;
     this.game.cvs.onkeydown = function(a) {
         b.onKeyDown(a);

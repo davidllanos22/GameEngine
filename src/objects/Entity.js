@@ -17,7 +17,7 @@ Entity.prototype = {
 		this.position.y = y;
 	},
 	onScreen: function(){
-		return this.rect.collides(game.currentCamera.rect);
+		if(this.rect != null)return this.rect.collides(game.currentCamera.rect);
 	},
 	add: function(child){
 
