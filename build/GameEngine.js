@@ -1,4 +1,4 @@
-/*! GameEngine 2015-01-28 */
+/*! GameEngine 2015-01-29 */
 Camera = function(a, b) {
     this.game = a, this.name = b, this.position = new Math.Vector2(0, 0), this.size = new Math.Vector2(a.width / 2 / a.gameScale, a.height / 2 / a.gameScale), 
     this.rect = new Rectangle(0, 0, this.size.x, this.size.y), this.angle = 0, this.shaking = !1, 
@@ -358,6 +358,18 @@ TransitionScene.prototype.render = function() {
     copy: function() {
         return new Math.Vector2(this.x, this.y);
     }
+}, StateMachine = function() {
+    this.states = [], this.current = "", this.last = "", this.add = function(a) {
+        this.find(a) ? console.log("There is already an state with that name.") : this.states.push(a);
+    }, this.remove = function(a) {
+        this.find(a) ? this.states.splice(this.states.indexOf(a), 1) : console.log("No state with that name.");
+    }, this.set = function(a) {
+        this.find(a) ? (this.last = this.current, this.current = a) : console.log("No state with that name.");
+    }, this.find = function(a) {
+        for (var b = !1, c = 0; c < this.states.length && !b; ) this.states[c] == a && (b = !0), 
+        c++;
+        return b;
+    };
 }, Timer = function(a, b, c, d, e) {
     this.time = a, this.isRunning = !1, this.repeat = b, this.onStart = c, this.onTick = d, 
     this.onFinish = e, this.game, this.count = -1, this.done = !1;

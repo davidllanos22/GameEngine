@@ -77,6 +77,11 @@ Player = function(x,y,control) {
   this.rect = new Rectangle(x+20,y+20,30,20);
   this.spd = new Math.Vector2(0.4, 0.4);
   this.direction = 0;
+  this.states = new StateMachine();
+  this.states.add("standing");
+  this.states.add("walking");
+
+  this.states.set("standing")
 }
 
 Player.prototype = Object.create(Entity.prototype);
@@ -91,6 +96,7 @@ Player.prototype.render = function(){
 
 Player.prototype.update = function(){
   //console.log(game.input.gamepad)
+  if(this.states.current == "d") console.log("yay");
   this.direction = 0;
 
   if(this.control ){
