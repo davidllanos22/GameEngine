@@ -23,3 +23,9 @@ Utils.playSound = function(sound){
 	sound = sound.cloneNode()
 	sound.play();
 }
+
+Utils.screenShoot = function(game){
+  var data = game.cvs.toDataURL();
+  window.open(data,'_blank');
+  return data;
+}

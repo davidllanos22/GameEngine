@@ -405,6 +405,9 @@ TransitionScene.prototype.render = function() {
     console.log(a);
 }, Utils.playSound = function(a) {
     a = a.cloneNode(), a.play();
+}, Utils.screenShoot = function(a) {
+    var b = a.cvs.toDataURL();
+    return window.open(b, "_blank"), b;
 }, function(a, b) {
     function c(a, b) {
         for (var c in b) try {
