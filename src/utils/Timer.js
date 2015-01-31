@@ -27,12 +27,25 @@ Timer.prototype = {
 				if(this.onFinish != null)  this.onFinish();
 				this.done = true;
 				this.isRunning = false;
-				if(this.repeat)this.count = -1;
+				if(this.repeat){
+					this.reset();
+				}
 				else game.timerManager.remove(this);
 			}else{
 				if(this.onTick != null) this.onTick();
 				this.count ++;
 			}
 		}
+	},
+	reset: function(){
+		this.count = -1;
+		this.done = false;	
+		this.isRunning = true;
+	},
+	pause: function(){
+		this.isRunning = false;
+	},
+	unpause: function(){
+		this.isRunning = true;
 	}
 }

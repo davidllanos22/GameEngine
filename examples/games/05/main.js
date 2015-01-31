@@ -23,7 +23,7 @@ game.init = function() {
   game.showPlay = true;
   game.wave = 0;
   game.waveSpeed = 1;
-  game.waveMax  = 0.15;
+  game.waveMax  = 0.10;
 
   title = game.loader.loadImage("title.png");
   cards = game.loader.loadImage("cards.png");
@@ -36,8 +36,9 @@ game.init = function() {
   game.waveTimer = new Timer(200, true, null, function(){
     if(Math.abs(game.wave) >= game.waveMax){
       game.waveSpeed *= -1;
+
     }
-    game.wave += game.waveSpeed * Math.lerp(game.wave,(game.waveMax+0.1)*game.waveSpeed,0.003);
+    game.wave += Math.lerp(game.wave,(game.waveMax+0.1)*game.waveSpeed,0.003)*0.2;
     console.log(game.waveSpeed+" "+game.wave)
   }, null);
   game.playTimer.start();
@@ -51,6 +52,7 @@ game.reset = function() {
   game.playTimer.start();
   game.moves = 0;
   game.cardCount = 0;
+  game.wave = 0;
 
   game.colors2 = [];
 
@@ -97,6 +99,7 @@ menuScene.update = function(){
 }
 gameScene.init = function(){
   game.reset();
+  game.waveTimer.pause();
   
 }
 gameScene.render = function(){
@@ -107,9 +110,6 @@ gameScene.render = function(){
   }
   game.graphics.print("Moves: "+game.moves,8,4,20,"#5775b9");
 }
-
-
-
 
 var actionCardFinish = function(){
   if(game.lastCard.color == game.actualCard.color){

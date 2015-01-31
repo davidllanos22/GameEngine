@@ -301,7 +301,7 @@ Scene.prototype.add = function(a) {
 }, TransitionScene = function(a, b) {
     Scene.call(this, b.game, "Transition Scene");
     var c = this;
-    this.from = a, this.to = b, this.visible = this.from, this.time = 200, this.fadeOut = new Timer(this.time, !1, null, null, function() {
+    this.from = a, this.to = b, this.visible = this.from, this.time = 300, this.fadeOut = new Timer(this.time, !1, null, null, function() {
         this.game.currentScene.changeScene(b);
     }), this.fadeIn = new Timer(this.time, !1, null, null, function() {
         c.visible = b, b.init(), c.fadeOut.start();
@@ -382,8 +382,17 @@ TransitionScene.prototype.render = function() {
     run: function() {
         (!this.done || this.repeat) && (-1 == this.count ? (null != this.onStart && this.onStart(), 
         this.count++) : this.count == this.time ? (null != this.onFinish && this.onFinish(), 
-        this.done = !0, this.isRunning = !1, this.repeat ? this.count = -1 : game.timerManager.remove(this)) : (null != this.onTick && this.onTick(), 
+        this.done = !0, this.isRunning = !1, this.repeat ? this.reset() : game.timerManager.remove(this)) : (null != this.onTick && this.onTick(), 
         this.count++));
+    },
+    reset: function() {
+        this.count = -1, this.done = !1, this.isRunning = !0;
+    },
+    pause: function() {
+        this.isRunning = !1;
+    },
+    unpause: function() {
+        this.isRunning = !0;
     }
 }, TimerManager = function(a) {
     this.game = a, this.timers = [];
@@ -395,7 +404,7 @@ TransitionScene.prototype.render = function() {
         this.timers.splice(this.timers.indexOf(a), 1);
     },
     update: function() {
-        for (var a = 0; a < this.timers.length; a++) this.timers[a].run();
+        for (var a = 0; a < this.timers.length; a++) this.timers[a].isRunning && this.timers[a].run();
     }
 }, Utils = {}, Utils.getScreenShoot = function(a) {
     var b = a.cvs.toDataURL();

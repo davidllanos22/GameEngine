@@ -15,7 +15,7 @@ TimerManager.prototype = {
   },
   update: function(){
     for(var i = 0; i<this.timers.length; i++){
-      this.timers[i].run();
+      if(this.timers[i].isRunning)this.timers[i].run();
     }
   }
 

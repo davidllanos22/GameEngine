@@ -55,7 +55,7 @@ TransitionScene = function(from, to){
 	this.from = from;
 	this.to = to;
 	this.visible = this.from;
-	this.time = 200;
+	this.time = 300;
 
 	this.fadeOut = new Timer(this.time, false, null, null, function(){
 		this.game.currentScene.changeScene(to);
