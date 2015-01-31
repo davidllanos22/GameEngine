@@ -32,16 +32,16 @@ game.init = function() {
   game.waveSpeed = 1;
   game.waveMax  = 0.10;
 
-  title = game.loader.loadImage("title.png");
-  cards = game.loader.loadImage("cards.png");
-  playmat = game.loader.loadImage("playmat.png");
-  play = game.loader.loadImage("play.png");
+  title = game.loader.loadImage("media/title.png");
+  cards = game.loader.loadImage("media/cards.png");
+  playmat = game.loader.loadImage("media/playmat.png");
+  play = game.loader.loadImage("media/play.png");
 
 
-  cardFlip = game.loader.loadSound("card-flip.wav");
-  cardFlip2 = game.loader.loadSound("card-flip2.wav");
-  yay = game.loader.loadSound("yay.wav");
-  loop = game.loader.loadSound("loop.mp3");
+  cardFlip = game.loader.loadSound("media/card-flip.wav");
+  cardFlip2 = game.loader.loadSound("media/card-flip2.wav");
+  yay = game.loader.loadSound("media/yay.wav");
+  loop = game.loader.loadSound("media/loop.mp3");
 
   game.actionTimer = new Timer(100, false, null, null, actionCardFinish);
   game.restartTimer = new Timer(200, false, null, null, actionRestartFinish);
