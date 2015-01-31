@@ -16,7 +16,7 @@ Font.prototype.render = function(char,x,y,graphics){
     if(this.chars.charAt(i) == char.toUpperCase()){
       var xx = i % 14;
       var yy = Math.floor(i/14);
-      graphics.imageSection(this.img,x,y,xx,yy,this.size,this.size);
+      graphics.imageSection(this.img,x,y,xx,yy,this.size,this.size,this.size,this.size);
     }
   }
 }

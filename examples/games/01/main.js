@@ -43,7 +43,8 @@ gameScene.render = function(){
 game.init = function() {
 	game.graphics.setClearColor("#b7ceed");
 	this.cardSize = 100;
-
+	//game.fillScreen = true;
+	game.fillScreenWithRatio = true;
 	this.currentScene = menuScene;
 	this.titleImage = game.loader.loadImage("title.png");
 	this.actionTimer = new Timer(100, false, null, null, actionCardFinish);

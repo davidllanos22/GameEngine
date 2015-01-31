@@ -55,21 +55,28 @@ Graphics.prototype = {
 		this.ctx.drawImage(src,0,0,src.width,src.height,x,y,src.width,src.height);
 		this.renderCounter++;
 	},
-	imageSection: function(src,x,y,xx,yy,w,h){
+	imageSection: function(src,x,y,xx,yy,sw,sh,w,h){
 		x = Math.floor(x);
 		y = Math.floor(y);
 		xx = Math.floor(xx);
 		yy = Math.floor(yy);
 		w = Math.floor(w);
 		h = Math.floor(h);
-		this.ctx.drawImage(src,xx*w,yy*h,w,h,x,y,w,h);
+		this.ctx.drawImage(src,xx*sw,yy*sh,sw,sh,x,y,w,h);
 		this.renderCounter++;
 	},
-	imageRot: function(src,x,y,xo,yo,s,rot){
+	imageSectionRot: function(src,x,y,xx,yy,sw,sh,w,h,rot){
+		x = Math.floor(x);
+		y = Math.floor(y);
+		xx = Math.floor(xx);
+		yy = Math.floor(yy);
+		w = Math.floor(w);
+		h = Math.floor(h);
 		this.ctx.save();
-		this.ctx.translate(x+s/2,y+s/2);
+		this.ctx.translate(x+(w/2),y+(h/2));
 		this.ctx.rotate(rot);
-		this.ctx.drawImage(src,xo*s,yo*s,s,s,-s/2,-s/2,s,s);
+		//this.ctx.drawImage(src,xo*s,yo*s,s,s,-s/2,-s/2,s,s);
+		this.ctx.drawImage(src,xx*sw,yy*sh,sw,sh,-w/2,-h/2,w,h);
 		this.ctx.restore();
 		this.renderCounter++;
 	}	

@@ -1,4 +1,4 @@
-/*! GameEngine 2015-01-29 */
+/*! GameEngine 2015-01-31 */
 Camera = function(a, b) {
     this.game = a, this.name = b, this.position = new Math.Vector2(0, 0), this.size = new Math.Vector2(a.width / 2 / a.gameScale, a.height / 2 / a.gameScale), 
     this.rect = new Rectangle(0, 0, this.size.x, this.size.y), this.angle = 0, this.shaking = !1, 
@@ -57,7 +57,7 @@ Camera = function(a, b) {
 }, Font.prototype.render = function(a, b, c, d) {
     for (var e = 0; e < this.chars.length; e++) if (this.chars.charAt(e) == a.toUpperCase()) {
         var f = e % 14, g = Math.floor(e / 14);
-        d.imageSection(this.img, b, c, f, g, this.size, this.size);
+        d.imageSection(this.img, b, c, f, g, this.size, this.size, this.size, this.size);
     }
 }, Game = function(a, b, c) {
     this.useGL = !1, this.cvs = document.createElement("canvas"), this.cvs.tabIndex = 1, 
@@ -163,13 +163,15 @@ Camera = function(a, b) {
         b = Math.floor(b), c = Math.floor(c), this.ctx.drawImage(a, 0, 0, a.width, a.height, b, c, a.width, a.height), 
         this.renderCounter++;
     },
-    imageSection: function(a, b, c, d, e, f, g) {
-        b = Math.floor(b), c = Math.floor(c), d = Math.floor(d), e = Math.floor(e), f = Math.floor(f), 
-        g = Math.floor(g), this.ctx.drawImage(a, d * f, e * g, f, g, b, c, f, g), this.renderCounter++;
+    imageSection: function(a, b, c, d, e, f, g, h, i) {
+        b = Math.floor(b), c = Math.floor(c), d = Math.floor(d), e = Math.floor(e), h = Math.floor(h), 
+        i = Math.floor(i), this.ctx.drawImage(a, d * f, e * g, f, g, b, c, h, i), this.renderCounter++;
     },
-    imageRot: function(a, b, c, d, e, f, g) {
-        this.ctx.save(), this.ctx.translate(b + f / 2, c + f / 2), this.ctx.rotate(g), this.ctx.drawImage(a, d * f, e * f, f, f, -f / 2, -f / 2, f, f), 
-        this.ctx.restore(), this.renderCounter++;
+    imageSectionRot: function(a, b, c, d, e, f, g, h, i, j) {
+        b = Math.floor(b), c = Math.floor(c), d = Math.floor(d), e = Math.floor(e), h = Math.floor(h), 
+        i = Math.floor(i), this.ctx.save(), this.ctx.translate(b + h / 2, c + i / 2), this.ctx.rotate(j), 
+        this.ctx.drawImage(a, d * f, e * g, f, g, -h / 2, -i / 2, h, i), this.ctx.restore(), 
+        this.renderCounter++;
     }
 }, Keys = {
     NUM_0: 48,
@@ -251,8 +253,8 @@ Camera = function(a, b) {
     },
     onMouseMove: function(a, b) {
         var c = this.game.cvs.getBoundingClientRect();
-        this.mouse.x = Math.round((b.clientX - c.left) / (c.right - c.left) * this.game.cvs.width / this.game.scale), 
-        this.mouse.y = Math.round((b.clientY - c.top) / (c.bottom - c.top) * this.game.cvs.height / this.game.scale);
+        this.mouse.x = Math.round((b.clientX - c.left) / (c.right - c.left) * this.game.cvs.width / this.game.scale) / this.game.gameScale, 
+        this.mouse.y = Math.round((b.clientY - c.top) / (c.bottom - c.top) * this.game.cvs.height / this.game.scale) / this.game.gameScale;
     },
     onMouseDown: function(a, b) {
         this.mouseClick[b.button] = !0, this.mouseHold[b.button] = !0;
@@ -315,7 +317,7 @@ TransitionScene.prototype.render = function() {
     }), this.timer.start();
 }, Animation.prototype = {
     render: function(a, b, c, d, e) {
-        game.graphics.imageSection(a, b, c, this.frames[this.actualFrame][0], this.frames[this.actualFrame][1], d, e);
+        game.graphics.imageSection(a, b, c, this.frames[this.actualFrame][0], this.frames[this.actualFrame][1], d, e, d, e);
     }
 }, Math.lerp = function(a, b, c) {
     return (b - a) * c;
@@ -387,7 +389,7 @@ TransitionScene.prototype.render = function() {
     this.game = a, this.timers = [];
 }, TimerManager.prototype = {
     add: function(a) {
-        a.game = game, this.timers.push(a);
+        -1 == this.timers.indexOf(a) && (a.game = game, this.timers.push(a));
     },
     remove: function(a) {
         this.timers.splice(this.timers.indexOf(a), 1);
@@ -395,8 +397,20 @@ TransitionScene.prototype.render = function() {
     update: function() {
         for (var a = 0; a < this.timers.length; a++) this.timers[a].run();
     }
-}, Utils = {}, Utils.log = function(a) {
-    console.log("%c [GAME ENGINE - LOG]: " + a, "color: #1010DD");
+}, Utils = {}, Utils.getScreenShoot = function(a) {
+    var b = a.cvs.toDataURL();
+    return window.open(b, "_blank"), b;
+}, Utils.getBase64Image = function(a) {
+    var b = document.createElement("canvas");
+    b.width = a.width, b.height = a.height;
+    var c = canvas.getContext("2d");
+    return c.drawImage(a, 0, 0), b.toDataURL("image/png");
+}, Utils.log = function(a) {
+    console.log({
+        message: a,
+        caller: this,
+        stack: arguments.callee.caller.toString()
+    });
 }, Utils.logLoad = function(a) {
     console.log("%c [GAME ENGINE - LOADER]: " + a, "color: #10DD10");
 }, Utils.logErr = function(a) {
@@ -405,9 +419,6 @@ TransitionScene.prototype.render = function() {
     console.log(a);
 }, Utils.playSound = function(a) {
     a = a.cloneNode(), a.play();
-}, Utils.screenShoot = function(a) {
-    var b = a.cvs.toDataURL();
-    return window.open(b, "_blank"), b;
 }, function(a, b) {
     function c(a, b) {
         for (var c in b) try {

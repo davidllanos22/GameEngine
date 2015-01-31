@@ -10,16 +10,7 @@ var player,
     yy;
 
 
-function getBase64Image(img) {
-    var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
- 
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
 
-    return canvas.toDataURL("image/png");
-}
 
 game.init = function(){
   game.graphics.clearColor = "#6fbc73";
@@ -77,26 +68,19 @@ Player = function(x,y,control) {
   this.rect = new Rectangle(x+20,y+20,30,20);
   this.spd = new Math.Vector2(0.4, 0.4);
   this.direction = 0;
-  this.states = new StateMachine();
-  this.states.add("standing");
-  this.states.add("walking");
-
-  this.states.set("standing")
 }
 
 Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.render = function(){
-  game.graphics.imageSection(player,this.position.x+2,this.position.y+10,2,0,64,90);
-  game.graphics.imageSection(player,this.position.x,this.position.y,this.direction,0,64,90);
+  game.graphics.imageSection(player,this.position.x+2,this.position.y+10,2,0,64,90,64,90);
+  game.graphics.imageSection(player,this.position.x,this.position.y,this.direction,0,64,90,64,90);
   //game.graphics.rect(this.rect.position.x,this.rect.position.y,this.rect.size.x,this.rect.size.y,"red");
 
 }
 
 Player.prototype.update = function(){
-  //console.log(game.input.gamepad)
-  if(this.states.current == "d") console.log("yay");
   this.direction = 0;
 
   if(this.control ){
@@ -168,7 +152,7 @@ Tree.prototype = Object.create(Entity.prototype);
 Tree.prototype.constructor = Tree;
 
 Tree.prototype.render = function(){
-  game.graphics.imageSection(tree,this.position.x,this.position.y-80,0,0,64,180);
+  game.graphics.imageSection(tree,this.position.x,this.position.y-80,0,0,64,180,64,180);
   //game.graphics.rect(this.rect.position.x,this.rect.position.y,this.rect.size.x,this.rect.size.y,"red");
 
 }
@@ -181,5 +165,5 @@ Grass.prototype = Object.create(Entity.prototype);
 Grass.prototype.constructor = Grass;
 
 Grass.prototype.render = function(){
-  game.graphics.imageSection(grass,this.position.x,this.position.y+64,this.i,0,32,32);
+  game.graphics.imageSection(grass,this.position.x,this.position.y+64,this.i,0,32,32,32,32);
 }

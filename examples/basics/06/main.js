@@ -5,7 +5,6 @@ var timer;
 var pos = new Math.Vector2(0,80);
 var speed = new Math.Vector2(1,1);
 
-
 game.init = function(){
 	timer = new Timer(200,false,start,tick,finish);
 }
@@ -18,7 +17,7 @@ game.update = function(){
 }
 
 var start = function(){
-	console.log("Start!");
+
 }
 
 var tick = function(){

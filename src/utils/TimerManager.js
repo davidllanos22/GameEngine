@@ -5,8 +5,10 @@ TimerManager = function(game){
 
 TimerManager.prototype = {
   add: function(timer){
-    timer.game = game;
-    this.timers.push(timer);
+    if(this.timers.indexOf(timer) == -1){
+      timer.game = game;
+      this.timers.push(timer);
+    }
   },
   remove: function(timer){
     this.timers.splice(this.timers.indexOf(timer),1);
