@@ -23,7 +23,7 @@ Graphics.prototype = {
 		this.clearColor = color;
 	},
 	clear: function(){
-		this.rect(0,0,this.game.width,this.game.height,this.clearColor)
+		this.rect(0,0,this.game.width/this.game.scale,this.game.height/this.game.scale,this.clearColor)
 		
 	},
 	print: function(text,x,y,size,color){

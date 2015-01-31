@@ -39,7 +39,6 @@ game.init = function() {
 
     }
     game.wave += Math.lerp(game.wave,(game.waveMax+0.1)*game.waveSpeed,0.003)*0.2;
-    console.log(game.waveSpeed+" "+game.wave)
   }, null);
   game.playTimer.start();
   game.waveTimer.start();
@@ -104,7 +103,7 @@ gameScene.init = function(){
 }
 gameScene.render = function(){
   
-  for(var i = 0; i<8; i++){
+  for(var i = 0; i<9; i++){
     game.graphics.imageSection(playmat,0,i*60,0,0,60,60,60,60);
     game.graphics.imageSection(playmat,game.width/game.scale-60,i*60,1,0,60,60,60,60);
   }

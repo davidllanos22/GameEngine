@@ -153,7 +153,7 @@ Camera = function(a, b) {
         this.clearColor = a;
     },
     clear: function() {
-        this.rect(0, 0, this.game.width, this.game.height, this.clearColor);
+        this.rect(0, 0, this.game.width / this.game.scale, this.game.height / this.game.scale, this.clearColor);
     },
     print: function(a, b, c, d, e) {
         for (this.ctx.fillStyle = e, i = 0; i < a.length; i++) this.font.render(a.charAt(i), b + this.font.separation * i, c, game.graphics);
@@ -308,7 +308,7 @@ Scene.prototype.add = function(a) {
     }), this.fadeIn.start();
 }, TransitionScene.prototype = Object.create(Scene.prototype), TransitionScene.prototype.constructor = TransitionScene, 
 TransitionScene.prototype.render = function() {
-    this.visible.renderInternal(), this.fadeIn.isRunning ? this.game.graphics.rect(0, 0, game.width, game.height, "rgba(255,255,255," + this.fadeIn.count / this.time + ")") : this.game.graphics.rect(0, 0, game.width, game.height, "rgba(255,255,255," + (this.time - this.fadeOut.count) / this.time + ")");
+    this.visible.renderInternal(), this.fadeIn.isRunning ? this.game.graphics.rect(0, 0, this.game.width / this.game.scale, this.game.height / this.game.scale, "rgba(255,255,255," + this.fadeIn.count / this.time + ")") : this.game.graphics.rect(0, 0, this.game.width / this.game.scale, this.game.height / this.game.scale, "rgba(255,255,255," + (this.time - this.fadeOut.count) / this.time + ")");
 }, Animation = function(a, b) {
     this.frames = b;
     var c = this;
