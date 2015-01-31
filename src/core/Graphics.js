@@ -62,6 +62,8 @@ Graphics.prototype = {
 		yy = Math.floor(yy);
 		w = Math.floor(w);
 		h = Math.floor(h);
+		if(w < 0 ) w = 0;
+		if(h < 0 ) h = 0;
 		this.ctx.drawImage(src,xx*sw,yy*sh,sw,sh,x,y,w,h);
 		this.renderCounter++;
 	},
@@ -72,6 +74,9 @@ Graphics.prototype = {
 		yy = Math.floor(yy);
 		w = Math.floor(w);
 		h = Math.floor(h);
+
+		if(w < 0 ) w = 0;
+		if(h < 0 ) h = 0;
 		this.ctx.save();
 		this.ctx.translate(x+(w/2),y+(h/2));
 		this.ctx.rotate(rot);

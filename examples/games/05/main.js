@@ -25,7 +25,7 @@ game.init = function() {
   game.cardSize = 70;
   game.gameScale =1;
   game.fillScreen = false;
-  game.fillScreenWithRatio = true;
+  game.fillScreenWithRatio = false;
   game.currentScene.changeScene(menuScene);
   game.showPlay = true;
   game.wave = 0;
@@ -177,7 +177,7 @@ Card.prototype = Object.create(Entity.prototype);
 Card.prototype.constructor = Card;
 
 Card.prototype.render = function() {
-  if(this.hover)game.graphics.rect(this.position.x-2,this.position.y-2,this.size.x+4,this.size.y+4, "white");
+  if(this.hover && !this.flipping)game.graphics.rect(this.position.x-2,this.position.y-2,this.size.x+4,this.size.y+4, "white");
   //game.graphics.rect(this.position.x,this.position.y,this.size.x,this.size.y,this.flipped ? this.color : "#5775b9");
   game.graphics.imageSection(cards,this.position.x,this.position.y,this.flipped ? 1 : 0,0,60,100,this.size.x,100);
   if(this.flipped) game.graphics.imageSection(cards,this.position.x,this.position.y,this.color + 1 ,0,60,100,this.size.x,100);
