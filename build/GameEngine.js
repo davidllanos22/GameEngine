@@ -426,6 +426,8 @@ TransitionScene.prototype.render = function() {
     throw new Error("[GAME ENGINE - ERROR]: " + a);
 }, Utils.logObj = function(a) {
     console.log(a);
+}, Utils.loopSound = function(a) {
+    a.loop = !0, a = a.cloneNode(), a.play();
 }, Utils.playSound = function(a) {
     a = a.cloneNode(), a.play();
 }, function(a, b) {

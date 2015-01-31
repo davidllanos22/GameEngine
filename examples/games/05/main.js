@@ -13,6 +13,13 @@ var cards;
 var cardSize;
 var playmat;
 
+// Sounds
+
+var cardFlip;
+var cardFlip2;
+var yay;
+var loop;
+
 game.init = function() {
   game.graphics.setClearColor("#c9003d");
   game.cardSize = 70;
@@ -30,6 +37,12 @@ game.init = function() {
   playmat = game.loader.loadImage("playmat.png");
   play = game.loader.loadImage("play.png");
 
+
+  cardFlip = game.loader.loadSound("card-flip.wav");
+  cardFlip2 = game.loader.loadSound("card-flip2.wav");
+  yay = game.loader.loadSound("yay.wav");
+  loop = game.loader.loadSound("loop.mp3");
+
   game.actionTimer = new Timer(100, false, null, null, actionCardFinish);
   game.restartTimer = new Timer(200, false, null, null, actionRestartFinish);
   game.playTimer = new Timer(200, true, null, null, function(){ game.showPlay = !game.showPlay;});
@@ -43,6 +56,8 @@ game.init = function() {
   game.playTimer.start();
   game.waveTimer.start();
   this.colors = [0,1,2,3,4,5];
+
+  Utils.loopSound(loop);
 
 }
 
@@ -72,6 +87,7 @@ game.reset = function() {
 }
 
 game.setSelected = function(card){
+  Utils.playSound(cardFlip2);
   game.lastCard = this.actualCard;
   game.actualCard = card;
 
@@ -116,10 +132,13 @@ var actionCardFinish = function(){
     game.actualCard.destroy();
     game.cardCount-=2;
     if(game.cardCount<=0){
+      Utils.playSound(yay);
+      game.waveTimer.reset();
       game.restartTimer.start();
     }
 
   }else{
+    Utils.playSound(cardFlip);
     game.actualCard.flip();
     game.lastCard.flip();
   }
@@ -201,6 +220,7 @@ Card.prototype.flip = function() {
     this.flipping = true;
     this.alreadyFlipped = false;
     this.flipN = 0;
+    
   }
 
 }

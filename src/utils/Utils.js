@@ -59,8 +59,13 @@ Utils.logObj = function (x){
 }
 
 //this shouldnt be here..
-Utils.playSound = function(sound){
+Utils.loopSound = function(sound){
+  sound.loop = true;
 	sound = sound.cloneNode()
 	sound.play();
+}
+Utils.playSound = function(sound){
+  sound = sound.cloneNode()
+  sound.play();
 }
 
