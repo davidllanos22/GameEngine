@@ -79,23 +79,39 @@ Game.prototype = {
 	* Internal initialization.
  	*/
 	initInternal: function (){
-		this.initDone = false; // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
-		
+		var self = this;
+
 		this.loader = new Loader(); // Create a new instance of the Loader.
 		this.graphics = new Graphics(this); // Create a new instance of the Renderer.
 		this.input = new Input(this); // Create a new instance of the Input.
 		this.timerManager = new TimerManager(this);
 
-		this.currentScene = new Scene(this,"Default Scene");
+		var loadingScreen = new Scene(this,"Loading");
+
+		loadingScreen.render = function(){
+			self.graphics.print("Loading: "+self.loader.numResourcesLoaded+"/"+self.loader.numResources,self.width/2,self.height/2)
+		}
+		this.currentScene = loadingScreen;
 		this.currentCamera = new Camera(this,"Default Camera");
-	
+
+		this.loader.loadAll(function(){
+
+			self.init(); // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
+			self.originalWidth = self.width;
+			self.onResizeInternal();
+
+		});
+
 		this.fps = 60; // Set fps.
 		this.dt = 0; // Set dt.
 		this.start = new Date().getTime(); // Get actual time.
 
 		this.step = 10 / this.fps; // Set step.
 		
+		
+
 		this.loop(this); // Call loop function to start game loop.
+
 	},
 	/**
 	* Game loop. Calls internal render and update.
@@ -124,13 +140,8 @@ Game.prototype = {
 	* Internal update function used by the engine. Do not use this function in your game. Use update instead.
 	*/
 	updateInternal: function(){
-		//--
-		if(!this.initDone){ // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
-			this.initDone = true; // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
-			this.init(); // TODO: CHANGE THIS WHEN PRELOADER IS DONE.
-			this.originalWidth = this.width;
-			this.onResizeInternal();
-		}
+		
+		
 		//--
 		if(!this.showPauseWhenNotFocused || this.focused){
 			this.timerManager.update();
@@ -174,6 +185,8 @@ Game.prototype = {
 		this.ctx.rotate(this.currentCamera.angle*Math.PI/180);
 		
 		this.currentScene.renderInternal(); // scene.render
+
+
 		this.render(); // game.render
 
 		this.ctx.restore();

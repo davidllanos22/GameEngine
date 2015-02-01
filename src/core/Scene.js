@@ -3,10 +3,13 @@ Scene = function(game,name){
 	this.name = name;
 	this.game = game;
 	this.ySorting = true;
+	this.init();
 }
 
 Scene.prototype = Object.create(Entity.prototype);
 Scene.prototype.constructor = Scene;
+Scene.prototype.init = function(){
+}
 Scene.prototype.add = function(child){
 	child.game = this.game;
 	this.childs.push(child);

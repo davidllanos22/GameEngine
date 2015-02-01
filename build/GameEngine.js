@@ -1,4 +1,4 @@
-/*! GameEngine 2015-01-31 */
+/*! GameEngine 2015-02-02 */
 Camera = function(a, b) {
     this.game = a, this.name = b, this.position = new Math.Vector2(0, 0), this.size = new Math.Vector2(a.width / 2 / a.gameScale, a.height / 2 / a.gameScale), 
     this.rect = new Rectangle(0, 0, this.size.x, this.size.y), this.angle = 0, this.shaking = !1, 
@@ -51,10 +51,10 @@ Camera = function(a, b) {
     collides: function(a) {
         return null != a ? this.position.x < a.position.x + a.size.x && this.position.x + this.size.x > a.position.x && this.position.y < a.position.y + a.size.y && this.position.y + this.size.y > a.position.y : void 0;
     }
-}, Font = function() {
-    this.chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ  0123456789    !?.;:()       ", this.size = 14, 
-    this.separation = 12, this.img = new Image(), this.img.src = "data:image/png;base64,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";
-}, Font.prototype.render = function(a, b, c, d) {
+}, Font = function(a, b, c, d) {
+    this.chars = a || "ABCDEFGHIJKLMNOPQRSTUVWXYZ  0123456789    !?.;:()       ", this.size = c || 14, 
+    this.separation = d || 12, this.img = new Image(), this.img.src = a || "data:image/png;base64,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";
+}, Font.prototype.loadCustomFont = function() {}, Font.prototype.render = function(a, b, c, d) {
     for (var e = 0; e < this.chars.length; e++) if (this.chars.charAt(e) == a.toUpperCase()) {
         var f = e % 14, g = Math.floor(e / 14);
         d.imageSection(this.img, b, c, f, g, this.size, this.size, this.size, this.size);
@@ -84,10 +84,17 @@ Camera = function(a, b) {
     }, this.initInternal();
 }, Game.prototype = {
     initInternal: function() {
-        this.initDone = !1, this.loader = new Loader(), this.graphics = new Graphics(this), 
-        this.input = new Input(this), this.timerManager = new TimerManager(this), this.currentScene = new Scene(this, "Default Scene"), 
-        this.currentCamera = new Camera(this, "Default Camera"), this.fps = 60, this.dt = 0, 
-        this.start = new Date().getTime(), this.step = 10 / this.fps, this.loop(this);
+        var a = this;
+        this.loader = new Loader(), this.graphics = new Graphics(this), this.input = new Input(this), 
+        this.timerManager = new TimerManager(this);
+        var b = new Scene(this, "Loading");
+        b.render = function() {
+            a.graphics.print("Loading: " + a.loader.numResourcesLoaded + "/" + a.loader.numResources, a.width / 2, a.height / 2);
+        }, this.currentScene = b, this.currentCamera = new Camera(this, "Default Camera"), 
+        this.loader.loadAll(function() {
+            a.init(), a.originalWidth = a.width, a.onResizeInternal();
+        }), this.fps = 60, this.dt = 0, this.start = new Date().getTime(), this.step = 10 / this.fps, 
+        this.loop(this);
     },
     loop: function(a) {
         this.meter.tickStart();
@@ -99,8 +106,7 @@ Camera = function(a, b) {
         });
     },
     updateInternal: function() {
-        this.initDone || (this.initDone = !0, this.init(), this.originalWidth = this.width, 
-        this.onResizeInternal()), (!this.showPauseWhenNotFocused || this.focused) && (this.timerManager.update(), 
+        (!this.showPauseWhenNotFocused || this.focused) && (this.timerManager.update(), 
         this.currentScene.updateInternal(), this.input.gamepad && (this.input.gamepad = navigator.getGamepads && navigator.getGamepads()[0]), 
         this.update()), this.input.mouseClick = [ !1, !1, !1 ], this.input.mouseRelease = [ !1, !1, !1 ];
     },
@@ -155,9 +161,12 @@ Camera = function(a, b) {
     clear: function() {
         this.rect(0, 0, this.game.width / this.game.scale, this.game.height / this.game.scale, this.clearColor);
     },
-    print: function(a, b, c, d, e) {
-        for (this.ctx.fillStyle = e, i = 0; i < a.length; i++) this.font.render(a.charAt(i), b + this.font.separation * i, c, game.graphics);
+    print: function(a, b, c) {
+        for (i = 0; i < a.length; i++) this.font.render(a.charAt(i), b + this.font.separation * i, c, this.game.graphics);
         this.renderCounter++;
+    },
+    setFont: function(a) {
+        this.font = a;
     },
     image: function(a, b, c) {
         b = Math.floor(b), c = Math.floor(c), this.ctx.drawImage(a, 0, 0, a.width, a.height, b, c, a.width, a.height), 
@@ -310,26 +319,39 @@ Camera = function(a, b) {
 }, Resource = function() {
     this.url, this.type;
 }, Loader = function() {
-    this.resources = [];
+    this.resources = [], this.numResources = 0, this.numResourcesLoaded = 0, this.onFinish, 
+    this.loaded = !1;
 }, Loader.prototype = {
     loadImage: function(a) {
-        Utils.logLoad("Loading Image " + a);
         var b = new Image();
-        return b.src = a + "?" + new Date().getTime(), b;
+        b.src = a + "?" + new Date().getTime();
+        var c = this;
+        return this.numResources++, b.onload = function() {
+            Utils.logLoad("Image loaded " + a), c.numResourcesLoaded++, c.check();
+        }, b;
     },
     loadSound: function(a) {
-        Utils.logLoad("Loading Sound " + a);
         var b = new Audio();
-        return b.src = a + "?" + new Date().getTime(), b;
+        b.src = a + "?" + new Date().getTime();
+        var c = this;
+        return this.numResources++, b.addEventListener("loadeddata", function() {
+            Utils.logLoad("Audio loaded " + a), c.numResourcesLoaded++, c.check();
+        }, !1), b;
     },
     loadData: function(a) {
         return Utils.logLoad("Loading Data " + a), 1;
     },
-    loadAll: function() {}
+    loadAll: function(a) {
+        this.onFinish = a;
+    },
+    check: function() {
+        this.numResourcesLoaded == this.numResources && (this.loaded = !0, this.onFinish());
+    }
 }, Scene = function(a, b) {
-    Entity.call(this, 0, 0, "Scene"), this.name = b, this.game = a, this.ySorting = !0;
+    Entity.call(this, 0, 0, "Scene"), this.name = b, this.game = a, this.ySorting = !0, 
+    this.init();
 }, Scene.prototype = Object.create(Entity.prototype), Scene.prototype.constructor = Scene, 
-Scene.prototype.add = function(a) {
+Scene.prototype.init = function() {}, Scene.prototype.add = function(a) {
     a.game = this.game, this.childs.push(a);
 }, Scene.prototype.remove = function(a) {
     this.childs.splice(this.childs.indexOf(a), 1);

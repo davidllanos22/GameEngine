@@ -29,14 +29,18 @@ Graphics.prototype = {
 	print: function(text,x,y,size,color){
 		//x = Math.floor(x);
 		//y = Math.floor(y);
-		this.ctx.fillStyle=color;
+
+		//this.ctx.fillStyle=color;
 		for(i = 0; i< text.length; i++){
-			this.font.render(text.charAt(i),x+this.font.separation*i,y,game.graphics);	
+			this.font.render(text.charAt(i),x+this.font.separation*i,y,this.game.graphics);	
 		}
 		
 		//this.ctx.font=size+"px pixel";
 		//this.ctx.fillText(text,x,size+y);
 		this.renderCounter++;
+	},
+	setFont: function(newFont){
+		this.font = newFont;
 	},
 	/*
 		img			- Specifies the image, canvas, or video element to use	 
@@ -62,8 +66,10 @@ Graphics.prototype = {
 		yy = Math.floor(yy);
 		w = Math.floor(w);
 		h = Math.floor(h);
+
 		if(w < 0 ) w = 0;
 		if(h < 0 ) h = 0;
+
 		this.ctx.drawImage(src,xx*sw,yy*sh,sw,sh,x,y,w,h);
 		this.renderCounter++;
 	},
@@ -77,6 +83,7 @@ Graphics.prototype = {
 
 		if(w < 0 ) w = 0;
 		if(h < 0 ) h = 0;
+
 		this.ctx.save();
 		this.ctx.translate(x+(w/2),y+(h/2));
 		this.ctx.rotate(rot);

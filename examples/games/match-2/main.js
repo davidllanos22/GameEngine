@@ -6,19 +6,18 @@ var menuScene = new Scene(game,"Menu");
 var gameScene = new Scene(game,"Game");
 
 // Images
-
-var title;
-var play;
-var cards;
-var cardSize;
-var playmat;
+var title = game.loader.loadImage("media/title.png");
+var cards = game.loader.loadImage("media/cards.png");
+var playmat = game.loader.loadImage("media/playmat.png");
+var play = game.loader.loadImage("media/play.png");
+var mountain = game.loader.loadImage("media/moonbow.jpg");
 
 // Sounds
 
-var cardFlip;
-var cardFlip2;
-var yay;
-var loop;
+var cardFlip = game.loader.loadSound("media/card-flip.wav");
+var cardFlip2 = game.loader.loadSound("media/card-flip2.wav");
+var yay = game.loader.loadSound("media/yay.wav");
+var loop = game.loader.loadSound("media/loop.mp3");
 
 game.init = function() {
   game.graphics.setClearColor("#c9003d");
@@ -32,16 +31,6 @@ game.init = function() {
   game.waveSpeed = 1;
   game.waveMax  = 0.10;
 
-  title = game.loader.loadImage("media/title.png");
-  cards = game.loader.loadImage("media/cards.png");
-  playmat = game.loader.loadImage("media/playmat.png");
-  play = game.loader.loadImage("media/play.png");
-
-
-  cardFlip = game.loader.loadSound("media/card-flip.wav");
-  cardFlip2 = game.loader.loadSound("media/card-flip2.wav");
-  yay = game.loader.loadSound("media/yay.wav");
-  loop = game.loader.loadSound("media/loop.mp3");
 
   game.actionTimer = new Timer(100, false, null, null, actionCardFinish);
   game.restartTimer = new Timer(200, false, null, null, actionRestartFinish);
@@ -115,6 +104,7 @@ menuScene.update = function(){
 gameScene.init = function(){
   game.reset();
   game.waveTimer.pause();
+  console.log("buaa");
   
 }
 gameScene.render = function(){
