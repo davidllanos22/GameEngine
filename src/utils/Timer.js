@@ -1,3 +1,13 @@
+/**
+* Timer class.
+* @constructor
+* @param {int} time - Time the timer will run.
+* @param {boolean} repeat - Will the animation be looped?.
+* @param {function} onStart - Function triggered at the start of the timer.
+* @param {function} onTick - Function triggered at every tick of the timer.
+* @param {function} onFinish - Function triggered at the end of the timer.
+
+*/
 Timer = function(time, repeat, onStart, onTick, onFinish){
 	this.time = time;
 	this.isRunning = false;

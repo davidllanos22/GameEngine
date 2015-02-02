@@ -1,3 +1,10 @@
+/**
+* Entity class.
+* @constructor
+* @param {int} x - X position of the new instance.
+* @param {int} y - Y position of the new instance.
+* @param {String} name - Name of the new instance.
+*/
 Entity = function(x, y, name){
 	this.position = new Math.Vector2(x, y);
 	this.name = name;

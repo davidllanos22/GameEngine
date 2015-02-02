@@ -1,3 +1,7 @@
+/**
+* State Machine class.
+* @constructor
+*/
 StateMachine = function(){
   this.states = [],
   this.current = "",

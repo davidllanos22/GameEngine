@@ -2,7 +2,10 @@ Resource = function(){
 	this.url;
 	this.type;
 }
-
+/**
+* Loader class.
+* @constructor
+*/
 Loader = function(){
 	this.resources = [];
 	this.numResources = 0;

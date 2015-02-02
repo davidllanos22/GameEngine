@@ -41,11 +41,11 @@ module.exports = function(grunt) {
 	    	}
 	  	},
 	  	copy: {
-			main: {
-		    	src: 'build/GameEngine.min.js',
-		    	dest: 'examples/GameEngine.min.js',
-		  	},
-		},
+  			main: {
+  		    	src: 'build/GameEngine.min.js',
+  		    	dest: 'examples/GameEngine.min.js',
+  		  	},
+		  },
   		watch: {
   			options: {
       			livereload: true,
@@ -59,17 +59,26 @@ module.exports = function(grunt) {
     			tasks: []
         }
   			
-  		}
+  		},
+      jsdoc : {
+        dist : {
+            src: ['src/**/*.js'], 
+            options: {
+                destination: 'docs'
+            }
+        }
+      }
   	});
 
   	grunt.loadNpmTasks('grunt-contrib-uglify');
   	grunt.loadNpmTasks('grunt-contrib-connect');
   	grunt.loadNpmTasks('grunt-contrib-copy');
   	grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-jsdoc');
 
     grunt.registerTask('default', ['build']);
 
-  	grunt.registerTask('build', ['uglify','copy']);
+  	grunt.registerTask('build', ['uglify','copy','jsdoc']);
   	grunt.registerTask('serve', ['connect','watch']);
 
 };

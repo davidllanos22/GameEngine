@@ -1,3 +1,10 @@
+/**
+* Animation class.
+* @constructor
+* @param {int} time - Time of the animation.
+* @param {Array} frames - Array of frames represented as [[0,0],[0,1]].
+*/
+
 Animation = function(time, frames){
   this.frames = frames;
   var self = this;

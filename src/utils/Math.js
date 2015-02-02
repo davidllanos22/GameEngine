@@ -1,3 +1,4 @@
+
 Math.lerp = function(from, to, time){
   return (to - from)*time;
 }
@@ -7,7 +8,12 @@ Math.randomTo = function(x){ // From 0 to x
 Math.randomRange = function(min, max){ // from min to max
   return Math.randomTo((max-min))+min;
 }
-
+/**
+* Vector2 class.
+* @constructor
+* @param {int} x - X position of the Vector.
+* @param {int} y - Y position of the Vector
+*/
 Math.Vector2 = function(x, y){
   this.x = x;
   this.y = y;

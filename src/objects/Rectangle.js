@@ -1,3 +1,11 @@
+/**
+* Rectangle class.
+* @constructor
+* @param {int} x - X position of the new instance.
+* @param {int} y - Y position of the new instance.
+* @param {int} w - Width new instance.
+* @param {int} h - Height of the new instance.
+*/
 Rectangle = function(x,y,w,h){
 	this.position = new Math.Vector2(x,y);
 	this.size = new Math.Vector2(w,h);

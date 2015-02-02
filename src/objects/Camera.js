@@ -1,3 +1,10 @@
+/**
+* Camera class.
+* @constructor
+* @param {Game} game - instance of the Game class.
+* @param {String} name - Name of the Scene.
+*/
+
 Camera = function(game, name){
 	this.game = game;
 	this.name = name;

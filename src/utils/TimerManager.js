@@ -1,3 +1,8 @@
+/**
+* Timer Manager class.
+* @constructor
+* @param {Game} game - Instance of the Game class.
+*/
 TimerManager = function(game){
   this.game = game;
   this.timers = [];
