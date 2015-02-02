@@ -61,6 +61,8 @@ Or with:
 $ grunt build
 ```
 
+These commands will also generate the documentation on the docs/ folder.
+
 
 
 ###Testing
