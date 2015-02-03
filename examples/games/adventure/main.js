@@ -2,22 +2,18 @@ var game = new Game(640,480);
 
 var player1;
 
-var player,
-    tree,
-    grass,
-    f,
-    xx,
+var xx,
     yy;
 
-
+var player = game.loader.loadImage("player.png");
+var tree = game.loader.loadImage("tree.png");
+var grass= game.loader.loadImage("grass.png");
+var f= game.loader.loadImage("font2.png");
 
 
 game.init = function(){
   game.graphics.clearColor = "#6fbc73";
-  player = game.loader.loadImage("player.png");
-  tree = game.loader.loadImage("tree.png");
-  grass= game.loader.loadImage("grass.png");
-  f= game.loader.loadImage("font2.png");
+ 
   game.gameScale = 2;
   game.showFps = true;
   game.fillScreen = true;

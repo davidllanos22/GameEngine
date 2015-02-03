@@ -169,5 +169,8 @@ Input.prototype = {
 		this.mouseRelease[e.button] = true;
 		this.mouseHold[e.button] = false;
 		
-	}
+	},
+  setMouse: function(a){
+    this.game.cvs.style.cursor = a;
+  }
 }

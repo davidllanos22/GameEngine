@@ -10,7 +10,6 @@ var title = game.loader.loadImage("media/title.png");
 var cards = game.loader.loadImage("media/cards.png");
 var playmat = game.loader.loadImage("media/playmat.png");
 var play = game.loader.loadImage("media/play.png");
-var mountain = game.loader.loadImage("media/moonbow.jpg");
 
 // Sounds
 

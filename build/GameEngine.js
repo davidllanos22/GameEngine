@@ -1,4 +1,4 @@
-/*! GameEngine 2015-02-02 */
+/*! GameEngine 2015-02-03 */
 Camera = function(a, b) {
     this.game = a, this.name = b, this.position = new Math.Vector2(0, 0), this.size = new Math.Vector2(a.width / 2 / a.gameScale, a.height / 2 / a.gameScale), 
     this.rect = new Rectangle(0, 0, this.size.x, this.size.y), this.angle = 0, this.shaking = !1, 
@@ -315,6 +315,9 @@ Camera = function(a, b) {
     },
     onMouseUp: function(a, b) {
         this.mouseRelease[b.button] = !0, this.mouseHold[b.button] = !1;
+    },
+    setMouse: function(a) {
+        this.game.cvs.style.cursor = a;
     }
 }, Resource = function() {
     this.url, this.type;
