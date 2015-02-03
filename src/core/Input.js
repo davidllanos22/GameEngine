@@ -104,6 +104,7 @@ Input = function(game){
 	this.mouseClick = [false,false,false];
 	this.mouseRelease = [false,false,false];
 	this.mouseHold = [false,false,false];
+  this.cursorImage;
 	
 	this.gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads;
 	this.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
@@ -165,7 +166,11 @@ Input.prototype = {
 		this.mouseHold[e.button] = false;
 		
 	},
-  setMouse: function(a){
+  setCursorStyle: function(a){
     this.game.cvs.style.cursor = a;
+  },
+  setCursorImage: function(a){
+    this.setCursorStyle("none");
+    this.cursorImage = a;
   }
 }

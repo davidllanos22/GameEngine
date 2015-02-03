@@ -178,6 +178,7 @@ Game.prototype = {
 		this.ctx.save()
 
 		this.ctx.scale(this.gameScale,this.gameScale);
+		
 		this.ctx.translate(Math.floor(-this.currentCamera.position.x),Math.floor(-this.currentCamera.position.y));
 		this.ctx.rotate(this.currentCamera.angle*Math.PI/180);
 		
@@ -185,6 +186,13 @@ Game.prototype = {
 
 
 		if(this.loader.loaded)this.render();
+		if(this.input.cursorImage != null){
+			if(this.input.cursorImage instanceof Image)
+				this.graphics.image(this.input.cursorImage, game.input.mouse.x, game.input.mouse.y)
+			if(this.input.cursorImage instanceof Animation){
+				//this.cursorImage.render(this.input.cursorImage.image, game.input.mouse.x, game.input.mouse.y)
+			}
+		}
 
 		this.ctx.restore();
 		

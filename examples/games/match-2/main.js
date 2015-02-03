@@ -33,7 +33,6 @@ game.init = function() {
   game.wave = 0;
   game.waveSpeed = 1;
   game.waveMax  = 0.10;
-  //game.input.setMouse("none");
 
   game.actionTimer = new Timer(100, false, null, null, actionCardFinish);
   game.restartTimer = new Timer(200, false, null, null, actionRestartFinish);
@@ -91,8 +90,9 @@ gameScene.render = function(){
   game.graphics.print("Moves: "+game.moves,8,4,20,"#5775b9");
 }
 game.update = function(){
-  game.input.setMouse("default");
+  game.input.setCursorStyle("default");
 }
+
 // Custom functions
 
 var actionCardFinish = function(){
@@ -182,16 +182,14 @@ Card.prototype.constructor = Card;
 
 Card.prototype.render = function() {
   if(this.hover && !this.flipping)game.graphics.rect(this.position.x-2,this.position.y-2,this.size.x+4,this.size.y+4, "white");
-  //game.graphics.rect(this.position.x,this.position.y,this.size.x,this.size.y,this.flipped ? this.color : "#5775b9");
   game.graphics.imageSection(cards,this.position.x,this.position.y,this.flipped ? 1 : 0,0,60,100,this.size.x,100);
   if(this.flipped) game.graphics.imageSection(cards,this.position.x,this.position.y,this.color + 1 ,0,60,100,this.size.x,100);
 }
 
 Card.prototype.update = function() {
-
   if(this.rect.collides(new Rectangle(game.input.mouse.x,game.input.mouse.y,1,1))){
     this.hover = true;
-    game.input.setMouse("pointer");
+    game.input.setCursorStyle("pointer");
     if(game.input.mouseClick[0] && !this.flipped && !game.actionCard) this.flip();
   }else{
     this.hover = false;

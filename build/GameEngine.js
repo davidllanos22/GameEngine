@@ -118,7 +118,8 @@ Camera = function(a, b) {
         this.ctx.msImageSmoothingEnabled = !0), this.graphics.clear(), this.graphics.renderCounter = 0, 
         this.ctx.save(), this.ctx.scale(this.gameScale, this.gameScale), this.ctx.translate(Math.floor(-this.currentCamera.position.x), Math.floor(-this.currentCamera.position.y)), 
         this.ctx.rotate(this.currentCamera.angle * Math.PI / 180), this.currentScene.renderInternal(), 
-        this.loader.loaded && this.render(), this.ctx.restore(), this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.width, this.height, "rgba(0,0,0,0.8)"), 
+        this.loader.loaded && this.render(), null != this.input.cursorImage && (this.input.cursorImage instanceof Image && this.graphics.image(this.input.cursorImage, game.input.mouse.x, game.input.mouse.y), 
+        this.input.cursorImage instanceof Animation), this.ctx.restore(), this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.width, this.height, "rgba(0,0,0,0.8)"), 
         this.graphics.print("- PAUSED - ", (this.width / 2 - 40) / this.scale, (this.height / 2 - 20) / this.scale, 20, "white")), 
         this.showFps && this.graphics.print("FPS: " + Math.round(this.meter.fps), 8, 8, 20, "white");
     },
@@ -274,7 +275,7 @@ Camera = function(a, b) {
 }, Input = function(a) {
     this.game = a, this.keyDown = {}, this.keyJustDown = {}, this.keyJustReleased = {}, 
     this.mouse = new Math.Vector2(0, 0), this.mouseClick = [ !1, !1, !1 ], this.mouseRelease = [ !1, !1, !1 ], 
-    this.mouseHold = [ !1, !1, !1 ], this.gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads, 
+    this.mouseHold = [ !1, !1, !1 ], this.cursorImage, this.gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads, 
     this.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
     var b = this;
     this.game.cvs.onkeydown = function(a) {
@@ -317,8 +318,11 @@ Camera = function(a, b) {
     onMouseUp: function(a, b) {
         this.mouseRelease[b.button] = !0, this.mouseHold[b.button] = !1;
     },
-    setMouse: function(a) {
+    setCursorStyle: function(a) {
         this.game.cvs.style.cursor = a;
+    },
+    setCursorImage: function(a) {
+        this.setCursorStyle("none"), this.cursorImage = a;
     }
 }, Resource = function() {
     this.url, this.type;
@@ -380,15 +384,15 @@ Scene.prototype.init = function() {}, Scene.prototype.add = function(a) {
 }, TransitionScene.prototype = Object.create(Scene.prototype), TransitionScene.prototype.constructor = TransitionScene, 
 TransitionScene.prototype.render = function() {
     this.visible.renderInternal(), this.fadeIn.isRunning ? this.game.graphics.rect(0, 0, this.game.width / this.game.scale, this.game.height / this.game.scale, "rgba(255,255,255," + this.fadeIn.count / this.time + ")") : this.game.graphics.rect(0, 0, this.game.width / this.game.scale, this.game.height / this.game.scale, "rgba(255,255,255," + (this.time - this.fadeOut.count) / this.time + ")");
-}, Animation = function(a, b) {
-    this.frames = b;
-    var c = this;
+}, Animation = function(a, b, c, d) {
+    this.frames = d, this.w = b, this.h = c;
+    var e = this;
     this.actualFrame = 0, this.timer = new Timer(a, !0, null, null, function() {
-        c.actualFrame == c.frames.length - 1 ? c.actualFrame = 0 : c.actualFrame++;
+        e.actualFrame == e.frames.length - 1 ? e.actualFrame = 0 : e.actualFrame++;
     }), this.timer.start();
 }, Animation.prototype = {
     render: function(a, b, c, d, e) {
-        game.graphics.imageSection(a, b, c, this.frames[this.actualFrame][0], this.frames[this.actualFrame][1], d, e, d, e);
+        game.graphics.imageSection(a, b, c, this.frames[this.actualFrame][0], this.frames[this.actualFrame][1], this.w, this.h, d, e);
     }
 }, Math.lerp = function(a, b, c) {
     return (b - a) * c;
