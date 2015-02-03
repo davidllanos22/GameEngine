@@ -50,6 +50,7 @@ Scene.prototype.updateInternal = function(){
 }
 
 Scene.prototype.changeScene = function(scene){
+	console.log("changing to scene "+scene.name)
 	this.game.currentScene = scene;
 	//this.game.currentScene.init();
 }

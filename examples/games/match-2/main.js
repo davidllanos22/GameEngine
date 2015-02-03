@@ -24,6 +24,7 @@ game.init = function() {
   game.gameScale =1;
   game.fillScreen = false;
   game.fillScreenWithRatio = false;
+  console.log("change");
   game.currentScene.changeScene(menuScene);
   game.showPlay = true;
   game.wave = 0;
