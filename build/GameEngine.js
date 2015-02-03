@@ -92,8 +92,8 @@ Camera = function(a, b) {
             a.graphics.print("Loading: " + a.loader.numResourcesLoaded + "/" + a.loader.numResources, a.width / 2, a.height / 2);
         }, this.currentScene = b, this.currentCamera = new Camera(this, "Default Camera"), 
         this.loader.loadAll(function() {
-            a.currentScene.changeScene(new Scene(a, "Default Scene")), console.log("before"), 
-            a.init(), a.originalWidth = a.width, a.onResizeInternal();
+            a.currentScene.changeScene(new Scene(a, "Default Scene")), a.init(), a.originalWidth = a.width, 
+            a.onResizeInternal();
         }), this.fps = 60, this.dt = 0, this.start = new Date().getTime(), this.step = 10 / this.fps, 
         this.loop(this);
     },
@@ -368,7 +368,7 @@ Scene.prototype.init = function() {}, Scene.prototype.add = function(a) {
         return ay = Math.round(a.position.y), by = Math.round(b.position.y), ay == by ? 0 : ay - by;
     }), this.update();
 }, Scene.prototype.changeScene = function(a) {
-    console.log("changing to scene " + a.name), this.game.currentScene = a;
+    this.game.currentScene = a;
 }, TransitionScene = function(a, b) {
     Scene.call(this, b.game, "Transition Scene");
     var c = this;

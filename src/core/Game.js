@@ -93,7 +93,6 @@ Game.prototype = {
 		
 		this.loader.loadAll(function(){
 			self.currentScene.changeScene(new Scene(self,"Default Scene"));
-			console.log("before");
 			self.init();
 			self.originalWidth = self.width;
 			self.onResizeInternal();

@@ -1,22 +1,26 @@
-var game = new Game(640,480); // create a new instance of the game
+// Create a new instance of the game
 
-// Scenes
+var game = new Game(640,480); 
+
+// Create Scenes
 
 var menuScene = new Scene(game,"Menu");
 var gameScene = new Scene(game,"Game");
 
-// Images
+// Create and load Images
 var title = game.loader.loadImage("media/title.png");
 var cards = game.loader.loadImage("media/cards.png");
 var playmat = game.loader.loadImage("media/playmat.png");
 var play = game.loader.loadImage("media/play.png");
 
-// Sounds
+// Create and load Sounds
 
 var cardFlip = game.loader.loadSound("media/card-flip.wav");
 var cardFlip2 = game.loader.loadSound("media/card-flip2.wav");
 var yay = game.loader.loadSound("media/yay.wav");
 var loop = game.loader.loadSound("media/loop.mp3");
+
+// Starting point of the game.
 
 game.init = function() {
   game.graphics.setClearColor("#c9003d");
@@ -24,13 +28,11 @@ game.init = function() {
   game.gameScale =1;
   game.fillScreen = false;
   game.fillScreenWithRatio = false;
-  console.log("change");
   game.currentScene.changeScene(menuScene);
   game.showPlay = true;
   game.wave = 0;
   game.waveSpeed = 1;
   game.waveMax  = 0.10;
-
 
   game.actionTimer = new Timer(100, false, null, null, actionCardFinish);
   game.restartTimer = new Timer(200, false, null, null, actionRestartFinish);
@@ -42,6 +44,7 @@ game.init = function() {
     }
     game.wave += Math.lerp(game.wave,(game.waveMax+0.1)*game.waveSpeed,0.003)*0.2;
   }, null);
+
   game.playTimer.start();
   game.waveTimer.start();
   this.colors = [0,1,2,3,4,5];
@@ -50,50 +53,19 @@ game.init = function() {
 
 }
 
-game.reset = function() {
-  game.showPlay = true;
-  game.playTimer.start();
-  game.moves = 0;
-  game.cardCount = 0;
-  game.wave = 0;
-
-  game.colors2 = [];
-
-  for (i = 0; i<game.colors.length;i++){
-    game.colors2.push(game.colors[i]);
-    game.colors2.push(game.colors[i]);
-  }
-
-  for (i = 0; i < 4; i++) {
-    for (j = 0; j < 3; j++) {
-      var n = Math.randomTo(game.colors2.length-1);
-      var card = new Card(105+i*(game.cardSize+50), 40+j*(100+50),game.colors2[n],game.cardSize);
-      game.cardCount++;
-      game.colors2.splice(n,1);
-      gameScene.add(card); 
-    }   
-  }
-}
-
-game.setSelected = function(card){
-  Utils.playSound(cardFlip2);
-  game.lastCard = this.actualCard;
-  game.actualCard = card;
-
-  game.moves ++;
-  if(game.lastCard != null && game.actualCard != null){ 
-    game.actionTimer.start();
-  }
-
-}
-
+// Menu Scene behavior
 
 menuScene.render = function(){
+  // Background rendering
   for(var i = 0; i<8; i++){
     game.graphics.imageSection(playmat,0,i*60,0,0,60,60,60,60);
     game.graphics.imageSection(playmat,game.width/game.scale-60,i*60,1,0,60,60,60,60);
   }
+  
+  // Title rendering
   game.graphics.imageSectionRot(title,-123,-40,0,0,title.width,title.height,title.width*2,title.height*2,game.wave);
+
+  // Flashing click to play
   if(game.showPlay)game.graphics.imageSection(play,130,350,0,0,play.width,play.height,play.width*2,play.height*2);
 }
 menuScene.update = function(){
@@ -101,20 +73,24 @@ menuScene.update = function(){
     game.currentScene.changeScene(new TransitionScene(game.currentScene,gameScene));
   }
 }
+
+// Game Scene Behavior
+
 gameScene.init = function(){
-  game.reset();
+  reset();
   game.waveTimer.pause();
-  console.log("buaa");
-  
 }
+
 gameScene.render = function(){
-  
+  // background rendering
   for(var i = 0; i<9; i++){
     game.graphics.imageSection(playmat,0,i*60,0,0,60,60,60,60);
     game.graphics.imageSection(playmat,game.width/game.scale-60,i*60,1,0,60,60,60,60);
   }
   game.graphics.print("Moves: "+game.moves,8,4,20,"#5775b9");
 }
+
+// Custom functions
 
 var actionCardFinish = function(){
   if(game.lastCard.color == game.actualCard.color){
@@ -139,14 +115,49 @@ var actionCardFinish = function(){
 }
 
 var actionRestartFinish = function(){
-  game.currentScene = menuScene;
+  game.currentScene.changeScene(menuScene);
+}
 
+var reset = function() {
+  game.showPlay = true;
+  game.playTimer.start();
+  game.moves = 0;
+  game.cardCount = 0;
+  game.wave = 0;
+
+  game.colors2 = [];
+
+  for (i = 0; i<game.colors.length;i++){
+    game.colors2.push(game.colors[i]);
+    game.colors2.push(game.colors[i]);
+  }
+
+  for (i = 0; i < 4; i++) {
+    for (j = 0; j < 3; j++) {
+      var n = Math.randomTo(game.colors2.length-1);
+      var card = new Card(105+i*(game.cardSize+50), 40+j*(100+50),game.colors2[n],game.cardSize);
+      game.cardCount++;
+      game.colors2.splice(n,1);
+      gameScene.add(card); 
+    }   
+  }
+}
+
+var setSelected = function(card){
+  Utils.playSound(cardFlip2);
+
+  game.lastCard = game.actualCard;
+  game.actualCard = card;
+
+  game.moves ++;
+
+  if(game.lastCard != null && game.actualCard != null){ 
+    game.actionTimer.start();
+  }
 }
 
 
-/*
-  Card Entity Class
-*/
+// Card Class
 
 Card = function(x,y,color,cardSize) {
   Entity.call(this,x,y,"Card");
@@ -189,7 +200,7 @@ Card.prototype.update = function() {
 
     if(this.size.x<= 0){
       if(!this.alreadyFlipped){
-        if(!this.flipped )game.setSelected(this);
+        if(!this.flipped )setSelected(this);
         this.flipped = !this.flipped;
         this.alreadyFlipped = true;
       }
@@ -210,8 +221,6 @@ Card.prototype.flip = function() {
     this.flipping = true;
     this.alreadyFlipped = false;
     this.flipN = 0;
-    
   }
-
 }
 
