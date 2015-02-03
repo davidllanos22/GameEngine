@@ -141,10 +141,11 @@ Game.prototype = {
 
 		if(!this.showPauseWhenNotFocused || this.focused){
 			this.timerManager.update();
+			if(this.loader.loaded)this.update();
 			this.currentScene.updateInternal();
 			if(this.input.gamepad)this.input.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 			//console.log(this.input.gamepad.axes);
-			if(this.loader.loaded)this.update();
+			
 		}
 
 		//this shouldn't be here

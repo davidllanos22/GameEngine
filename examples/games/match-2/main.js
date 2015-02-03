@@ -33,6 +33,7 @@ game.init = function() {
   game.wave = 0;
   game.waveSpeed = 1;
   game.waveMax  = 0.10;
+  //game.input.setMouse("none");
 
   game.actionTimer = new Timer(100, false, null, null, actionCardFinish);
   game.restartTimer = new Timer(200, false, null, null, actionRestartFinish);
@@ -89,7 +90,9 @@ gameScene.render = function(){
   }
   game.graphics.print("Moves: "+game.moves,8,4,20,"#5775b9");
 }
-
+game.update = function(){
+  game.input.setMouse("default");
+}
 // Custom functions
 
 var actionCardFinish = function(){
@@ -188,6 +191,7 @@ Card.prototype.update = function() {
 
   if(this.rect.collides(new Rectangle(game.input.mouse.x,game.input.mouse.y,1,1))){
     this.hover = true;
+    game.input.setMouse("pointer");
     if(game.input.mouseClick[0] && !this.flipped && !game.actionCard) this.flip();
   }else{
     this.hover = false;
@@ -213,7 +217,6 @@ Card.prototype.update = function() {
       this.flipping = false;
     }
   }
-
 }
 
 Card.prototype.flip = function() {

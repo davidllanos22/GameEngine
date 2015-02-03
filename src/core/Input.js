@@ -141,24 +141,19 @@ Input.prototype = {
 			this.keyJustDown[key] = 0;
 			return true;
 		}
-		else 
-			return false;
+		else return false;
 	},
 	released: function(key){
 		if(this.keyJustReleased[key]){
 			this.keyJustReleased[key] = 0;
 			return true;
-		}
-		else 
+		}else 
 			return false;
 	},
 	onMouseMove: function(input, e){
-		//this.mouseX = e.x;
-		//this.mouseY = e.y;
 		var rect = this.game.cvs.getBoundingClientRect();
 		this.mouse.x = Math.round(((e.clientX-rect.left)/(rect.right-rect.left)*this.game.cvs.width)/this.game.scale)/this.game.gameScale;
 		this.mouse.y = Math.round(((e.clientY-rect.top)/(rect.bottom-rect.top)*this.game.cvs.height)/this.game.scale)/this.game.gameScale;
-
 	},
 	onMouseDown: function(input, e){
 		this.mouseClick[e.button] = true;

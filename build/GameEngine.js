@@ -108,8 +108,8 @@ Camera = function(a, b) {
     },
     updateInternal: function() {
         this.loader.loaded || this.loader.check(), (!this.showPauseWhenNotFocused || this.focused) && (this.timerManager.update(), 
-        this.currentScene.updateInternal(), this.input.gamepad && (this.input.gamepad = navigator.getGamepads && navigator.getGamepads()[0]), 
-        this.loader.loaded && this.update()), this.input.mouseClick = [ !1, !1, !1 ], this.input.mouseRelease = [ !1, !1, !1 ];
+        this.loader.loaded && this.update(), this.currentScene.updateInternal(), this.input.gamepad && (this.input.gamepad = navigator.getGamepads && navigator.getGamepads()[0])), 
+        this.input.mouseClick = [ !1, !1, !1 ], this.input.mouseRelease = [ !1, !1, !1 ];
     },
     renderInternal: function() {
         this.pixelart ? (this.ctx.imageSmoothingEnabled = !1, this.ctx.webkitImageSmoothingEnabled = !1, 
