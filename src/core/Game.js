@@ -90,14 +90,16 @@ Game.prototype = {
 		}
 		this.currentScene = loadingScreen;
 		this.currentCamera = new Camera(this,"Default Camera");
-
+		
 		this.loader.loadAll(function(){
-
+			self.currentScene.changeScene(new Scene(this,"Default Scene"));
 			self.init();
 			self.originalWidth = self.width;
 			self.onResizeInternal();
-
+			
 		});
+
+		
 
 		this.fps = 60;
 		this.dt = 0;
@@ -135,13 +137,14 @@ Game.prototype = {
 	* Internal update function used by the engine. Do not use this function in your game. Use update instead.
 	*/
 	updateInternal: function(){
-		
+		if(!this.loader.loaded)this.loader.check();
+
 		if(!this.showPauseWhenNotFocused || this.focused){
 			this.timerManager.update();
 			this.currentScene.updateInternal();
 			if(this.input.gamepad)this.input.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 			//console.log(this.input.gamepad.axes);
-			this.update();
+			if(this.loader.loaded)this.update();
 		}
 
 		//this shouldn't be here
@@ -180,7 +183,7 @@ Game.prototype = {
 		this.currentScene.renderInternal();
 
 
-		this.render();
+		if(this.loader.loaded)this.render();
 
 		this.ctx.restore();
 		

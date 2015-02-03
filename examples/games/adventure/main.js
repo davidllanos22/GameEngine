@@ -8,7 +8,7 @@ var xx,
 var player = game.loader.loadImage("player.png");
 var tree = game.loader.loadImage("tree.png");
 var grass= game.loader.loadImage("grass.png");
-var f= game.loader.loadImage("font2.png");
+var f = game.loader.loadImage("font2.png");
 
 
 game.init = function(){
@@ -45,18 +45,15 @@ game.update = function(){
   if(game.input.check(Keys.SPACE)){
     game.currentCamera.shake(400,1);
   } 
-}
-game.render = function(){
-  game.graphics.print("David",player1.position.x,player1.position.y-20,20,"red");
-  game.graphics.print("David",Math.floor(game.currentCamera.position.x),Math.floor(game.currentCamera.position.y)+20,20,"red");
-}
-game.currentScene.update = function(){
   xx = 22 + player1.position.x - (game.width / 2) / game.gameScale;
   yy = 22 + player1.position.y - (game.height / 2) / game.gameScale;
 
   game.currentCamera.setPosition(xx, yy, true);
 }
-
+game.render = function(){
+  game.graphics.print("David",player1.position.x,player1.position.y-20,20,"red");
+  game.graphics.print("David",Math.floor(game.currentCamera.position.x),Math.floor(game.currentCamera.position.y)+20,20,"red");
+}
 
 Player = function(x,y,control) {
   Entity.call(this,x,y,"Player");
@@ -127,7 +124,7 @@ Player.prototype.willCollide = function(xx,yy){
   rect.position.x += xx;
   rect.position.y += yy;
   for(var i = 0; i<game.currentScene.childs.length;i++){
-    var e = this.game.currentScene.childs[i];
+    var e = game.currentScene.childs[i];
     if(e != this && e.rect!=null){
       if(rect.collides(e.rect)){
         this.rect.position = this.position.copy().add(new Math.Vector2(15,60));
