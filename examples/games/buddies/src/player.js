@@ -87,13 +87,14 @@ Player.prototype.update = function() {
       what.take(this);
   }
 
-  if(game.input.pressed(Keys.SPACE) && what == null){
+  if(game.input.pressed(Keys.SPACE) && what == null && this.item){
       this.item.release(this);  
   }
 
-  if(this.item ){
+  if(this.item){
     this.item.position = this.position;
-  }
+    this.spd = 0.5;
+  }else this.spd = 1;
 
 }
 Player.prototype.interact = function(){
