@@ -6,7 +6,7 @@ Player = function(x, y, control) {
   this.spd = 1;
   this.direction = 0;
   this.vi = new Math.Vector2(0,0);
-  this.box = null;
+  this.item = null;
   this.boxTimer = new Timer(20,false,null,null,null);
 }
 
@@ -17,8 +17,8 @@ Player.prototype.render = function() {
   game.graphics.imageSection(player, this.position.x, this.position.y, 0, 0, 63, 137, 63, 137);
   //game.graphics.rect(this.rect.position.x, this.rect.position.y, this.rect.size.x, this.rect.size.y, "red");
   game.graphics.rect(this.viewRect.position.x, this.viewRect.position.y, this.viewRect.size.x, this.viewRect.size.y, "green");
-   if(this.box){
-    game.graphics.imageSection(boxes, this.position.x-5, this.position.y+60, this.box.type, 0, 70, 70, 70, 70);
+   if(this.item instanceof Box || this.item instanceof Grass){
+    game.graphics.imageSection(boxes, this.position.x-5, this.position.y+60, this.item.type, 0, 70, 70, 70, 70);
    }
 }
 
@@ -83,20 +83,16 @@ Player.prototype.update = function() {
 
   var what = this.interact();
   if(what != null && game.input.pressed(Keys.SPACE)){
-    if(what instanceof Box && !this.box && !this.boxTimer.isRunning)
+    if(!this.item)
       what.take(this);
   }
 
   if(game.input.pressed(Keys.SPACE) && what == null){
-    if(this.box){
-      this.boxTimer.start();
-      this.box.release(this);  
-    }
-      
+      this.item.release(this);  
   }
 
-  if(this.box){
-    this.box.position = this.position;
+  if(this.item ){
+    this.item.position = this.position;
   }
 
 }

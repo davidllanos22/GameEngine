@@ -13,7 +13,7 @@ Box.prototype.render = function() {
 
 }
 Box.prototype.take = function(player){
-  player.box = this;
+  player.item = this;
   this.disabled = true;
   this.oldRect = this.rect.copy();
   this.rect = null;
@@ -39,5 +39,5 @@ Box.prototype.release = function(player){
 
   this.position = this.rect.position.copy().add(new Math.Vector2(-10,-90)); 
   console.log(this.rect.position)
-  player.box = null;
+  player.item = null;
 }

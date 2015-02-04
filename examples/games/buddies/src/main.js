@@ -13,7 +13,7 @@ game.init = function() {
   game.graphics.clearColor = "#6fbc73";
   
   game.gameScale = 1;
-  game.fillScreen = true;
+  game.fillScreen = false;
   //game.input.setCursorStyle("none");
   game.currentCamera.useLimit = true;
   game.currentCamera.limit = new Math.Vector2(game.width, game.height);
@@ -25,8 +25,12 @@ game.init = function() {
     game.currentScene.add(new Player(Math.randomTo(game.width*3), Math.randomTo(game.height*3), false));
   };
   */
-  for (var i = 0; i <50; i++) {
+  for (var i = 0; i <20; i++) {
     game.currentScene.add(new Box(Math.randomTo(100), Math.randomTo(200)));
+  };
+
+  for (var i = 0; i <20; i++) {
+    game.currentScene.add(new Grass(Math.randomTo(100)+300, Math.randomTo(200)));
   };
   
   xx = 22 + player1.position.x - (game.width / 2) / game.gameScale;
