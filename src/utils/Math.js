@@ -20,17 +20,21 @@ Math.Vector2 = function(x, y){
 }
 
 Math.Vector2.prototype = {
+  set: function(x, y){
+    this.x = x;
+    this.y = y;
+  },
   add: function(vector){
     this.x += vector.x;
     this.y += vector.y;
     return this;
   },
-  addX: function(vector){
-    this.x += vector.x;
+  addX: function(x){
+    this.x += x;
     return this;
   },
-  addY: function(vector){
-    this.y += vector.y;
+  addY: function(y){
+    this.y += y;
     return this;
   },
   subtract: function(vector){
@@ -38,12 +42,12 @@ Math.Vector2.prototype = {
     this.y -= vector.y;
     return this;
   },
-  subtractX: function(vector){
-    this.x -= vector.x;
+  subtractX: function(x){
+    this.x -= x;
     return this;
   },
-  subtractY: function(vector){
-    this.y -= vector.y;
+  subtractY: function(y){
+    this.y -= y;
     return this;
   },
   lerp: function(vector, time){

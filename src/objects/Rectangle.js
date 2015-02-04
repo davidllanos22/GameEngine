@@ -28,5 +28,16 @@ Rectangle.prototype = {
 						 		this.position.x + this.size.x > rect.position.x && 
 						 		this.position.y < rect.position.y + rect.size.y && 
 						 		this.position.y + this.size.y > rect.position.y );
+	},
+	collidesAt: function(rect, xx, yy){
+		var rectMod = this.copy();
+  
+	  rectMod.position.x += xx;
+	  rectMod.position.y += yy;
+	
+	  return rectMod.collides(rect);
+	},
+	copy: function(){
+		return new Rectangle(this.position.x,this.position.y,this.size.x,this.size.x);
 	}
 }

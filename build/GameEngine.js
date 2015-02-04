@@ -1,4 +1,4 @@
-/*! GameEngine 2015-02-03 */
+/*! GameEngine 2015-02-04 */
 Camera = function(a, b) {
     this.game = a, this.name = b, this.position = new Math.Vector2(0, 0), this.size = new Math.Vector2(a.width / 2 / a.gameScale, a.height / 2 / a.gameScale), 
     this.rect = new Rectangle(0, 0, this.size.x, this.size.y), this.angle = 0, this.shaking = !1, 
@@ -50,6 +50,13 @@ Camera = function(a, b) {
     },
     collides: function(a) {
         return null != a ? this.position.x < a.position.x + a.size.x && this.position.x + this.size.x > a.position.x && this.position.y < a.position.y + a.size.y && this.position.y + this.size.y > a.position.y : void 0;
+    },
+    collidesAt: function(a, b, c) {
+        var d = this.copy();
+        return d.position.x += b, d.position.y += c, d.collides(a);
+    },
+    copy: function() {
+        return new Rectangle(this.position.x, this.position.y, this.size.x, this.size.x);
     }
 }, Font = function(a, b, c, d) {
     this.chars = a || "ABCDEFGHIJKLMNOPQRSTUVWXYZ  0123456789    !?.;:()       ", this.size = c || 14, 
@@ -403,23 +410,26 @@ TransitionScene.prototype.render = function() {
 }, Math.Vector2 = function(a, b) {
     this.x = a, this.y = b;
 }, Math.Vector2.prototype = {
+    set: function(a, b) {
+        this.x = a, this.y = b;
+    },
     add: function(a) {
         return this.x += a.x, this.y += a.y, this;
     },
     addX: function(a) {
-        return this.x += a.x, this;
+        return this.x += a, this;
     },
     addY: function(a) {
-        return this.y += a.y, this;
+        return this.y += a, this;
     },
     subtract: function(a) {
         return this.x -= a.x, this.y -= a.y, this;
     },
     subtractX: function(a) {
-        return this.x -= a.x, this;
+        return this.x -= a, this;
     },
     subtractY: function(a) {
-        return this.y -= a.y, this;
+        return this.y -= a, this;
     },
     lerp: function(a, b) {
         return this.x += Math.lerp(this.x, a.x, b), this.y += Math.lerp(this.y, a.y, b), 

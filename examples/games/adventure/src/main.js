@@ -14,7 +14,7 @@ game.init = function() {
   
   game.gameScale = 1;
   game.fillScreen = true;
-  game.input.setCursorStyle("none");
+  //game.input.setCursorStyle("none");
   game.currentCamera.useLimit = true;
   game.currentCamera.limit = new Math.Vector2(game.width, game.height);
   player1 = new Player(200, 200, true);
@@ -38,13 +38,14 @@ game.init = function() {
 
 game.update = function() {
   if (game.input.check(Keys.SPACE)) {
-    game.currentCamera.shake(400, 1);
+    //game.currentCamera.shake(400, 1);
   }
   xx = 22 + player1.position.x - (game.width / 2) / game.gameScale;
   yy = 22 + player1.position.y - (game.height / 2) / game.gameScale;
 
 //game.currentCamera.setPosition(xx, yy, true);
+ // console.log(player1.viewRect.position)
 }
 game.render = function() {
-  game.graphics.print("David", player1.position.x, player1.position.y - 10, 20, "red");
+  game.graphics.print("David", player1.position.x, player1.position.y - 20, 20, "red");
 }

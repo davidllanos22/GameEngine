@@ -78,7 +78,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['build']);
 
-  	grunt.registerTask('build', ['uglify','copy','jsdoc']);
+  	grunt.registerTask('build', ['uglify','copy']);
   	grunt.registerTask('serve', ['connect','watch']);
 
 };
