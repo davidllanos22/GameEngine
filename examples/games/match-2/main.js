@@ -8,17 +8,17 @@ var menuScene = new Scene(game,"Menu");
 var gameScene = new Scene(game,"Game");
 
 // Create and load Images
-var title = game.loader.loadImage("media/title.png");
-var cards = game.loader.loadImage("media/cards.png");
-var playmat = game.loader.loadImage("media/playmat.png");
-var play = game.loader.loadImage("media/play.png");
+var title = game.loader.loadImage("media/images/title.png");
+var cards = game.loader.loadImage("media/images/cards.png");
+var playmat = game.loader.loadImage("media/images/playmat.png");
+var play = game.loader.loadImage("media/images/play.png");
 
 // Create and load Sounds
 
-var cardFlip = game.loader.loadSound("media/card-flip.wav");
-var cardFlip2 = game.loader.loadSound("media/card-flip2.wav");
-var yay = game.loader.loadSound("media/yay.wav");
-var loop = game.loader.loadSound("media/loop.mp3");
+var cardFlip = game.loader.loadSound("media/sounds/card-flip.wav");
+var cardFlip2 = game.loader.loadSound("media/sounds/card-flip2.wav");
+var yay = game.loader.loadSound("media/sounds/yay.wav");
+var loop = game.loader.loadSound("media/sounds/loop.mp3");
 
 // Starting point of the game.
 

@@ -1,0 +1,50 @@
+var game = new Game(640, 480);
+
+var player1;
+
+var xx, yy;
+
+var player = game.loader.loadImage("media/player.png");
+var tree = game.loader.loadImage("media/tree.png");
+var grass = game.loader.loadImage("media/grass.png");
+var boxes = game.loader.loadImage("media/boxes.png");
+
+game.init = function() {
+  game.graphics.clearColor = "#6fbc73";
+  
+  game.gameScale = 1;
+  game.fillScreen = true;
+  game.input.setCursorStyle("none");
+  game.currentCamera.useLimit = true;
+  game.currentCamera.limit = new Math.Vector2(game.width, game.height);
+  player1 = new Player(200, 200, true);
+  
+  game.currentScene.add(player1);
+  /*
+  for (var i = 0; i <10; i++) {
+    game.currentScene.add(new Player(Math.randomTo(game.width*3), Math.randomTo(game.height*3), false));
+  };
+  */
+  for (var i = 0; i <50; i++) {
+    game.currentScene.add(new Box(Math.randomTo(game.width*3), Math.randomTo(game.height*3)));
+  };
+  
+  xx = 22 + player1.position.x - (game.width / 2) / game.gameScale;
+  yy = 22 + player1.position.y - (game.height / 2) / game.gameScale;
+  
+  game.currentCamera.setPosition(xx, yy, false);
+
+}
+
+game.update = function() {
+  if (game.input.check(Keys.SPACE)) {
+    game.currentCamera.shake(400, 1);
+  }
+  xx = 22 + player1.position.x - (game.width / 2) / game.gameScale;
+  yy = 22 + player1.position.y - (game.height / 2) / game.gameScale;
+
+//game.currentCamera.setPosition(xx, yy, true);
+}
+game.render = function() {
+  game.graphics.print("David", player1.position.x, player1.position.y - 10, 20, "red");
+}
