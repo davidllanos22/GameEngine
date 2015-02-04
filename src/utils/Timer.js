@@ -23,10 +23,8 @@ Timer = function(time, repeat, onStart, onTick, onFinish){
 
 Timer.prototype = {
 	start: function(){
-		this.count = -1;
-		this.done = false;
 		game.timerManager.add(this);
-		this.isRunning = true;
+		this.reset();
 	},
 	run: function(){
 		if(!this.done || this.repeat){

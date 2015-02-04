@@ -26,7 +26,7 @@ game.init = function() {
   };
   */
   for (var i = 0; i <50; i++) {
-    game.currentScene.add(new Box(Math.randomTo(game.width*3), Math.randomTo(game.height*3)));
+    game.currentScene.add(new Box(Math.randomTo(100), Math.randomTo(200)));
   };
   
   xx = 22 + player1.position.x - (game.width / 2) / game.gameScale;

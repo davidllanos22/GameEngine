@@ -6,6 +6,8 @@ Player = function(x, y, control) {
   this.spd = 1;
   this.direction = 0;
   this.vi = new Math.Vector2(0,0);
+  this.box = null;
+  this.boxTimer = new Timer(20,false,null,null,null);
 }
 
 Player.prototype = Object.create(Entity.prototype);
@@ -14,8 +16,10 @@ Player.prototype.constructor = Player;
 Player.prototype.render = function() {
   game.graphics.imageSection(player, this.position.x, this.position.y, 0, 0, 63, 137, 63, 137);
   //game.graphics.rect(this.rect.position.x, this.rect.position.y, this.rect.size.x, this.rect.size.y, "red");
-  //game.graphics.rect(this.viewRect.position.x, this.viewRect.position.y, this.viewRect.size.x, this.viewRect.size.y, "green");
-
+  game.graphics.rect(this.viewRect.position.x, this.viewRect.position.y, this.viewRect.size.x, this.viewRect.size.y, "green");
+   if(this.box){
+    game.graphics.imageSection(boxes, this.position.x-5, this.position.y+60, this.box.type, 0, 70, 70, 70, 70);
+   }
 }
 
 Player.prototype.update = function() {
@@ -77,12 +81,26 @@ Player.prototype.update = function() {
       this.viewRect.position = this.rect.position.copy().add(new Math.Vector2(0,40));
   }
 
-  var what = this.viewRectCollides();
+  var what = this.interact();
   if(what != null && game.input.pressed(Keys.SPACE)){
-    what.destroy();
+    if(what instanceof Box && !this.box && !this.boxTimer.isRunning)
+      what.take(this);
   }
+
+  if(game.input.pressed(Keys.SPACE) && what == null){
+    if(this.box){
+      this.boxTimer.start();
+      this.box.release(this);  
+    }
+      
+  }
+
+  if(this.box){
+    this.box.position = this.position;
+  }
+
 }
-Player.prototype.viewRectCollides = function(){
+Player.prototype.interact = function(){
    for (var i = 0; i < game.currentScene.childs.length; i++) {
     var e = game.currentScene.childs[i];
     if (e != this.viewRect && e != this && e.rect != null) {
@@ -99,26 +117,6 @@ Player.prototype.willCollide = function(xx, yy) {
     if (e != this && e.rect != null) {
       if (this.rect.collidesAt(e.rect,xx,yy)) {
         this.rect.position = this.position.copy().add(new Math.Vector2(20, 80));
-        return true;
-      }
-    }
-  }
-  this.rect.position = this.position.copy().add(new Math.Vector2(20, 80));
-  return false;
-}
-
-// remove this
-Player.prototype.willCollideOld = function(xx, yy) {
-  var rect = this.rect;
-  
-  rect.position.x += xx;
-  rect.position.y += yy;
-  for (var i = 0; i < game.currentScene.childs.length; i++) {
-    var e = game.currentScene.childs[i];
-    if (e != this && e.rect != null) {
-      if (rect.collides(e.rect)) {
-        this.rect.position = this.position.copy().add(new Math.Vector2(-20, 80));
-        console.log("uf")
         return true;
       }
     }

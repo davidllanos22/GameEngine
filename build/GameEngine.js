@@ -462,7 +462,7 @@ TransitionScene.prototype.render = function() {
     this.onFinish = e, this.game, this.count = -1, this.done = !1;
 }, Timer.prototype = {
     start: function() {
-        this.count = -1, this.done = !1, game.timerManager.add(this), this.isRunning = !0;
+        game.timerManager.add(this), this.reset();
     },
     run: function() {
         (!this.done || this.repeat) && (-1 == this.count ? (null != this.onStart && this.onStart(), 
