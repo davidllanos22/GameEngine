@@ -166,6 +166,19 @@ Input.prototype = {
 		this.mouseHold[e.button] = false;
 		
 	},
+  mouseReset: function(){
+    this.mouseClick = [false,false,false];
+    this.mouseRelease = [false,false,false];
+  },
+  mouseRender: function(){
+    if(this.cursorImage != null){
+      if(this.cursorImage instanceof Image)
+        this.game.graphics.image(this.input.cursorImage, this.game.input.mouse.x, this.game.input.mouse.y)
+      if(this.game.input.cursorImage instanceof Animation){
+        //this.cursorImage.render(this.input.cursorImage.image, game.input.mouse.x, game.input.mouse.y)
+      }
+    }
+  },
   setCursorStyle: function(a){
     this.game.cvs.style.cursor = a;
   },

@@ -13,7 +13,7 @@ game.init = function() {
   game.graphics.clearColor = "#6fbc73";
   
   game.gameScale = 1;
-  game.fillScreen = false;
+  game.fillScreen = true;
   //game.input.setCursorStyle("none");
   game.currentCamera.useLimit = true;
   game.currentCamera.limit = new Math.Vector2(game.width, game.height);

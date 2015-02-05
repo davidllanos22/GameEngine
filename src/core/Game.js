@@ -42,8 +42,6 @@ Game = function(width,height,element){
 
 	// FPS
 
-	this.meter = new FPSMeter({position:"absolute",width:100,theme:"transparent"});
-	this.meter.hide();
 	this.showFps = false;
 
 	// Scaling 
@@ -101,11 +99,12 @@ Game.prototype = {
 
 		
 
-		this.fps = 60;
+		this.desiredFps = 60;
 		this.dt = 0;
 		this.start = new Date().getTime();
 
-		this.step = 10 / this.fps;
+		this.step = 10 / this.desiredFps;
+		this.lastLoop = new Date();
 		
 		this.loop(this);
 
@@ -115,12 +114,18 @@ Game.prototype = {
 	* @param {Game} game - Instance of game class.
 	*/
 	loop: function(game){
-		this.meter.tickStart();
 
 		var now = new Date().getTime();
 		var elapsed = now - game.start;
 		
 		game.start = elapsed;
+
+		this.thisLoop = new Date();
+    this.fps = Math.round(1000 / (this.thisLoop - this.lastLoop)) | 0;
+    this.lastLoop = this.thisLoop;
+
+    //console.log(this.fps)
+
 		game.dt += Math.min(1,(elapsed)/1000);
 		
 		while(game.dt > game.step){
@@ -129,7 +134,8 @@ Game.prototype = {
 		}
 
 		game.renderInternal();
-		this.meter.tick();
+
+
 
 		window.requestAnimationFrame(function(){game.loop(game);});
 	},
@@ -144,15 +150,8 @@ Game.prototype = {
 			if(this.loader.loaded)this.update();
 			this.currentScene.updateInternal();
 			if(this.input.gamepad)this.input.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
-			//console.log(this.input.gamepad.axes);
-			
+			this.input.mouseReset();
 		}
-
-		//this shouldn't be here
-
-		this.input.mouseClick = [false,false,false];
-		this.input.mouseRelease = [false,false,false];
-		
 	},
 	/**
 	* Internal render function used by the engine. Do not use this function in your game. Use render instead.
@@ -184,15 +183,9 @@ Game.prototype = {
 		
 		this.currentScene.renderInternal();
 
-
 		if(this.loader.loaded)this.render();
-		if(this.input.cursorImage != null){
-			if(this.input.cursorImage instanceof Image)
-				this.graphics.image(this.input.cursorImage, game.input.mouse.x, game.input.mouse.y)
-			if(this.input.cursorImage instanceof Animation){
-				//this.cursorImage.render(this.input.cursorImage.image, game.input.mouse.x, game.input.mouse.y)
-			}
-		}
+
+		this.input.mouseRender();
 
 		this.ctx.restore();
 		
@@ -201,7 +194,7 @@ Game.prototype = {
 			this.graphics.print("- PAUSED - ",((this.width/2)-40)/this.scale,((this.height/2)-20)/this.scale,20,"white");
 		}
 
-		if(this.showFps)this.graphics.print("FPS: "+Math.round(this.meter.fps),8,8,20,"white");
+		if(this.showFps)this.graphics.print("FPS: "+Math.round(this.fps),8,8,20,"white");
 
 	},
 	/**
