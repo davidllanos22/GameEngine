@@ -6,14 +6,16 @@
 * @param {int} size - Size of the sub-image to be cutted.
 * @param {int} separation - Separation between the characters.
 */
-Font = function(img,chars,size,separation){
+Font = function(img,chars,w,h,separation){
 
   this.chars = chars || "ABCDEFGHIJKLMN"+
                       "OPQRSTUVWXYZ  "+
                       "0123456789    "+
                       "!?.;:()       ";
                       
-  this.size = size || 14;
+  this.w = w || 14;
+  this.h = h || 14;
+
   this.separation = separation || 12;
   
   if(!img){
@@ -35,7 +37,7 @@ Font.prototype.render = function(char,x,y,graphics){
     if(this.chars.charAt(i) == char.toUpperCase()){
       var xx = i % 14;
       var yy = Math.floor(i/14);
-      graphics.imageSection(this.img,x,y,xx,yy,this.size,this.size,this.size,this.size);
+      graphics.imageSection(this.img,x,y,xx,yy,this.w,this.h,this.w,this.h);
     }
   }
 }
