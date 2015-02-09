@@ -109,16 +109,13 @@ Input = function(game){
 	this.gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads;
 	this.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 
-	var input = this;
+	var self = this;
 
-	this.game.cvs.onkeydown = function(e){input.onKeyDown(e);}
-	this.game.cvs.onkeyup = function(e){input.onKeyUp(e);}
-	this.game.cvs.onmousemove = function(e){input.onMouseMove(this, e);}
-	this.game.cvs.onmousedown = function(e){input.onMouseDown(this, e);}
-	this.game.cvs.onmouseup = function(e){input.onMouseUp(this, e);}
-
-
-
+	this.game.cvs.onkeydown = function(e){self.onKeyDown(e);}
+	this.game.cvs.onkeyup = function(e){self.onKeyUp(e);}
+	this.game.cvs.onmousemove = function(e){self.onMouseMove(this, e);}
+	this.game.cvs.onmousedown = function(e){self.onMouseDown(this, e);}
+	this.game.cvs.onmouseup = function(e){self.onMouseUp(this, e);}
 }
 
 Input.prototype = {

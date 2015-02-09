@@ -8,7 +8,7 @@
 */
 Font = function(img,chars,size,separation){
 
-  this.chars = img || "ABCDEFGHIJKLMN"+
+  this.chars = chars || "ABCDEFGHIJKLMN"+
                       "OPQRSTUVWXYZ  "+
                       "0123456789    "+
                       "!?.;:()       ";
