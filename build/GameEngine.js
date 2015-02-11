@@ -158,8 +158,19 @@ Camera = function(a, b) {
     this.game = a, this.ctx = this.game.ctx, this.renderCounter = 0, this.clearColor = "#000000", 
     this.font = new Font();
 }, Graphics.prototype = {
+    point: function(a, b, c) {
+        this.ctx.fillStyle = c, this.ctx.fillRect(a, b, 1, 1), this.renderCounter++;
+    },
+    line: function(a, b, c, d, e) {
+        this.ctx.strokeStyle = e, this.ctx.beginPath(), this.ctx.moveTo(a, b), this.ctx.lineTo(c, d), 
+        this.ctx.stroke();
+    },
     rect: function(a, b, c, d, e) {
         this.ctx.fillStyle = e, this.ctx.fillRect(a, b, c, d), this.renderCounter++;
+    },
+    circle: function(a, b, c, d) {
+        this.ctx.fillStyle = d, this.ctx.beginPath(), this.ctx.arc(a, b, c, 0, 2 * Math.PI, !1), 
+        this.ctx.fill();
     },
     setClearColor: function(a) {
         this.clearColor = a;

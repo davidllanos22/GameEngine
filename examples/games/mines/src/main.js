@@ -19,7 +19,9 @@ var timerCount = 0;
 var minesCount = 0;
 var freeCount = 0;
 
-var mainTimer = new Timer(380,true,null,null,function(){timerCount++;});
+var mainTimer = new Timer(380,true,null,null,function(){
+  if(!gameOver && !gameWin)timerCount++;
+});
 
 var font = new Font(numbers,"0123456789",11,13,13);
 
@@ -34,10 +36,13 @@ game.init = function(){
 game.update = function(){
   faceState = 0; 
 
-  if(gameOver || gameWin){
+  if(gameOver){
     faceState = 2; 
     game.cvs.style.webkitFilter = "blur("+Math.randomRange(0,2)+"px) hue-rotate("+Math.randomRange(0,180)+"deg)";
     game.cvs.style.filter = "blur("+Math.randomRange(0,2)+"px) hue-rotate("+Math.randomRange(0,180)+"deg)";
+    game.currentCamera.shake(20,Math.randomTo(1));
+  }else if(gameWin){
+    faceState = 3; 
   }else{
 
     game.cvs.style.webkitFilter = "blur(0px) hue-rotate(0deg)";

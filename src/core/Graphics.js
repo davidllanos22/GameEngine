@@ -13,7 +13,18 @@ Graphics = function(game){
 }
 
 Graphics.prototype = {
-
+	point: function(x,y,color){
+		this.ctx.fillStyle=color;
+		this.ctx.fillRect(x,y,1,1);
+		this.renderCounter++;
+	},
+	line: function(x0,y0,x1,y1,color){
+		this.ctx.strokeStyle = color;
+		this.ctx.beginPath();
+    this.ctx.moveTo(x0, y0);
+    this.ctx.lineTo(x1, y1);
+    this.ctx.stroke();
+	},
 	rect: function(x,y,w,h,color){
 		// x = Math.floor(x);
 		// y = Math.floor(y);
@@ -23,12 +34,17 @@ Graphics.prototype = {
 		this.ctx.fillRect(x,y,w,h);
 		this.renderCounter++;
 	},
-	//todo 
+	circle: function(x,y,r,color){
+		this.ctx.fillStyle = color;
+		this.ctx.beginPath();
+    this.ctx.arc(x, y, r, 0, 2 * Math.PI, false);
+    this.ctx.fill();
+	},
 	setClearColor: function(color){
 		this.clearColor = color;
 	},
 	clear: function(){
-		this.rect(0,0,this.game.width/this.game.scale,this.game.height/this.game.scale,this.clearColor)
+		this.rect(0,0,this.game.width/this.game.scale,this.game.height/this.game.scale,this.clearColor);
 		
 	},
 	print: function(text,x,y,size,color){
@@ -47,17 +63,6 @@ Graphics.prototype = {
 	setFont: function(newFont){
 		this.font = newFont;
 	},
-	/*
-		img			- Specifies the image, canvas, or video element to use	 
-		sx			- Optional. The x coordinate where to start clipping
-		sy			- Optional. The y coordinate where to start clipping
-		swidth 	-	Optional. The width of the clipped image
-		sheight	- Optional. The height of the clipped image
-		x				- The x coordinate where to place the image on the canvas
-		y				- The y coordinate where to place the image on the canvas
-		width		-	Optional. The width of the image to use (stretch or reduce the image)
-		height	- Optional. The height of the image to use (stretch or reduce the image)
-	*/
 	image: function(src,x,y){
 		x = Math.floor(x);
 		y = Math.floor(y);
