@@ -60,6 +60,7 @@ game.render = function(){
   game.graphics.imageSection(faces, 71, 15, faceState, 0, 18, 18, 18, 18);
   game.graphics.print((timerCount<100?"0": "" )+(timerCount<10?"0": "" )+ timerCount,101,18);
   game.graphics.print((minesCount<100?"0": "" )+(minesCount<10?"0": "" )+ (minesCount< 0? 0:minesCount),21,18);
+  
 }
 
 var initGame = function(){

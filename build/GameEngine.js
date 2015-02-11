@@ -159,17 +159,17 @@ Camera = function(a, b) {
     this.font = new Font();
 }, Graphics.prototype = {
     point: function(a, b, c) {
-        this.ctx.fillStyle = c, this.ctx.fillRect(a, b, 1, 1), this.renderCounter++;
+        this.setColor(c), this.ctx.fillRect(a, b, 1, 1), this.renderCounter++;
     },
     line: function(a, b, c, d, e) {
-        this.ctx.strokeStyle = e, this.ctx.beginPath(), this.ctx.moveTo(a, b), this.ctx.lineTo(c, d), 
+        this.setColor(e), this.ctx.beginPath(), this.ctx.moveTo(a, b), this.ctx.lineTo(c, d), 
         this.ctx.stroke();
     },
     rect: function(a, b, c, d, e) {
-        this.ctx.fillStyle = e, this.ctx.fillRect(a, b, c, d), this.renderCounter++;
+        this.setColor(e), this.ctx.fillRect(a, b, c, d), this.renderCounter++;
     },
     circle: function(a, b, c, d) {
-        this.ctx.fillStyle = d, this.ctx.beginPath(), this.ctx.arc(a, b, c, 0, 2 * Math.PI, !1), 
+        this.setColor(d), this.ctx.beginPath(), this.ctx.arc(a, b, c, 0, 2 * Math.PI, !1), 
         this.ctx.fill();
     },
     setClearColor: function(a) {
@@ -181,6 +181,9 @@ Camera = function(a, b) {
     print: function(a, b, c) {
         for (i = 0; i < a.length; i++) this.font.render(a.charAt(i), b + this.font.separation * i, c, this.game.graphics);
         this.renderCounter++;
+    },
+    setColor: function(a) {
+        this.ctx.strokeStyle = a, this.ctx.fillStyle = a;
     },
     setFont: function(a) {
         this.font = a;
@@ -477,20 +480,20 @@ TransitionScene.prototype.render = function() {
         return b;
     };
 }, Timer = function(a, b, c, d, e) {
-    this.time = a, this.isRunning = !1, this.repeat = b, this.onStart = c, this.onTick = d, 
-    this.onFinish = e, this.game, this.count = -1, this.done = !1;
+    this.duration = a, this.isRunning = !1, this.repeat = b, this.onStart = c, this.onTick = d, 
+    this.onFinish = e, this.game, this.time = -1, this.count = 0, this.done = !1;
 }, Timer.prototype = {
     start: function() {
         game.timerManager.add(this), this.reset();
     },
     run: function() {
-        (!this.done || this.repeat) && (-1 == this.count ? (null != this.onStart && this.onStart(), 
-        this.count++) : this.count == this.time ? (null != this.onFinish && this.onFinish(), 
-        this.done = !0, this.isRunning = !1, this.repeat ? this.reset() : game.timerManager.remove(this)) : (null != this.onTick && this.onTick(), 
-        this.count++));
+        (!this.done || this.repeat) && (-1 == this.time ? (null != this.onStart && this.onStart(), 
+        this.time++) : this.time == this.duration ? (null != this.onFinish && this.onFinish(), 
+        this.done = !0, this.isRunning = !1, this.repeat ? (this.count++, this.reset()) : game.timerManager.remove(this)) : (null != this.onTick && this.onTick(), 
+        this.time++));
     },
     reset: function() {
-        this.count = -1, this.done = !1, this.isRunning = !0;
+        this.time = -1, this.done = !1, this.isRunning = !0;
     },
     pause: function() {
         this.isRunning = !1;

@@ -14,12 +14,12 @@ Graphics = function(game){
 
 Graphics.prototype = {
 	point: function(x,y,color){
-		this.ctx.fillStyle=color;
+		this.setColor(color);
 		this.ctx.fillRect(x,y,1,1);
 		this.renderCounter++;
 	},
 	line: function(x0,y0,x1,y1,color){
-		this.ctx.strokeStyle = color;
+		this.setColor(color);
 		this.ctx.beginPath();
     this.ctx.moveTo(x0, y0);
     this.ctx.lineTo(x1, y1);
@@ -30,12 +30,12 @@ Graphics.prototype = {
 		// y = Math.floor(y);
 		// w = Math.floor(w);
 		// h = Math.floor(h);
-		this.ctx.fillStyle=color;
+		this.setColor(color);
 		this.ctx.fillRect(x,y,w,h);
 		this.renderCounter++;
 	},
 	circle: function(x,y,r,color){
-		this.ctx.fillStyle = color;
+		this.setColor(color);
 		this.ctx.beginPath();
     this.ctx.arc(x, y, r, 0, 2 * Math.PI, false);
     this.ctx.fill();
@@ -59,6 +59,11 @@ Graphics.prototype = {
 		//this.ctx.font=size+"px pixel";
 		//this.ctx.fillText(text,x,size+y);
 		this.renderCounter++;
+	},
+	setColor: function(color){
+		this.ctx.strokeStyle = color;
+		this.ctx.fillStyle = color;
+
 	},
 	setFont: function(newFont){
 		this.font = newFont;

@@ -1,12 +1,7 @@
-var game = new Game(640,480); // create a new instance of the game
+var game = new Game(640, 480); // Create a new instance of the game.
 
-var image;
-
-game.init = function(){
-	image = this.loader.loadImage("image.png"); // load image
-
-}
+var image = game.loader.loadImage("image.png"); // Load an image.
 
 game.render = function(){
-	this.graphics.image(image,this.width/2-image.width/2,this.height/2-image.height/2); // draw image
+	game.graphics.image(image, game.width/2-image.width/2, game.height/2-image.height/2); // Draw an image.
 }

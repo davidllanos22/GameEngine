@@ -1,31 +1,37 @@
-var game = new Game(640,480); // create a new instance of the game
+var game = new Game(640, 480); // Create a new instance of the game.
 
-var timer;
+var timer = new Timer(10, true, start, null, null); // Create a new looped timer with a callbacks.
 
-var pos = new Math.Vector2(0,80);
-var speed = new Math.Vector2(1,1);
-
+var rectCount = 0;
+var col = row = 0;
+var max = 33;
 game.init = function(){
-	timer = new Timer(200,false,start,tick,finish);
+  timer.start(); // Start the timer.
 }
+
 game.render = function(){
-	this.graphics.rect(pos.x,pos.y,40,40,"blue");
+  row = 0;
+
+  for(var i = 0; i < rectCount; i++){
+
+    var color = i % 2 == 0 ? 0 : -100;
+    
+    col = i % max;
+
+    var r = col * 10 + color;
+    var g = row * 10 + color;
+    var b = 200 + color;
+
+    game.graphics.rect(col * 20,(row * 20), 20, 20, "rgb("+r+","+g+","+b+")");
+
+    if (col == (max - 1)) {
+      row++;
+    }
+  }
+
+  game.graphics.print("Number of times looped: " + timer.count, 4, 4); // Draw a string.
 }
 
-game.update = function(){
-	if(!timer.isRunning)timer.start();
-}
-
-var start = function(){
-
-}
-
-var tick = function(){
-	pos.add(speed);
-
-	if(pos.x > game.width) pos.x=-40;
-}
-
-var finish = function(){
-	speed.y *= -1;
+function start(){
+  rectCount ++;
 }
