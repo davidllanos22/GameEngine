@@ -46,9 +46,17 @@ Loader.prototype = {
 
 		return audio;
 	},
-	loadData: function(url){
+	loadData: function(url,callback){
 		Utils.logLoad("Loading Data " + url);
-		return 1;
+
+		var req = new XMLHttpRequest();
+		req.onreadystatechange = function(){
+			if (req.readyState == 4) {
+		    callback(req.responseText);
+		  }
+		};
+		req.open("GET", url, true);
+		req.send();
 	},
 	loadAll: function(onFinish){
 		this.onFinish = onFinish;
