@@ -43,7 +43,6 @@ Block.prototype.update = function(){
           gameOver = true;
           faceState = 2;
           this.revealBombs();
-          console.log("BOOM! Game over!");
         }
         else{
           freeCount --;
@@ -73,7 +72,6 @@ Block.prototype.update = function(){
       if(freeCount == 0){
         gameWin = true;
         faceState = 3;
-        console.log("やった！！");
       }
     }
     else 

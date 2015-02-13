@@ -13,7 +13,7 @@ Utils.getBase64Image = function(img) {
     cvs.width = img.width;
     cvs.height = img.height;
  
-    var ctx = canvas.getContext("2d");
+    var ctx = cvs.getContext("2d");
     ctx.drawImage(img, 0, 0);
 
     return cvs.toDataURL("image/png");

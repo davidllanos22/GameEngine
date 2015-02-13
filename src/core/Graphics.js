@@ -53,7 +53,7 @@ Graphics.prototype = {
 
 		//this.ctx.fillStyle=color;
 		for(i = 0; i< text.length; i++){
-			this.font.render(text.charAt(i),x+this.font.separation*i,y,this.game.graphics);	
+			this.font.render(text.charAt(i),x+this.font.separation*i,y,this);	
 		}
 		
 		//this.ctx.font=size+"px pixel";

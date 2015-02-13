@@ -1,4 +1,4 @@
-var game = new Game(320,145*2);
+var game = new Game(480,145*3);
 
 var tiles = game.loader.loadImage("media/tiles.png");
 var faces = game.loader.loadImage("media/faces.png");
@@ -26,7 +26,7 @@ var mainTimer = new Timer(380,true,null,null,function(){
 var font = new Font(numbers,"0123456789",11,13,13);
 
 game.init = function(){
-  game.gameScale = 2;
+  game.gameScale = 3;
   
   game.graphics.setClearColor("#9cb1a8");
   game.graphics.font = font;
@@ -58,16 +58,18 @@ game.update = function(){
 game.render = function(){
   game.graphics.image(overlay,0,0);
   game.graphics.imageSection(faces, 71, 15, faceState, 0, 18, 18, 18, 18);
-  game.graphics.print((timerCount<100?"0": "" )+(timerCount<10?"0": "" )+ timerCount,101,18);
+  game.graphics.print((timerCount<100?"0": "" )+(timerCount<10?"0": "" )+ timerCount,101,18); 
   game.graphics.print((minesCount<100?"0": "" )+(minesCount<10?"0": "" )+ (minesCount< 0? 0:minesCount),21,18);
   
 }
 
 var initGame = function(){
+  if(gameWin) bombsMax += 2;
   gameOver = false;
   gameWin = false;
   faceState = 0;
   timerCount = 0;
+
   minesCount = bombsMax;
   freeCount = (mapWidth * mapHeight) - minesCount;
   blocks = [];
