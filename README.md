@@ -3,11 +3,13 @@
 
 Open Source HTML5 game engine with fast development as a goal.
 
-This project is under the [MIT License](http://opensource.org/licenses/mit-license.php)
+Font made by [Kenney Vleugels](http://www.kenney.nl/).
+
+This project is under the [MIT License](http://opensource.org/licenses/mit-license.php).
 
 ##Features
 * Standalone library, no dependencies.
-* Entity component system.
+* Optional entity component system.
 * Scenes.
 * Timers.
 * Cameras.

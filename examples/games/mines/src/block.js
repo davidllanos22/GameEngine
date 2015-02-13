@@ -34,7 +34,7 @@ Block.prototype.update = function(){
   if(!gameOver && !gameWin){
     if(this.rect.collides(new Rectangle(game.input.mouse.x,game.input.mouse.y,1,1))){
       this.hovered = true;
-      if(game.input.mouseHold[0] && !this.revealed){
+      if(game.input.mouseClick[0] && !this.revealed){
         
         if(this.marked){
           faceState = 1;
