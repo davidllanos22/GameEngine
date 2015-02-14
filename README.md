@@ -3,9 +3,8 @@
 
 Open Source HTML5 game engine with fast development as a goal.
 
-Font made by [Kenney Vleugels](http://www.kenney.nl/assets/kenney-fonts).
-
-This project is under the [MIT License](http://opensource.org/licenses/mit-license.php).
+Font made by <a href="http://www.kenney.nl/assets/kenney-fonts" target="_blank">Kenney Vleugels</a>.
+This project is under the <a href="http://opensource.org/licenses/mit-license.php" target="_blank">MIT License</a>.
 
 ##Features
 * Standalone library, no dependencies.
@@ -34,15 +33,14 @@ Now you are ready to start making games!
 
 ##Development
 
-This project is being developed with [npm](https://www.npmjs.com/) and [grunt](http://gruntjs.com/).
+This project is being developed with <a href="https://www.npmjs.com/" target="_blank">npm</a> and <a href="http://gruntjs.com/" target="_blank">grunt</a>.
 
 Download the repository or clone it:
 
 ```bash
 $ git clone https://github.com/davidllanos22/GameEngine.git
 ```
-Once downloaded you will need to install all the npm packages being used:
-
+Once downloaded you will need to install all the npm packages dependencies:
 
 ```bash
 $ npm install
@@ -64,7 +62,6 @@ $ grunt build
 ```
 
 These commands will also generate the documentation on the docs/ folder.
-
 
 
 ###Testing
