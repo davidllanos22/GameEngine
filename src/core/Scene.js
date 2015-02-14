@@ -4,7 +4,6 @@
 * @param {Game} game - instance of the Game class.
 * @param {String} name - Name of the Scene.
 */
-
 Scene = function(game,name){
 	Entity.call(this,0,0,"Scene");
 	this.name = name;
@@ -15,6 +14,7 @@ Scene = function(game,name){
 
 Scene.prototype = Object.create(Entity.prototype);
 Scene.prototype.constructor = Scene;
+
 Scene.prototype.init = function(){
 }
 Scene.prototype.add = function(child){

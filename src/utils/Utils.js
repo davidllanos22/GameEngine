@@ -19,45 +19,6 @@ Utils.getBase64Image = function(img) {
     return cvs.toDataURL("image/png");
 }
 
-/*
-function extendEntity(ChildClass) {
-  ChildClass.prototype = new Entity();
-  ChildClass.prototype.constructor = ChildClass;
-  Entity.call(ChildClass.prototype,ChildClass.x,ChildClass.y,"Scene");
-
-}
-
-C = function(x,y){
-  this.position.x = x;
-  this.position.y = y;
-}
-
-extendEntity(C);
-
-*/
-
-
-//this log functions sucks.
-Utils.log = function (x){
-   console.log({
-        'message': x,
-        'caller': this, 
-        'stack':arguments.callee.caller.toString()
-    });
-	//console.log("%c [GAME ENGINE - LOG]: " + x ,'color: #1010DD');
-}
-Utils.logLoad = function (x){
-	console.log("%c [GAME ENGINE - LOADER]: " + x ,'color: #10DD10');
-}
-Utils.logErr = function (x){
-	//console.log("%c [GAME ENGINE - ERROR]: "+x,'color: #DD1010');
-	throw new Error("[GAME ENGINE - ERROR]: "+x);
-}
-
-Utils.logObj = function (x){
-	console.log(x);
-}
-
 //this shouldnt be here..
 Utils.loopSound = function(sound){
   sound.loop = true;

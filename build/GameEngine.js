@@ -155,8 +155,8 @@ Camera = function(a, b) {
         this.height = b, this.cvs.width = this.width, this.cvs.height = this.height, this.cvs.style.width = this.width, 
         this.cvs.style.height = this.height;
     },
-    add: function() {
-        this.currentScene.add(e);
+    add: function(a) {
+        this.currentScene.add(a);
     },
     remove: function(a) {
         this.currentScene.remove(a);
@@ -362,8 +362,6 @@ Camera = function(a, b) {
     setCursorImage: function(a) {
         this.setCursorStyle("none"), this.cursorImage = a;
     }
-}, Resource = function() {
-    this.url, this.type;
 }, Loader = function() {
     this.resources = [], this.numResources = 0, this.numResourcesLoaded = 0, this.onFinish, 
     this.loaded = !1;
@@ -373,7 +371,7 @@ Camera = function(a, b) {
         b.src = a + "?" + new Date().getTime();
         var c = this;
         return this.numResources++, b.onload = function() {
-            Utils.logLoad("Image loaded " + a), c.numResourcesLoaded++, c.check();
+            console.log("Image loaded " + a), c.numResourcesLoaded++, c.check();
         }, b;
     },
     loadSound: function(a) {
@@ -381,14 +379,13 @@ Camera = function(a, b) {
         b.src = a + "?" + new Date().getTime();
         var c = this;
         return this.numResources++, b.addEventListener("loadeddata", function() {
-            Utils.logLoad("Audio loaded " + a), c.numResourcesLoaded++, c.check();
+            console.log("Audio loaded " + a), c.numResourcesLoaded++, c.check();
         }, !1), b;
     },
     loadData: function(a, b) {
-        Utils.logLoad("Loading Data " + a);
         var c = new XMLHttpRequest();
         c.onreadystatechange = function() {
-            4 == c.readyState && b(c.responseText);
+            4 == c.readyState && (console.log("Data loaded " + a), b(c.responseText));
         }, c.open("GET", a, !0), c.send();
     },
     loadAll: function(a) {
@@ -536,18 +533,6 @@ TransitionScene.prototype.render = function() {
     b.width = a.width, b.height = a.height;
     var c = b.getContext("2d");
     return c.drawImage(a, 0, 0), b.toDataURL("image/png");
-}, Utils.log = function(a) {
-    console.log({
-        message: a,
-        caller: this,
-        stack: arguments.callee.caller.toString()
-    });
-}, Utils.logLoad = function(a) {
-    console.log("%c [GAME ENGINE - LOADER]: " + a, "color: #10DD10");
-}, Utils.logErr = function(a) {
-    throw new Error("[GAME ENGINE - ERROR]: " + a);
-}, Utils.logObj = function(a) {
-    console.log(a);
 }, Utils.loopSound = function(a) {
     a.loop = !0, a = a.cloneNode(), a.play();
 }, Utils.playSound = function(a) {

@@ -299,7 +299,7 @@ Game.prototype = {
 	* @param {Entity} child - The entity to add.
 	*/
 	add: function(child){
-		this.currentScene.add(e);
+		this.currentScene.add(child);
 	},
 	/**
 	* Removes a child from the current scene.

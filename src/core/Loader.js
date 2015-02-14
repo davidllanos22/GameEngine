@@ -1,7 +1,3 @@
-Resource = function(){
-	this.url;
-	this.type;
-}
 /**
 * Loader class.
 * @constructor
@@ -17,7 +13,6 @@ Loader = function(){
 Loader.prototype = {
 
 	loadImage: function(url){
-		
 		var img = new Image();
 		img.src = url + "?" + new Date().getTime();
 
@@ -25,7 +20,7 @@ Loader.prototype = {
 		this.numResources++;
 
 		img.onload = function () {
-			Utils.logLoad("Image loaded " + url);
+			console.log("Image loaded " + url);
 			self.numResourcesLoaded++;
 			self.check();
 		}	
@@ -39,7 +34,7 @@ Loader.prototype = {
 		this.numResources++;
 
 		audio.addEventListener('loadeddata', function(){
-    	Utils.logLoad("Audio loaded " + url);
+    	console.log("Audio loaded " + url);
 			self.numResourcesLoaded++;
 			self.check();
 		}, false);
@@ -47,11 +42,10 @@ Loader.prototype = {
 		return audio;
 	},
 	loadData: function(url,callback){
-		Utils.logLoad("Loading Data " + url);
-
 		var req = new XMLHttpRequest();
 		req.onreadystatechange = function(){
 			if (req.readyState == 4) {
+				console.log("Data loaded " + url);
 		    callback(req.responseText);
 		  }
 		};
