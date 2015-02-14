@@ -154,6 +154,18 @@ Camera = function(a, b) {
         (0 == a || 0 == b) && Utils.logErr("Width and Height can't be 0."), this.width = a, 
         this.height = b, this.cvs.width = this.width, this.cvs.height = this.height, this.cvs.style.width = this.width, 
         this.cvs.style.height = this.height;
+    },
+    add: function() {
+        this.currentScene.add(e);
+    },
+    remove: function(a) {
+        this.currentScene.remove(a);
+    },
+    removeAll: function() {
+        this.currentScene.removeAll();
+    },
+    changeScene: function(a) {
+        this.currentScene.changeScene(a);
     }
 }, Graphics = function(a) {
     this.game = a, this.ctx = this.game.ctx, this.renderCounter = 0, this.clearColor = "#000000", 
@@ -393,6 +405,10 @@ Scene.prototype.init = function() {}, Scene.prototype.add = function(a) {
     a.game = this.game, this.childs.push(a);
 }, Scene.prototype.remove = function(a) {
     this.childs.splice(this.childs.indexOf(a), 1);
+}, Scene.prototype.removeAll = function() {
+    for (var a = this.childs.length; a > 0; ) this.remove(this.childs[0]), a = this.childs.length;
+}, Scene.prototype.changeScene = function(a) {
+    this.game.currentScene = a;
 }, Scene.prototype.renderInternal = function() {
     this.render();
     for (var a = 0; a < this.childs.length; a++) this.childs[a].render();
@@ -401,8 +417,6 @@ Scene.prototype.init = function() {}, Scene.prototype.add = function(a) {
     this.ySorting && this.childs.sort(function(a, b) {
         return ay = Math.round(a.position.y), by = Math.round(b.position.y), ay == by ? 0 : ay - by;
     }), this.update();
-}, Scene.prototype.changeScene = function(a) {
-    this.game.currentScene = a;
 }, TransitionScene = function(a, b) {
     Scene.call(this, b.game, "Transition Scene");
     var c = this;

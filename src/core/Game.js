@@ -293,5 +293,32 @@ Game.prototype = {
 		this.cvs.height = this.height;
 		this.cvs.style.width = this.width;
 		this.cvs.style.height = this.height;
+	},
+	/**
+	* Adds a child to the current scene.
+	* @param {Entity} child - The entity to add.
+	*/
+	add: function(child){
+		this.currentScene.add(e);
+	},
+	/**
+	* Removes a child from the current scene.
+	* @param {Entity} child - The entity to remove.
+	*/
+	remove: function(child){
+		this.currentScene.remove(child);	
+	},
+	/**
+	* Removes all childs from the current scene.
+	*/
+	removeAll: function(){
+		this.currentScene.removeAll();
+	},
+	/**
+	* Changes to the selected scene.
+	* @param {Scene} scene - The scene to change to.
+	*/
+	changeScene: function(scene){
+		this.currentScene.changeScene(scene);
 	}
 }

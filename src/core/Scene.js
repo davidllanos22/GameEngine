@@ -24,6 +24,18 @@ Scene.prototype.add = function(child){
 Scene.prototype.remove = function(child){
 	this.childs.splice(this.childs.indexOf(child),1);
 }
+Scene.prototype.removeAll = function(){
+	var l = this.childs.length;
+
+  while(l > 0){
+    this.remove(this.childs[0]);
+    l = this.childs.length;
+  }
+}
+Scene.prototype.changeScene = function(scene){
+	this.game.currentScene = scene;
+	//this.game.currentScene.init();
+}
 
 Scene.prototype.renderInternal = function(){
 	this.render();
@@ -49,10 +61,7 @@ Scene.prototype.updateInternal = function(){
 	this.update();
 }
 
-Scene.prototype.changeScene = function(scene){
-	this.game.currentScene = scene;
-	//this.game.currentScene.init();
-}
+
 
 
 /**

@@ -76,12 +76,7 @@ var initGame = function(){
   freeCount = (mapWidth * mapHeight) - minesCount;
   blocks = [];
   
-  var l = game.currentScene.childs.length;
-
-  while(l > 0){
-    game.currentScene.childs[0].destroy();
-    l = game.currentScene.childs.length;
-  }
+  game.currentScene.removeAll();
   
   for(var xx = 0; xx < mapWidth; xx++){
       blocks[xx] = [];
