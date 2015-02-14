@@ -24,6 +24,7 @@ var mainTimer = new Timer(380,true,null,null,function(){
 });
 
 var font = new Font(numbers,"0123456789",11,13,13);
+var fontDefault = new Font();
 
 game.init = function(){
   game.gameScale = 3;
@@ -58,9 +59,9 @@ game.update = function(){
 game.render = function(){
   game.graphics.image(overlay,0,0);
   game.graphics.imageSection(faces, 71, 15, faceState, 0, 18, 18, 18, 18);
+
   game.graphics.print((timerCount<100?"0": "" )+(timerCount<10?"0": "" )+ timerCount,101,18); 
   game.graphics.print((minesCount<100?"0": "" )+(minesCount<10?"0": "" )+ (minesCount< 0? 0:minesCount),21,18);
-  
 }
 
 var initGame = function(){
@@ -101,9 +102,3 @@ var initGame = function(){
   }
   mainTimer.start();
 }
-
-
-
-
-
-

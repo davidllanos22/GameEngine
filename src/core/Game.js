@@ -81,20 +81,26 @@ Game.prototype = {
 		this.input = new Input(this); 
 		this.timerManager = new TimerManager(this);
 
-		var loadingScreen = new Scene(this,"Loading");
+		this.originalWidth = this.width;
+		this.onResizeInternal();
 
-		loadingScreen.render = function(){
-			self.graphics.print("Loading: "+self.loader.numResourcesLoaded+"/"+self.loader.numResources,self.width/2,self.height/2)
+		this.loadingScreen = new Scene(this,"Loading");
+
+		this.loadingScreen.render = function(){
+			self.graphics.setClearColor("#0d4c57");
+			var xx = ( self.width / self.scale / self.gameScale ) / 2-112;
+  		var yy = ( self.height / self.scale / self.gameScale ) / 2;
+			self.graphics.print("Loading: "+self.loader.numResourcesLoaded+" of "+self.loader.numResources,xx,yy)
 		}
-		this.currentScene = loadingScreen;
+		this.currentScene = this.loadingScreen;
 		this.currentCamera = new Camera(this,"Default Camera");
 		
 		this.loader.loadAll(function(){
 			self.currentScene.changeScene(new Scene(self,"Default Scene"));
+			self.graphics.setClearColor("#000");
 			self.init();
 			self.originalWidth = self.width;
 			self.onResizeInternal();
-
 		});
 
 		
@@ -191,7 +197,7 @@ Game.prototype = {
 		
 		if(this.showPauseWhenNotFocused && !this.focused){
 			this.graphics.rect(0,0,this.width,this.height,"rgba(0,0,0,0.8)");
-			this.graphics.print("- PAUSED - ",((this.width/2)-40)/this.scale,((this.height/2)-20)/this.scale,20,"white");
+			this.graphics.print("- PAUSED - ",((this.width*this.gameScale/this.scale)/2-40)/this.scale,((this.height*this.gameScale/this.scale)/2-20)/this.scale);
 		}
 
 		if(this.showFps)this.graphics.print("FPS: "+Math.round(this.fps),8,8,20,"white");

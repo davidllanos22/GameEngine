@@ -1,4 +1,4 @@
-/*! GameEngine 2015-02-13 */
+/*! GameEngine 2015-02-14 */
 Camera = function(a, b) {
     this.game = a, this.name = b, this.position = new Math.Vector2(0, 0), this.size = new Math.Vector2(a.width / 2 / a.gameScale, a.height / 2 / a.gameScale), 
     this.rect = new Rectangle(0, 0, this.size.x, this.size.y), this.angle = 0, this.shaking = !1, 
@@ -90,14 +90,15 @@ Camera = function(a, b) {
     initInternal: function() {
         var a = this;
         this.loader = new Loader(), this.graphics = new Graphics(this), this.input = new Input(this), 
-        this.timerManager = new TimerManager(this);
-        var b = new Scene(this, "Loading");
-        b.render = function() {
-            a.graphics.print("Loading: " + a.loader.numResourcesLoaded + "/" + a.loader.numResources, a.width / 2, a.height / 2);
-        }, this.currentScene = b, this.currentCamera = new Camera(this, "Default Camera"), 
+        this.timerManager = new TimerManager(this), this.originalWidth = this.width, this.onResizeInternal(), 
+        this.loadingScreen = new Scene(this, "Loading"), this.loadingScreen.render = function() {
+            a.graphics.setClearColor("#0d4c57");
+            var b = a.width / a.scale / a.gameScale / 2 - 112, c = a.height / a.scale / a.gameScale / 2;
+            a.graphics.print("Loading: " + a.loader.numResourcesLoaded + " of " + a.loader.numResources, b, c);
+        }, this.currentScene = this.loadingScreen, this.currentCamera = new Camera(this, "Default Camera"), 
         this.loader.loadAll(function() {
-            a.currentScene.changeScene(new Scene(a, "Default Scene")), a.init(), a.originalWidth = a.width, 
-            a.onResizeInternal();
+            a.currentScene.changeScene(new Scene(a, "Default Scene")), a.graphics.setClearColor("#000"), 
+            a.init(), a.originalWidth = a.width, a.onResizeInternal();
         }), this.desiredFps = 60, this.dt = 0, this.start = new Date().getTime(), this.step = 10 / this.desiredFps, 
         this.lastLoop = new Date(), this.loop(this);
     },
@@ -124,7 +125,7 @@ Camera = function(a, b) {
         this.ctx.rotate(this.currentCamera.angle * Math.PI / 180), this.currentScene.renderInternal(), 
         this.loader.loaded && this.render(), this.input.mouseRender(), this.ctx.restore(), 
         this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.width, this.height, "rgba(0,0,0,0.8)"), 
-        this.graphics.print("- PAUSED - ", (this.width / 2 - 40) / this.scale, (this.height / 2 - 20) / this.scale, 20, "white")), 
+        this.graphics.print("- PAUSED - ", (this.width * this.gameScale / this.scale / 2 - 40) / this.scale, (this.height * this.gameScale / this.scale / 2 - 20) / this.scale)), 
         this.showFps && this.graphics.print("FPS: " + Math.round(this.fps), 8, 8, 20, "white");
     },
     init: function() {},

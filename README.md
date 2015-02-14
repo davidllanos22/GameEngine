@@ -3,7 +3,7 @@
 
 Open Source HTML5 game engine with fast development as a goal.
 
-Font made by [Kenney Vleugels](http://www.kenney.nl/).
+Font made by [Kenney Vleugels](http://www.kenney.nl/assets/kenney-fonts).
 
 This project is under the [MIT License](http://opensource.org/licenses/mit-license.php).
 
