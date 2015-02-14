@@ -93,8 +93,8 @@ Camera = function(a, b) {
         this.timerManager = new TimerManager(this), this.originalWidth = this.width, this.onResizeInternal(), 
         this.loadingScreen = new Scene(this, "Loading"), this.loadingScreen.render = function() {
             a.graphics.setClearColor("#0d4c57");
-            var b = a.width / a.scale / a.gameScale / 2 - 112, c = a.height / a.scale / a.gameScale / 2;
-            a.graphics.print("Loading: " + a.loader.numResourcesLoaded + " of " + a.loader.numResources, b, c);
+            var b = "Loading: " + a.loader.numResourcesLoaded + " of " + a.loader.numResources, c = a.width / a.scale / a.gameScale / 2 - 16 * b.length / 2, d = a.height / a.scale / a.gameScale / 2;
+            a.graphics.print(b, c, d);
         }, this.currentScene = this.loadingScreen, this.currentCamera = new Camera(this, "Default Camera"), 
         this.loader.loadAll(function() {
             a.currentScene.changeScene(new Scene(a, "Default Scene")), a.graphics.setClearColor("#000"), 

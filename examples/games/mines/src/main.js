@@ -1,9 +1,10 @@
-var game = new Game(480,145*3);
+var game = new Game(480,435);
 
 var tiles = game.loader.loadImage("media/tiles.png");
 var faces = game.loader.loadImage("media/faces.png");
 var overlay = game.loader.loadImage("media/overlay.png");
 var numbers = game.loader.loadImage("media/numbers.png");
+
 
 var blocks = [];
 var bombsMax = 10;

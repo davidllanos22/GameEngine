@@ -88,9 +88,11 @@ Game.prototype = {
 
 		this.loadingScreen.render = function(){
 			self.graphics.setClearColor("#0d4c57");
-			var xx = ( self.width / self.scale / self.gameScale ) / 2-112;
+			var string = "Loading: "+self.loader.numResourcesLoaded+" of "+self.loader.numResources;
+			var xx = ( self.width / self.scale / self.gameScale ) / 2-(string.length*16)/2;
   		var yy = ( self.height / self.scale / self.gameScale ) / 2;
-			self.graphics.print("Loading: "+self.loader.numResourcesLoaded+" of "+self.loader.numResources,xx,yy)
+  		
+			self.graphics.print(string, xx, yy)
 		}
 		this.currentScene = this.loadingScreen;
 		this.currentCamera = new Camera(this,"Default Camera");
