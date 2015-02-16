@@ -6,45 +6,87 @@
 		*{
 			padding: 0;
 			margin: 0;
+			font-family: 'Open Sans', sans-serif;
+		}
+		body{
+			background-color: #0d4c57;
+			color: #fff;
 		}
 		a{
 			text-decoration: none;
 			color: #86bcff;
 		}
 		a:hover{
-			color: #5881bd;
+			color: #fff;
 		}
 		li{
 			list-style: none;
+			display: inline;
+			margin-left: 40px;
 		}
-		.container{
-			text-align: center;
-			width: 100px;
+		#container{
+			background-color: #000;
+			width: 800px;
+			height: 100%;
+			padding: 20px;
 			margin: 0 auto;
 		}
+		#container > h1 {
+			padding-top: 20px;
+			margin-bottom: 60px;
+			text-align: center;
+		}
+		h3{
+			margin: 20px 0;
+			margin-left: 40px;
+		}
+		#view{
+			margin:50px auto;
+			width:640px;
+		}
+		iframe{
+			width: 640px;
+			height: 480px;
+		}
+
 
 
 	</style>
+	<script type="text/javascript">
+		var frame = null;
+
+		window.onload = function(){
+			frame = document.getElementById("frame");
+		}
+
+		function changeGame(src){
+			frame.src = src;
+		}
+	</script>
 </head>
 <body>
-	<div class="container">
-		<div class="examples">
-			<h3>Basics</h3><br>
+	<div id="container">
+		<h1>Examples for Game Engine</h1>
+		<div id="examples">
+			<h3>Basics</h3>
 			<ul>
-				<li><a href="basics/01">01 - Image</a></li>
-				<li><a href="basics/02">02 - Rectangle</a></li>
-				<li><a href="basics/03">03 - Text</a></li>
-				<li><a href="basics/04">04 - Input</a></li>
-				<li><a href="basics/05">05 - Sound</a></li>
-				<li><a href="basics/06">06 - Timer</a></li>
+				<li><a href="#" onClick="changeGame('basics/01');" >01 - Image</a></li>
+				<li><a href="#" onClick="changeGame('basics/02');" >02 - Rectangle</a></li>
+				<li><a href="#" onClick="changeGame('basics/03');" >03 - Text</a></li>
+				<li><a href="#" onClick="changeGame('basics/04');" >04 - Input</a></li>
+				<li><a href="#" onClick="changeGame('basics/05');" >05 - Sound</a></li>
+				<li><a href="#" onClick="changeGame('basics/06');" >06 - Timer</a></li>
 			</ul>
 			
-			<h3>Games</h3><br>
+			<h3>Games</h3>
 			<ul>
-				<li><a href="games/match-2">01 - Match-2</a></li>
-				<li><a href="games/match-2">01 - Mines</a></li>
+				<li><a href="#" onClick="changeGame('games/match-2');" >01 - Match-2</a></li>
+				<li><a href="#" onClick="changeGame('games/mines');" >02 - Mines</a></li>
 
 			</ul>
+		</div>
+		<div id="view">
+			<iframe id="frame"></iframe>
 		</div>
 	</div>
 </body>
