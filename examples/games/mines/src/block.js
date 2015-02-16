@@ -32,7 +32,7 @@ Block.prototype.render = function(){
 }
 Block.prototype.update = function(){
   if(!gameOver && !gameWin){
-    if(this.rect.collides(new Rectangle(game.input.mouse.x,game.input.mouse.y,1,1))){
+    if(this.rect.collides(new Rectangle(game.input.mouse.x+game.currentCamera.position.x,game.input.mouse.y+game.currentCamera.position.y,1,1))){
       this.hovered = true;
       if(game.input.mouseClick[0] && !this.revealed){
         

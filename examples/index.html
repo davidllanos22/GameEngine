@@ -6,18 +6,20 @@
 		*{
 			padding: 0;
 			margin: 0;
-			font-family: 'Open Sans', sans-serif;
+			
 		}
 		body{
 			background-color: #0d4c57;
 			color: #fff;
+			font-family: 'Open Sans', sans-serif;
 		}
 		a{
 			text-decoration: none;
-			color: #86bcff;
+			color: #0d4c57;
+			font-weight: bolder;
 		}
 		a:hover{
-			color: #fff;
+			color: #888;
 		}
 		li{
 			list-style: none;
@@ -48,21 +50,58 @@
 			width: 640px;
 			height: 480px;
 		}
+		#frame2{
+			background-color: #fff; 
+		}
+		#code{
+			height:500px;
+		}
 
 
 
 	</style>
+	<link rel="stylesheet" type="text/css" href="vendor/codemirror.css">
+	<script src="vendor/codemirror.js"></script>
+	<script src="vendor/javascript.js"></script>
 	<script type="text/javascript">
-		var frame = null;
+		var gameFrame = null;
+		var code = null;
+		var editor = null;
 
 		window.onload = function(){
-			frame = document.getElementById("frame");
+			gameFrame = document.getElementById("gameFrame");
+			code =	document.getElementById("code");
+
+			editor = CodeMirror.fromTextArea(code, {
+    		lineNumbers: true,
+    		mode: 'javascript'
+  		});
+  		editor.setSize();
 		}
 
-		function changeGame(src){
-			frame.src = src;
+		function changeGame(folder,src){
+			gameFrame.src = folder;
+			for(i = 0; i < src.length; i ++){
+				loadData(folder+src[i],function(response){
+					editor.setValue(response);
+				})
+			}
+			
+		}
+
+		function loadData(url,callback){
+				var req = new XMLHttpRequest();
+				req.onreadystatechange = function(){
+					if (req.readyState == 4) {
+						console.log("Data loaded " + url);
+				    callback(req.responseText);
+				  }
+				};
+				req.open("GET", url, true);
+				req.send();
 		}
 	</script>
+	
 </head>
 <body>
 	<div id="container">
@@ -70,23 +109,24 @@
 		<div id="examples">
 			<h3>Basics</h3>
 			<ul>
-				<li><a href="#" onClick="changeGame('basics/01');" >01 - Image</a></li>
-				<li><a href="#" onClick="changeGame('basics/02');" >02 - Rectangle</a></li>
-				<li><a href="#" onClick="changeGame('basics/03');" >03 - Text</a></li>
-				<li><a href="#" onClick="changeGame('basics/04');" >04 - Input</a></li>
-				<li><a href="#" onClick="changeGame('basics/05');" >05 - Sound</a></li>
-				<li><a href="#" onClick="changeGame('basics/06');" >06 - Timer</a></li>
+				<li><a href="#examples" onClick="changeGame('basics/01/', ['main.js']);" >01 - Image</a></li>
+				<li><a href="#examples" onClick="changeGame('basics/02/', ['main.js']);" >02 - Rectangle</a></li>
+				<li><a href="#examples" onClick="changeGame('basics/03/', ['main.js']);" >03 - Text</a></li>
+				<li><a href="#examples" onClick="changeGame('basics/04/', ['main.js']);" >04 - Input</a></li>
+				<li><a href="#examples" onClick="changeGame('basics/05/', ['main.js']);" >05 - Sound</a></li>
+				<li><a href="#examples" onClick="changeGame('basics/06/', ['main.js']);" >06 - Timer</a></li>
 			</ul>
 			
 			<h3>Games</h3>
 			<ul>
-				<li><a href="#" onClick="changeGame('games/match-2');" >01 - Match-2</a></li>
-				<li><a href="#" onClick="changeGame('games/mines');" >02 - Mines</a></li>
+				<li><a href="#examples" onClick="changeGame('games/match-2/', ['main.js']);" >01 - Match-2</a></li>
+				<li><a href="#examples" onClick="changeGame('games/mines/', ['src/main.js','src/block.js']);" >02 - Mines</a></li>
 
 			</ul>
 		</div>
 		<div id="view">
-			<iframe id="frame"></iframe>
+			<iframe id="gameFrame"></iframe>
+			<textarea id="code" src="basics/01/main.js"></textarea>
 		</div>
 	</div>
 </body>

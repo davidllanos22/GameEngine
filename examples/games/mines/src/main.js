@@ -40,6 +40,13 @@ game.init = function(){
   game.graphics.setClearColor("#9cb1a8"); // Change the clear/background color.
   game.graphics.font = font; // Set the font.
 
+  game.fillScreen = true;
+
+  // 
+  var xx = (( game.width / game.scale / game.gameScale ) / 2) - 210/4;
+  var yy = (( game.height / game.scale / game.gameScale ) / 2) - 255/4;
+  game.currentCamera.setPosition(-xx,-yy,false);
+
   reset(); // Start the game.
 }
 
@@ -64,7 +71,7 @@ game.update = function(){
 
   // Reset the game if we click the face icon.
 
-  if(faceRect.collides(new Rectangle(game.input.mouse.x,game.input.mouse.y,1,1))){
+  if(faceRect.collides(new Rectangle(game.input.mouse.x+game.currentCamera.position.x,game.input.mouse.y+game.currentCamera.position.y,1,1))){
     if(game.input.mouseClick[0]){
       reset();
     }
