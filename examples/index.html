@@ -83,7 +83,8 @@
 			gameFrame.src = folder;
 			for(i = 0; i < src.length; i ++){
 				loadData(folder+src[i],function(response){
-					editor.setValue(response);
+					if(i == 1) editor.setValue(response);
+					else if(i > 1 && i != 0) editor.setValue(editor.getValue() + "\n\n" + response);
 				})
 			}
 			
