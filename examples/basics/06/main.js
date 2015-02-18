@@ -5,6 +5,11 @@ var timer = new Timer(10, true, start, null, null); // Create a new looped timer
 var rectCount = 0;
 var col = row = 0;
 var max = 33;
+
+game.init = function(){
+  game.graphics.setClearColor("#0d4c57");
+}
+
 game.init = function(){
   timer.start(); // Start the timer.
 }

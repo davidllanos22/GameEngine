@@ -1,5 +1,8 @@
 var game = new Game(640,480); // Create a new instance of the game.
 
+game.init = function(){
+  game.graphics.setClearColor("#0d4c57");
+}
 
 game.render = function(){
 	game.graphics.rect(game.width/2-150, game.height/2-150, 300, 300, "#7f007f"); // Draw a rectangle.

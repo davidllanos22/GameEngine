@@ -4,6 +4,10 @@ var pos = new Math.Vector2(0, 0); // Position of the rectangle.
 
 var v = 1; // Speed of the rectangle.
 
+game.init = function(){
+  game.graphics.setClearColor("#0d4c57");
+}
+
 game.render = function(){
 	game.graphics.rect(pos.x, pos.y, 50, 50, "red"); // Draw a rectangle.
 	game.graphics.print("Use WASD or direction keys to move", 10, 440, 20); // Draw a string. 
