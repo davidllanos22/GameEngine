@@ -5,7 +5,7 @@ var pos = new Math.Vector2(0, 0); // Position of the rectangle.
 var v = 1; // Speed of the rectangle.
 
 game.init = function(){
-  game.graphics.setClearColor("#0d4c57");
+  game.graphics.setClearColor("#0d4c57"); // Set the background color.
 }
 
 game.render = function(){

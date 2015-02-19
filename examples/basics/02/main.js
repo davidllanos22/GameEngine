@@ -1,7 +1,7 @@
 var game = new Game(640,480); // Create a new instance of the game.
 
 game.init = function(){
-  game.graphics.setClearColor("#0d4c57");
+  game.graphics.setClearColor("#0d4c57"); // Set the background color.
 }
 
 game.render = function(){

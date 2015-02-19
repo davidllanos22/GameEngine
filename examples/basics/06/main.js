@@ -7,7 +7,7 @@ var col = row = 0;
 var max = 33;
 
 game.init = function(){
-  game.graphics.setClearColor("#0d4c57");
+  game.graphics.setClearColor("#0d4c57"); // Set the background color.
 }
 
 game.init = function(){

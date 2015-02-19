@@ -4,7 +4,7 @@ var sound01 = game.loader.loadSound("sound01.wav"); // Load a sound.
 var	sound02 = game.loader.loadSound("sound02.wav"); // Load a sound.
 
 game.init = function(){
-  game.graphics.setClearColor("#0d4c57");
+  game.graphics.setClearColor("#0d4c57"); // Set the background color.
 }
 
 game.render = function(){
