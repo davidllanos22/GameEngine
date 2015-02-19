@@ -25,15 +25,14 @@ Font = function(img,chars,w,h,separation){
   }else{
     this.img = img;  
   }
-}  
 
-Font.prototype.render = function(char,x,y,graphics){
-
-  for(var i = 0; i<this.chars.length;i++){
-    if(this.chars.charAt(i) == char.toUpperCase()){
-      var xx = i % 16;
-      var yy = Math.floor(i/16);
-      graphics.imageSection(this.img,x,y,xx,yy,this.w,this.h,this.w,this.h);
+  this.render = function(char,x,y,graphics){
+    for(var i = 0; i<this.chars.length;i++){
+      if(this.chars.charAt(i) == char.toUpperCase()){
+        var xx = i % 16;
+        var yy = Math.floor(i/16);
+        graphics.imageSection(this.img,x,y,xx,yy,this.w,this.h,this.w,this.h);
+      }
     }
   }
-}
+}  

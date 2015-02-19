@@ -59,7 +59,7 @@ menuScene.render = function(){
   // Background rendering
   for(var i = 0; i<8; i++){
     game.graphics.imageSection(playmat,0,i*60,0,0,60,60,60,60);
-    game.graphics.imageSection(playmat,game.width/game.scale-60,i*60,1,0,60,60,60,60);
+    game.graphics.imageSection(playmat,this.game.getSize().x-60,i*60,1,0,60,60,60,60);
   }
   
   // Title rendering
@@ -85,7 +85,7 @@ gameScene.render = function(){
   // background rendering
   for(var i = 0; i<9; i++){
     game.graphics.imageSection(playmat,0,i*60,0,0,60,60,60,60);
-    game.graphics.imageSection(playmat,game.width/game.scale-60,i*60,1,0,60,60,60,60);
+    game.graphics.imageSection(playmat,this.game.getSize().x-60,i*60,1,0,60,60,60,60);
   }
   game.graphics.print("Moves: "+game.moves,8,4,20,"#5775b9");
 }

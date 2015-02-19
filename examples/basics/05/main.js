@@ -8,10 +8,11 @@ game.init = function(){
 }
 
 game.render = function(){
-  var xx = ( game.width / game.scale / game.gameScale ) / 2;
-  var yy = ( game.height / game.scale / game.gameScale ) / 2;
-	game.graphics.print("Press enter to", xx-105, yy-50, 20); // Draw a string. 
-	game.graphics.print("play a sound", xx-90, yy-20, 20); // Draw a string.
+  var xx = game.getSize().x / 2;
+  var yy = game.getSize().y / 2;
+
+	game.graphics.print("Press enter to", xx - 105, yy - 50, 20); // Draw a string. 
+	game.graphics.print("play a sound", xx - 90, yy - 20, 20); // Draw a string.
 }
 game.update = function(){
 	if(game.input.pressed(Keys.ENTER))

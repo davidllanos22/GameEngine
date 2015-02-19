@@ -36,7 +36,7 @@ var font = new Font(numbers,"0123456789",11,13,13); // Font to display numbers.
 // Init function.
 
 game.init = function(){
-  game.gameScale = 2; // Set the scale.
+  game.setScale(2); // Set the scale.
   game.graphics.setClearColor("#9cb1a8"); // Change the clear/background color.
   game.graphics.font = font; // Set the font.
   game.currentCamera.setPosition(-game.getSize().x / 2 + 80,-game.getSize().y / 2 + 73,false);
@@ -54,14 +54,14 @@ game.update = function(){
 
   if(gameOver){
     faceState = 2; 
-    game.cvs.style.webkitFilter = "blur("+Math.randomRange(0,2)+"px) hue-rotate("+Math.randomRange(0,180)+"deg)";
-    game.cvs.style.filter = "blur("+Math.randomRange(0,2)+"px) hue-rotate("+Math.randomRange(0,180)+"deg)";
+    game.getCanvas().style.webkitFilter = "blur("+Math.randomRange(0,2)+"px) hue-rotate("+Math.randomRange(0,180)+"deg)";
+    game.getCanvas().style.filter = "blur("+Math.randomRange(0,2)+"px) hue-rotate("+Math.randomRange(0,180)+"deg)";
     game.currentCamera.shake(20,Math.randomTo(1));
   }else if(gameWin){
     faceState = 3; 
   }else{
-    game.cvs.style.webkitFilter = "blur(0px) hue-rotate(0deg)";
-    game.cvs.style.filter = "blur(0px) hue-rotate(0deg)";
+    game.getCanvas().style.webkitFilter = "blur(0px) hue-rotate(0deg)";
+    game.getCanvas().style.filter = "blur(0px) hue-rotate(0deg)";
   }
 
   // Reset the game if we click the face icon.

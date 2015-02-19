@@ -4,28 +4,22 @@
 * @param {Game} game - Instance of the Game class.
 */
 Graphics = function(game){
-	this.game = game;
-	this.ctx = this.game.ctx;
 
-	this.renderCounter = 0;
-	this.clearColor = "#000000";
-	this.font = new Font();
-}
-
-Graphics.prototype = {
-	point: function(x,y,color){
+	this.point = function(x,y,color){
 		this.setColor(color);
 		this.ctx.fillRect(x,y,1,1);
 		this.renderCounter++;
-	},
-	line: function(x0,y0,x1,y1,color){
+	}
+
+	this.line = function(x0,y0,x1,y1,color){
 		this.setColor(color);
 		this.ctx.beginPath();
     this.ctx.moveTo(x0, y0);
     this.ctx.lineTo(x1, y1);
     this.ctx.stroke();
-	},
-	rect: function(x,y,w,h,color){
+	}
+
+	this.rect = function(x,y,w,h,color){
 		// x = Math.floor(x);
 		// y = Math.floor(y);
 		// w = Math.floor(w);
@@ -33,21 +27,24 @@ Graphics.prototype = {
 		this.setColor(color);
 		this.ctx.fillRect(x,y,w,h);
 		this.renderCounter++;
-	},
-	circle: function(x,y,r,color){
+	}
+
+	this.circle = function(x,y,r,color){
 		this.setColor(color);
 		this.ctx.beginPath();
     this.ctx.arc(x, y, r, 0, 2 * Math.PI, false);
     this.ctx.fill();
-	},
-	setClearColor: function(color){
+	}
+
+	this.setClearColor = function(color){
 		this.clearColor = color;
-	},
-	clear: function(){
-		this.rect(0,0,this.game.width/this.game.scale,this.game.height/this.game.scale,this.clearColor);
-		
-	},
-	print: function(text,x,y,size,color){
+	}
+
+	this.clear = function(){
+		this.rect(0,0,this.game.getSize().x * this.game.getScale(),this.game.getSize().y * this.game.getScale(),this.clearColor);
+	}
+
+	this.print = function(text,x,y,size,color){
 		//x = Math.floor(x);
 		//y = Math.floor(y);
 
@@ -59,22 +56,26 @@ Graphics.prototype = {
 		//this.ctx.font=size+"px pixel";
 		//this.ctx.fillText(text,x,size+y);
 		this.renderCounter++;
-	},
-	setColor: function(color){
+	}
+
+	this.setColor = function(color){
 		this.ctx.strokeStyle = color;
 		this.ctx.fillStyle = color;
 
-	},
-	setFont: function(newFont){
+	}
+
+	this.setFont = function(newFont){
 		this.font = newFont;
-	},
-	image: function(src,x,y){
+	}
+
+	this.image = function(src,x,y){
 		x = Math.floor(x);
 		y = Math.floor(y);
 		this.ctx.drawImage(src,0,0,src.width,src.height,x,y,src.width,src.height);
 		this.renderCounter++;
-	},
-	imageSection: function(src,x,y,xx,yy,sw,sh,w,h){
+	}
+
+	this.imageSection = function(src,x,y,xx,yy,sw,sh,w,h){
 		x = Math.floor(x);
 		y = Math.floor(y);
 		xx = Math.floor(xx);
@@ -87,8 +88,9 @@ Graphics.prototype = {
 
 		this.ctx.drawImage(src,xx*sw,yy*sh,sw,sh,x,y,w,h);
 		this.renderCounter++;
-	},
-	imageSectionRot: function(src,x,y,xx,yy,sw,sh,w,h,rot){
+	}
+
+	this.imageSectionRot = function(src,x,y,xx,yy,sw,sh,w,h,rot){
 		x = Math.floor(x);
 		y = Math.floor(y);
 		xx = Math.floor(xx);
@@ -107,4 +109,12 @@ Graphics.prototype = {
 		this.ctx.restore();
 		this.renderCounter++;
 	}	
+
+
+	this.game = game;
+	this.ctx = this.game.getContext();
+
+	this.renderCounter = 0;
+	this.clearColor = "#000000";
+	this.font = new Font();
 }

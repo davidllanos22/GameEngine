@@ -3,17 +3,18 @@
 * @constructor
 */
 StateMachine = function(){
-  this.states = [],
-  this.current = "",
-  this.last = "",
+
+
   this.add = function(name){
     if(!this.find(name))this.states.push(name);
     else console.log("There is already an state with that name.");
-  },
+  }
+
   this.remove = function(name){
      if(this.find(name)) this.states.splice(this.states.indexOf(name),1);
      else console.log("No state with that name.");
-  },
+  }
+
   this.set = function(name){
     if(this.find(name)){
       this.last = this.current;
@@ -21,7 +22,8 @@ StateMachine = function(){
     }else{
       console.log("No state with that name.");
     }
-  },
+  }
+
   this.find = function(name){
     var exists = false;
     var i = 0;
@@ -33,4 +35,8 @@ StateMachine = function(){
     }
     return exists;
   }
+
+  this.states = [];
+  this.current = "";
+  this.last = "";
 }

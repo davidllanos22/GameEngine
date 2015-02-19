@@ -96,7 +96,85 @@ Keys = {
 * @param {Game} game - instance of the Game class.
 */
 Input = function(game){
+
+  this.onKeyDown = function(e){
+    this.keyDown[e.keyCode] = true;
+    if(this.keyJustDown[e.keyCode] != 0)this.keyJustDown[e.keyCode] = true;
+    delete this.keyJustReleased[e.keyCode];
+  }
+
+  this.onKeyUp = function(e){
+    if(this.keyJustReleased[e.keyCode] != 0)this.keyJustReleased[e.keyCode] = true;
+    delete this.keyDown[e.keyCode];
+    delete this.keyJustDown[e.keyCode];
+  }
+
+  this.check = function(key){
+    return this.keyDown[key];
+  }
+
+  this.pressed = function(key){
+    if(this.keyJustDown[key]){
+      this.keyJustDown[key] = 0;
+      return true;
+    }
+    else return false;
+  }
+
+  this.released = function(key){
+    if(this.keyJustReleased[key]){
+      this.keyJustReleased[key] = 0;
+      return true;
+    }else 
+      return false;
+  }
+
+  this.onMouseMove = function(input, e){
+    var rect = this.game.getCanvas().getBoundingClientRect();
+    var xx = (e.clientX-rect.left)/(rect.right-rect.left) * this.game.getSize().x;
+    var yy = (e.clientY-rect.top)/(rect.bottom-rect.top) * this.game.getSize().y;
+    this.mouse.x = xx;
+    this.mouse.y = yy;
+  }
+  
+  this.onMouseDown = function(input, e){
+    this.mouseClick[e.button] = true;
+    this.mouseHold[e.button] = true;
+    
+  }
+
+  this.onMouseUp = function(input, e){
+    this.mouseRelease[e.button] = true;
+    this.mouseHold[e.button] = false;
+    
+  }
+
+  this.mouseReset = function(){
+    this.mouseClick = [false,false,false];
+    this.mouseRelease = [false,false,false];
+  }
+
+  this.mouseRender = function(){
+    if(this.cursorImage != null){
+      if(this.cursorImage instanceof Image)
+        this.game.graphics.image(this.input.cursorImage, this.game.input.mouse.x, this.game.input.mouse.y)
+      if(this.game.input.cursorImage instanceof Animation){
+        //this.cursorImage.render(this.input.cursorImage.image, game.input.mouse.x, game.input.mouse.y)
+      }
+    }
+  }
+
+  this.setCursorStyle = function(a){
+    this.game.getCanvas().style.cursor = a;
+  }
+
+  this.setCursorImage = function(a){
+    this.setCursorStyle("none");
+    this.cursorImage = a;
+  }
+
 	this.game = game;
+  this.cvs = game.getCanvas();
 	this.keyDown = {};
 	this.keyJustDown = {};
 	this.keyJustReleased = {};
@@ -111,76 +189,9 @@ Input = function(game){
 
 	var self = this;
 
-	this.game.cvs.onkeydown = function(e){self.onKeyDown(e);}
-	this.game.cvs.onkeyup = function(e){self.onKeyUp(e);}
-	this.game.cvs.onmousemove = function(e){self.onMouseMove(this, e);}
-	this.game.cvs.onmousedown = function(e){self.onMouseDown(this, e);}
-	this.game.cvs.onmouseup = function(e){self.onMouseUp(this, e);}
-}
-
-Input.prototype = {
-
-	onKeyDown: function(e){
-		this.keyDown[e.keyCode] = true;
-		if(this.keyJustDown[e.keyCode] != 0)this.keyJustDown[e.keyCode] = true;
-		delete this.keyJustReleased[e.keyCode];
-	},
-	onKeyUp: function(e){
-		if(this.keyJustReleased[e.keyCode] != 0)this.keyJustReleased[e.keyCode] = true;
-		delete this.keyDown[e.keyCode];
-		delete this.keyJustDown[e.keyCode];
-	},
-
-	check: function(key){
-		return this.keyDown[key];
-	},
-	pressed: function(key){
-		if(this.keyJustDown[key]){
-			this.keyJustDown[key] = 0;
-			return true;
-		}
-		else return false;
-	},
-	released: function(key){
-		if(this.keyJustReleased[key]){
-			this.keyJustReleased[key] = 0;
-			return true;
-		}else 
-			return false;
-	},
-	onMouseMove: function(input, e){
-		var rect = this.game.cvs.getBoundingClientRect();
-		this.mouse.x = Math.round(((e.clientX-rect.left)/(rect.right-rect.left)*this.game.cvs.width)/this.game.scale)/this.game.gameScale;
-		this.mouse.y = Math.round(((e.clientY-rect.top)/(rect.bottom-rect.top)*this.game.cvs.height)/this.game.scale)/this.game.gameScale;
-	},
-	onMouseDown: function(input, e){
-		this.mouseClick[e.button] = true;
-		this.mouseHold[e.button] = true;
-		
-	},
-	onMouseUp: function(input, e){
-		this.mouseRelease[e.button] = true;
-		this.mouseHold[e.button] = false;
-		
-	},
-  mouseReset: function(){
-    this.mouseClick = [false,false,false];
-    this.mouseRelease = [false,false,false];
-  },
-  mouseRender: function(){
-    if(this.cursorImage != null){
-      if(this.cursorImage instanceof Image)
-        this.game.graphics.image(this.input.cursorImage, this.game.input.mouse.x, this.game.input.mouse.y)
-      if(this.game.input.cursorImage instanceof Animation){
-        //this.cursorImage.render(this.input.cursorImage.image, game.input.mouse.x, game.input.mouse.y)
-      }
-    }
-  },
-  setCursorStyle: function(a){
-    this.game.cvs.style.cursor = a;
-  },
-  setCursorImage: function(a){
-    this.setCursorStyle("none");
-    this.cursorImage = a;
-  }
+	this.cvs.onkeydown = function(e){self.onKeyDown(e);}
+	this.cvs.onkeyup = function(e){self.onKeyUp(e);}
+	this.cvs.onmousemove = function(e){self.onMouseMove(this, e);}
+	this.cvs.onmousedown = function(e){self.onMouseDown(this, e);}
+	this.cvs.onmouseup = function(e){self.onMouseUp(this, e);}
 }
