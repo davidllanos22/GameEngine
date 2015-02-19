@@ -89,10 +89,7 @@ Game.prototype = {
 		this.loadingScreen.render = function(){
 			self.graphics.setClearColor("#0d4c57");
 			var string = "Loading: "+self.loader.numResourcesLoaded+" of "+self.loader.numResources;
-			var xx = ( self.width / self.scale / self.gameScale ) / 2-(string.length*16)/2;
-  		var yy = ( self.height / self.scale / self.gameScale ) / 2;
-  		
-			self.graphics.print(string, xx, yy)
+			self.graphics.print(string, self.getSize().x / 2-(string.length*16)/2, self.getSize().y / 2)
 		}
 		this.currentScene = this.loadingScreen;
 		this.currentCamera = new Camera(this,"Default Camera");
@@ -198,8 +195,8 @@ Game.prototype = {
 		this.ctx.restore();
 		
 		if(this.showPauseWhenNotFocused && !this.focused){
-			this.graphics.rect(0,0,this.width,this.height,"rgba(0,0,0,0.8)");
-			this.graphics.print("- PAUSED - ",((this.width*this.gameScale/this.scale)/2-40)/this.scale,((this.height*this.gameScale/this.scale)/2-20)/this.scale);
+			this.graphics.rect(0,0,this.getSize().x,this.getSize().y,"rgba(0,0,0,0.4)");
+			this.graphics.print("- PAUSED - ",this.getSize().x/2-80,this.getSize().y/2-10);
 		}
 
 		if(this.showFps)this.graphics.print("FPS: "+Math.round(this.fps),8,8,20,"white");
@@ -293,6 +290,11 @@ Game.prototype = {
 		this.cvs.height = this.height;
 		this.cvs.style.width = this.width;
 		this.cvs.style.height = this.height;
+	},
+	getSize: function(){
+		var xx = ( this.width / this.scale / this.gameScale );
+  	var yy = ( this.height / this.scale / this.gameScale );
+		return new Math.Vector2(xx, yy);
 	},
 	/**
 	* Adds a child to the current scene.

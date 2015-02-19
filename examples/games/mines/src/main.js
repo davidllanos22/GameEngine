@@ -1,4 +1,4 @@
-var game = new Game(480,435); // Create a new instance of the game.
+var game = new Game(640,480); // Create a new instance of the game.
 
 // Load assets.
 
@@ -36,23 +36,18 @@ var font = new Font(numbers,"0123456789",11,13,13); // Font to display numbers.
 // Init function.
 
 game.init = function(){
-  game.gameScale = 3; // Set the scale.
+  game.gameScale = 2; // Set the scale.
   game.graphics.setClearColor("#9cb1a8"); // Change the clear/background color.
   game.graphics.font = font; // Set the font.
-
-  game.fillScreen = true;
-
-  // 
-  var xx = (( game.width / game.scale / game.gameScale ) / 2) - 210/4;
-  var yy = (( game.height / game.scale / game.gameScale ) / 2) - 255/4;
-  game.currentCamera.setPosition(-xx,-yy,false);
-
+  game.currentCamera.setPosition(-game.getSize().x / 2 + 80,-game.getSize().y / 2 + 73,false);
   reset(); // Start the game.
 }
 
 // Update function.
 
 game.update = function(){
+  
+
   faceState = 0; 
 
   // Make some fancy effects when we loose.

@@ -1,4 +1,4 @@
-/*! GameEngine 2015-02-14 */
+/*! GameEngine 2015-02-19 */
 Camera = function(a, b) {
     this.game = a, this.name = b, this.position = new Math.Vector2(0, 0), this.size = new Math.Vector2(a.width / 2 / a.gameScale, a.height / 2 / a.gameScale), 
     this.rect = new Rectangle(0, 0, this.size.x, this.size.y), this.angle = 0, this.shaking = !1, 
@@ -93,8 +93,8 @@ Camera = function(a, b) {
         this.timerManager = new TimerManager(this), this.originalWidth = this.width, this.onResizeInternal(), 
         this.loadingScreen = new Scene(this, "Loading"), this.loadingScreen.render = function() {
             a.graphics.setClearColor("#0d4c57");
-            var b = "Loading: " + a.loader.numResourcesLoaded + " of " + a.loader.numResources, c = a.width / a.scale / a.gameScale / 2 - 16 * b.length / 2, d = a.height / a.scale / a.gameScale / 2;
-            a.graphics.print(b, c, d);
+            var b = "Loading: " + a.loader.numResourcesLoaded + " of " + a.loader.numResources;
+            a.graphics.print(b, a.getSize().x / 2 - 16 * b.length / 2, a.getSize().y / 2);
         }, this.currentScene = this.loadingScreen, this.currentCamera = new Camera(this, "Default Camera"), 
         this.loader.loadAll(function() {
             a.currentScene.changeScene(new Scene(a, "Default Scene")), a.graphics.setClearColor("#000"), 
@@ -124,8 +124,8 @@ Camera = function(a, b) {
         this.ctx.save(), this.ctx.scale(this.gameScale, this.gameScale), this.ctx.translate(Math.floor(-this.currentCamera.position.x), Math.floor(-this.currentCamera.position.y)), 
         this.ctx.rotate(this.currentCamera.angle * Math.PI / 180), this.currentScene.renderInternal(), 
         this.loader.loaded && this.render(), this.input.mouseRender(), this.ctx.restore(), 
-        this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.width, this.height, "rgba(0,0,0,0.8)"), 
-        this.graphics.print("- PAUSED - ", (this.width * this.gameScale / this.scale / 2 - 40) / this.scale, (this.height * this.gameScale / this.scale / 2 - 20) / this.scale)), 
+        this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.getSize().x, this.getSize().y, "rgba(0,0,0,0.4)"), 
+        this.graphics.print("- PAUSED - ", this.getSize().x / 2 - 80, this.getSize().y / 2 - 10)), 
         this.showFps && this.graphics.print("FPS: " + Math.round(this.fps), 8, 8, 20, "white");
     },
     init: function() {},
@@ -154,6 +154,10 @@ Camera = function(a, b) {
         (0 == a || 0 == b) && Utils.logErr("Width and Height can't be 0."), this.width = a, 
         this.height = b, this.cvs.width = this.width, this.cvs.height = this.height, this.cvs.style.width = this.width, 
         this.cvs.style.height = this.height;
+    },
+    getSize: function() {
+        var a = this.width / this.scale / this.gameScale, b = this.height / this.scale / this.gameScale;
+        return new Math.Vector2(a, b);
     },
     add: function(a) {
         this.currentScene.add(a);
