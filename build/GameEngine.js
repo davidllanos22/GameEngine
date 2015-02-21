@@ -1,4 +1,4 @@
-/*! GameEngine 2015-02-19 */
+/*! GameEngine 2015-02-21 */
 Camera = function(a, b) {
     this.setPosition = function(a, b, c) {
         var d = new Math.Vector2(a, b);
@@ -123,6 +123,8 @@ Camera = function(a, b) {
         return r;
     }, this.fillScreenWithRatio = function(a) {
         return null == a ? A : void (A = a);
+    }, this.fillScreen = function(a) {
+        return null == a ? x : void (x = a);
     }, this.showPauseWhenNotFocused = function(a) {
         return null == a ? o : void (o = a);
     }, this.showFps = function(a) {
@@ -386,13 +388,15 @@ TransitionScene = function(a, b) {
     }), this.fadeIn.start();
 }, TransitionScene.prototype = Object.create(Scene.prototype), TransitionScene.prototype.constructor = TransitionScene, 
 Animation = function(a, b, c, d) {
-    this.render = function(a, b, c, d, e) {
-        game.graphics.imageSection(a, b, c, this.frames[this.actualFrame][0], this.frames[this.actualFrame][1], this.w, this.h, d, e);
-    }, this.frames = d, this.w = b, this.h = c;
+    this.frames = d, this.w = b, this.h = c;
     var e = this;
     this.actualFrame = 0, this.timer = new Timer(a, !0, null, null, function() {
         e.actualFrame == e.frames.length - 1 ? e.actualFrame = 0 : e.actualFrame++;
     }), this.timer.start();
+}, Animation.prototype = {
+    render: function(a, b, c, d, e) {
+        game.graphics.imageSection(a, b, c, this.frames[this.actualFrame][0], this.frames[this.actualFrame][1], this.w, this.h, d, e);
+    }
 }, Math.lerp = function(a, b, c) {
     return (b - a) * c;
 }, Math.randomTo = function(a) {

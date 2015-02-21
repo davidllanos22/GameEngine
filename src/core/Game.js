@@ -232,6 +232,12 @@ Game = function(width,height,element){
 		else
 			return fillScreenWithRatio;
 	}
+	this.fillScreen = function(e){
+		if(e != null)
+			fillScreen = e;
+		else
+			return fillScreen;
+	}
 	this.showPauseWhenNotFocused = function(e){
 		if(e != null)
 			showPauseWhenNotFocused = e;

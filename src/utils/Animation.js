@@ -5,11 +5,6 @@
 * @param {Array} frames - Array of frames represented as [[0,0],[0,1]].
 */
 Animation = function(time, w, h, frames){
-
-  this.render = function(src,x,y,w,h){
-    game.graphics.imageSection(src,x,y,this.frames[this.actualFrame][0],this.frames[this.actualFrame][1],this.w,this.h,w,h);
-  }
-
   this.frames = frames;
   this.w = w;
   this.h = h;
@@ -20,4 +15,10 @@ Animation = function(time, w, h, frames){
     else self.actualFrame ++;
   });
   this.timer.start();
+}
+
+Animation.prototype = {
+  render: function(src,x,y,w,h){
+    game.graphics.imageSection(src,x,y,this.frames[this.actualFrame][0],this.frames[this.actualFrame][1],this.w,this.h,w,h);
+  }
 }
