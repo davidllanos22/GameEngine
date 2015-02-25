@@ -176,10 +176,10 @@ Camera = function(a, b) {
         this.clearColor = a;
     }, this.clear = function() {
         this.rect(0, 0, this.game.getSize().x * this.game.getScale(), this.game.getSize().y * this.game.getScale(), this.clearColor);
-    }, this.print = function(a, b, c, d, e, f) {
-        for (void 0 == f && (f = this.game.getScale()), this.ctx.save(), this.ctx.scale(f, f), 
+    }, this.print = function(a, b, c, d) {
+        for (null != d && (this.ctx.save(), this.ctx.scale(this.game.getScale() - (this.game.getScale() - d), this.game.getScale() - (this.game.getScale() - d))), 
         i = 0; i < a.length; i++) this.font.render(a.charAt(i), b + this.font.separation * i, c, this);
-        this.ctx.restore(), this.renderCounter++;
+        null != d && this.ctx.restore(), this.renderCounter++;
     }, this.setColor = function(a) {
         this.ctx.strokeStyle = a, this.ctx.fillStyle = a;
     }, this.setFont = function(a) {

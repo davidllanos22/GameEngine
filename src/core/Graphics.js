@@ -44,14 +44,16 @@ Graphics = function(game){
 		this.rect(0,0,this.game.getSize().x * this.game.getScale(),this.game.getSize().y * this.game.getScale(),this.clearColor);
 	}
 
-	this.print = function(text,x,y,size,color, scale){
-		if(scale == undefined) scale = this.game.getScale();
-		this.ctx.save();
-		this.ctx.scale(scale, scale);
+	this.print = function(text, x, y, scale){
+		if(scale != null){
+			this.ctx.save();
+			this.ctx.scale(this.game.getScale() - (this.game.getScale() - scale), this.game.getScale() - (this.game.getScale() - scale));
+		}
 		for(i = 0; i< text.length; i++){
 			this.font.render(text.charAt(i),x+this.font.separation*i,y,this);	
 		}
-		this.ctx.restore();
+		if(scale != null)
+			this.ctx.restore();
 		//this.ctx.fillStyle=color;
 		//this.ctx.font=size+"px pixel";
 		//this.ctx.fillText(text,x,size+y);

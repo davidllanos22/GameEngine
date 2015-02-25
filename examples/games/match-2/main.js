@@ -25,9 +25,6 @@ var loop = game.loader.loadSound("media/sounds/loop.mp3");
 game.init = function() {
   game.graphics.setClearColor("#c9003d");
   game.cardSize = 70;
-  game.gameScale =1;
-  game.fillScreen = false;
-  game.fillScreenWithRatio = false;
   game.currentScene.changeScene(menuScene);
   game.showPlay = true;
   game.wave = 0;
@@ -83,11 +80,11 @@ gameScene.init = function(){
 
 gameScene.render = function(){
   // background rendering
-  for(var i = 0; i<9; i++){
-    game.graphics.imageSection(playmat,0,i*60,0,0,60,60,60,60);
-    game.graphics.imageSection(playmat,this.game.getSize().x-60,i*60,1,0,60,60,60,60);
+  for(var i = 0; i < 9; i++){
+    game.graphics.imageSection(playmat, 0, i * 60 , 0, 0, 60, 60, 60, 60);
+    game.graphics.imageSection(playmat, this.game.getSize().x - 60, i * 60, 1, 0, 60, 60, 60, 60);
   }
-  game.graphics.print("Moves: "+game.moves,8,4,20,"#5775b9");
+  game.graphics.print("Moves: " + game.moves, 8, 4, 0.5);
 }
 game.update = function(){
   game.input.setCursorStyle("default");
