@@ -1,4 +1,4 @@
-/*! GameEngine 2015-02-21 */
+/*! GameEngine 2015-02-25 */
 Camera = function(a, b) {
     this.setPosition = function(a, b, c) {
         var d = new Math.Vector2(a, b);
@@ -176,9 +176,10 @@ Camera = function(a, b) {
         this.clearColor = a;
     }, this.clear = function() {
         this.rect(0, 0, this.game.getSize().x * this.game.getScale(), this.game.getSize().y * this.game.getScale(), this.clearColor);
-    }, this.print = function(a, b, c) {
-        for (i = 0; i < a.length; i++) this.font.render(a.charAt(i), b + this.font.separation * i, c, this);
-        this.renderCounter++;
+    }, this.print = function(a, b, c, d, e, f) {
+        for (void 0 == f && (f = this.game.getScale()), this.ctx.save(), this.ctx.scale(f, f), 
+        i = 0; i < a.length; i++) this.font.render(a.charAt(i), b + this.font.separation * i, c, this);
+        this.ctx.restore(), this.renderCounter++;
     }, this.setColor = function(a) {
         this.ctx.strokeStyle = a, this.ctx.fillStyle = a;
     }, this.setFont = function(a) {
