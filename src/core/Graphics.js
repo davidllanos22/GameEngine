@@ -50,7 +50,7 @@ Graphics = function(game){
 			this.ctx.scale(this.game.getScale() - (this.game.getScale() - scale), this.game.getScale() - (this.game.getScale() - scale));
 		}
 		for(i = 0; i< text.length; i++){
-			this.font.render(text.charAt(i),x+this.font.separation*i,y,this);	
+			this.font.render(text.charAt(i), x + this.font.separation * i, y, this);	
 		}
 		if(scale != null)
 			this.ctx.restore();

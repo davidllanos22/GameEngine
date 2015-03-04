@@ -18,7 +18,7 @@ Scene = function(game,name){
 
 	this.removeAll = function(){
 		var l = this.childs.length;
-
+ 
 	  while(l > 0){
 	    this.remove(this.childs[0]);
 	    l = this.childs.length;
@@ -38,18 +38,17 @@ Scene = function(game,name){
 	}
 
 	this.updateInternal = function(){
+		
+		if(this.ySorting) this.childs.sort(function(a,b){
+			var ay = Math.ceil(a.position.y);
+			var by = Math.ceil(b.position.y);
+
+			return ay - by;
+		});
+
 		for(var i = 0; i<this.childs.length; i++){
 			this.childs[i].update();
 		}
-		if(this.ySorting) this.childs.sort(function(a,b){
-			ay = Math.round(a.position.y);
-			by = Math.round(b.position.y);
-
-			if(ay == by){
-				return 0;
-			} 
-			return ay - by;
-		});
 		this.update();
 	}
 

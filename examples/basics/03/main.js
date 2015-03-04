@@ -5,5 +5,5 @@ game.init = function(){
 }
 
 game.render = function(){
-	game.graphics.print("Hello World!", 100, 180, 40); // Draw a string.
+	game.graphics.print("Hello World!", 100, 180); // Draw a string.
 }

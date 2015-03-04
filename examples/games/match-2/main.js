@@ -84,7 +84,7 @@ gameScene.render = function(){
     game.graphics.imageSection(playmat, 0, i * 60 , 0, 0, 60, 60, 60, 60);
     game.graphics.imageSection(playmat, this.game.getSize().x - 60, i * 60, 1, 0, 60, 60, 60, 60);
   }
-  game.graphics.print("Moves: " + game.moves, 8, 4, 0.5);
+  game.graphics.print("Moves: " + game.moves, 8, 4);
 }
 game.update = function(){
   game.input.setCursorStyle("default");
