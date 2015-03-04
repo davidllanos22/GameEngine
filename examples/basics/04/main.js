@@ -10,7 +10,7 @@ game.init = function(){
 
 game.render = function(){
 	game.graphics.rect(pos.x, pos.y, 50, 50, "#FF0066"); // Draw a rectangle.
-	game.graphics.print("Use WASD or direction keys to move", 10, 440, 20); // Draw a string. 
+	game.graphics.print("Use WASD or direction keys to move", 10, 440); // Draw a string. 
 }
 
 game.update = function(){
