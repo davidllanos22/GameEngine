@@ -3,7 +3,7 @@
 Utils = {};
 
 Utils.getScreenShoot = function(game){
-  var data = game.cvs.toDataURL();
+  var data = game.getCanvas().toDataURL();
   window.open(data,'_blank');
   return data;
 }

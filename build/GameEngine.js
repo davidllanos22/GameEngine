@@ -1,4 +1,4 @@
-/*! GameEngine 2015-03-04 */
+/*! GameEngine 2015-03-05 */
 Camera = function(a, b) {
     this.setPosition = function(a, b, c) {
         var d = new Math.Vector2(a, b);
@@ -481,7 +481,7 @@ Animation = function(a, b, c, d) {
         for (var a = 0; a < this.timers.length; a++) this.timers[a].isRunning && this.timers[a].run();
     }, this.game = a, this.timers = [];
 }, Utils = {}, Utils.getScreenShoot = function(a) {
-    var b = a.cvs.toDataURL();
+    var b = a.getCanvas().toDataURL();
     return window.open(b, "_blank"), b;
 }, Utils.getBase64Image = function(a) {
     var b = document.createElement("canvas");
