@@ -2,10 +2,16 @@ var game = new Game(640,480); // Create a new instance of the game.
 
 // Load assets.
 
-var tiles = game.loader.loadImage("media/tiles.png");
-var faces = game.loader.loadImage("media/faces.png");
-var overlay = game.loader.loadImage("media/overlay.png");
-var numbers = game.loader.loadImage("media/numbers.png");
+var tiles = game.loader.loadImage("media/images/tiles.png");
+var faces = game.loader.loadImage("media/images/faces.png");
+var overlay = game.loader.loadImage("media/images/overlay.png");
+var numbers = game.loader.loadImage("media/images/numbers.png");
+
+var bomb = game.loader.loadSound("media/sounds/bomb.wav");
+var bip01 = game.loader.loadSound("media/sounds/bip01.wav");
+var bip02 = game.loader.loadSound("media/sounds/bip02.wav");
+var nextLevel = game.loader.loadSound("media/sounds/nextLevel.wav");
+var resetSound = game.loader.loadSound("media/sounds/reset.wav");
 
 // Game Variables.
 
@@ -68,6 +74,7 @@ game.update = function(){
 
   if(faceRect.collides(new Rectangle(game.input.mouse.x+game.currentCamera.position.x,game.input.mouse.y+game.currentCamera.position.y,1,1))){
     if(game.input.mouseClick[0]){
+      if(!gameWin)Utils.playSound(resetSound);
       reset();
     }
   }
@@ -87,7 +94,10 @@ game.render = function(){
 // Reset function.
 
 var reset = function(){
-  if(gameWin) bombsMax += 2;
+  if(gameWin){
+    bombsMax += 2;
+    Utils.playSound(nextLevel);
+  }
   gameOver = false;
   gameWin = false;
   faceState = 0;

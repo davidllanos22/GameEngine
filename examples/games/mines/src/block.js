@@ -41,10 +41,12 @@ Block.prototype.update = function(){
         }else if(this.isMine){
           this.explode = true;
           gameOver = true;
+          Utils.playSound(bomb);
           faceState = 2;
           this.revealBombs();
         }
         else{
+          Utils.playSound(bip01);
           freeCount --;
           this.revealed = true;
           if(this.checkBlocks() == 0){
@@ -54,6 +56,7 @@ Block.prototype.update = function(){
         }
       }
       if(game.input.mouseClick[2] && !this.revealed){
+        Utils.playSound(bip02);
         if(this.marked){
 
           if(this.markN == 0){
@@ -63,8 +66,7 @@ Block.prototype.update = function(){
             this.markN = 0;
             this.marked = false;
           }
-        }
-        else{
+        }else{
           minesCount --;
           this.marked = true;
         }
