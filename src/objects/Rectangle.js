@@ -35,7 +35,7 @@ Rectangle = function(x,y,w,h){
 	}
 
 	this.copy = function(){
-		return new Rectangle(this.position.x,this.position.y,this.size.x,this.size.x);
+		return new Rectangle(this.position.x, this.position.y, this.size.x, this.size.x);
 	}
 
 	this.position = new Math.Vector2(x,y);

@@ -3,11 +3,12 @@
 * @constructor
 */
 Loader = function(){
+	
+	
 	this.loadImage = function(url){
 		var img = new Image();
 		img.src = url + "?" + new Date().getTime();
-
-		var self = this;
+		
 		this.numResources++;
 
 		img.onload = function () {
@@ -22,7 +23,6 @@ Loader = function(){
 		var audio = new Audio();
 		audio.src = url + "?" + new Date().getTime();
 
-		var self = this;
 		this.numResources++;
 
 		audio.addEventListener('loadeddata', function(){
@@ -56,7 +56,7 @@ Loader = function(){
 			this.onFinish();	
 		}
 	}
-
+	var self = this;
 	this.resources = [];
 	this.numResources = 0;
 	this.numResourcesLoaded = 0;

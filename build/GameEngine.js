@@ -1,4 +1,4 @@
-/*! GameEngine 2015-03-05 */
+/*! GameEngine 2015-03-07 */
 Camera = function(a, b) {
     this.setPosition = function(a, b, c) {
         var d = new Math.Vector2(a, b);
@@ -332,20 +332,16 @@ Camera = function(a, b) {
         b.onMouseUp(this, a);
     };
 }, Loader = function() {
-    this.loadImage = function(a) {
-        var b = new Image();
-        b.src = a + "?" + new Date().getTime();
-        var c = this;
-        return this.numResources++, b.onload = function() {
-            console.log("Image loaded " + a), c.numResourcesLoaded++, c.check();
-        }, b;
-    }, this.loadSound = function(a) {
-        var b = new Audio();
-        b.src = a + "?" + new Date().getTime();
-        var c = this;
-        return this.numResources++, b.addEventListener("loadeddata", function() {
-            console.log("Audio loaded " + a), c.numResourcesLoaded++, c.check();
-        }, !1), b;
+    this.loadImage = function(b) {
+        var c = new Image();
+        return c.src = b + "?" + new Date().getTime(), this.numResources++, c.onload = function() {
+            console.log("Image loaded " + b), a.numResourcesLoaded++, a.check();
+        }, c;
+    }, this.loadSound = function(b) {
+        var c = new Audio();
+        return c.src = b + "?" + new Date().getTime(), this.numResources++, c.addEventListener("loadeddata", function() {
+            console.log("Audio loaded " + b), a.numResourcesLoaded++, a.check();
+        }, !1), c;
     }, this.loadData = function(a, b) {
         var c = new XMLHttpRequest();
         c.onreadystatechange = function() {
@@ -355,10 +351,12 @@ Camera = function(a, b) {
         this.onFinish = a;
     }, this.check = function() {
         this.numResourcesLoaded == this.numResources && (this.loaded = !0, this.onFinish());
-    }, this.resources = [], this.numResources = 0, this.numResourcesLoaded = 0, this.onFinish, 
+    };
+    var a = this;
+    this.resources = [], this.numResources = 0, this.numResourcesLoaded = 0, this.onFinish, 
     this.loaded = !1;
 }, Scene = function(a, b) {
-    this.init = function() {}, this.add = function(a) {
+    this.add = function(a) {
         a.game = this.game, this.childs.push(a);
     }, this.remove = function(a) {
         this.childs.splice(this.childs.indexOf(a), 1);
@@ -407,43 +405,37 @@ Animation = function(a, b, c, d) {
 }, Math.randomRange = function(a, b) {
     return Math.randomTo(b - a) + a;
 }, Math.Vector2 = function(a, b) {
-    this.x = a, this.y = b;
-}, Math.Vector2.prototype = {
-    set: function(a, b) {
+    void 0 == a && void 0 == b && (a = 0, b = 0), this.x = a, this.y = b, this.set = function(a, b) {
         this.x = a, this.y = b;
-    },
-    add: function(a) {
+    }, this.add = function(a) {
         return this.x += a.x, this.y += a.y, this;
-    },
-    addX: function(a) {
+    }, this.addX = function(a) {
         return this.x += a, this;
-    },
-    addY: function(a) {
+    }, this.addY = function(a) {
         return this.y += a, this;
-    },
-    subtract: function(a) {
+    }, this.subtract = function(a) {
         return this.x -= a.x, this.y -= a.y, this;
-    },
-    subtractX: function(a) {
+    }, this.subtractX = function(a) {
         return this.x -= a, this;
-    },
-    subtractY: function(a) {
+    }, this.subtractY = function(a) {
         return this.y -= a, this;
-    },
-    lerp: function(a, b) {
+    }, this.reverse = function() {
+        return this.x = -this.x, this.y = -this.y, this;
+    }, this.dotProduct = function(a) {
+        return this.x * a.x + this.y * a.y;
+    }, this.crossProduct = function(a) {
+        return this.x * a.y - this.y * a.x;
+    }, this.lerp = function(a, b) {
         return this.x += Math.lerp(this.x, a.x, b), this.y += Math.lerp(this.y, a.y, b), 
         this;
-    },
-    angleBetween: function(a) {
+    }, this.angleBetween = function(a) {
         return Math.atan2(a.y - this.y, a.x - this.x);
-    },
-    distance: function(a) {
+    }, this.distance = function(a) {
         var b = this.x - a.x, c = this.y - a.y;
         return Math.sqrt(b * b + c * c);
-    },
-    copy: function() {
+    }, this.copy = function() {
         return new Math.Vector2(this.x, this.y);
-    }
+    };
 }, StateMachine = function() {
     this.add = function(a) {
         this.find(a) ? console.log("There is already an state with that name.") : this.states.push(a);
@@ -488,8 +480,8 @@ Animation = function(a, b, c, d) {
     b.width = a.width, b.height = a.height;
     var c = b.getContext("2d");
     return c.drawImage(a, 0, 0), b.toDataURL("image/png");
-}, Utils.loopSound = function(a) {
-    a.loop = !0, a = a.cloneNode(), a.play();
 }, Utils.playSound = function(a) {
     a = a.cloneNode(), a.play();
+}, Utils.stopSound = function() {}, Utils.loopSound = function(a) {
+    a.loop = !0, a = a.cloneNode(), a.play();
 };

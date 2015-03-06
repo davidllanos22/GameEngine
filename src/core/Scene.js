@@ -5,13 +5,11 @@
 * @param {String} name - Name of the Scene.
 */
 Scene = function(game,name){
-
-	this.init = function(){}
-
 	this.add = function(child){
 		child.game = this.game;
 		this.childs.push(child);
 	}
+
 	this.remove = function(child){
 		this.childs.splice(this.childs.indexOf(child),1);
 	}
@@ -24,6 +22,7 @@ Scene = function(game,name){
 	    l = this.childs.length;
 	  }
 	}
+
 	this.changeScene = function(scene){
 		this.game.currentScene = scene;
 		//this.game.currentScene.init();
@@ -38,7 +37,6 @@ Scene = function(game,name){
 	}
 
 	this.updateInternal = function(){
-		
 		if(this.ySorting) this.childs.sort(function(a,b){
 			var ay = Math.ceil(a.position.y);
 			var by = Math.ceil(b.position.y);
@@ -52,7 +50,7 @@ Scene = function(game,name){
 		this.update();
 	}
 
-	Entity.call(this,0,0,"Scene");
+	Entity.call(this, 0, 0, "Scene");
 	this.name = name;
 	this.game = game;
 	this.ySorting = true;
@@ -64,6 +62,7 @@ Scene.prototype.constructor = Scene;
 
 /**
 * TransitionScene class.
+*
 * @constructor
 * @param {Scene} from - Origen Scene.
 * @param {Scene} to - End Scene.
@@ -85,11 +84,13 @@ TransitionScene = function(from, to){
 	this.fadeOut = new Timer(this.time, false, null, null, function(){
 		this.game.currentScene.changeScene(to);
 	});
+
 	this.fadeIn = new Timer(this.time, false, null, null, function(){
 		self.visible = to;
 		to.init();
 		self.fadeOut.start();
 	});
+	
 	this.fadeIn.start();
 }
 

@@ -131,8 +131,8 @@ Input = function(game){
 
   this.onMouseMove = function(input, e){
     var rect = this.game.getCanvas().getBoundingClientRect();
-    var xx = (e.clientX-rect.left)/(rect.right-rect.left) * this.game.getSize().x;
-    var yy = (e.clientY-rect.top)/(rect.bottom-rect.top) * this.game.getSize().y;
+    var xx = (e.clientX - rect.left) / (rect.right - rect.left) * this.game.getSize().x;
+    var yy = (e.clientY - rect.top) / (rect.bottom - rect.top) * this.game.getSize().y;
     this.mouse.x = xx;
     this.mouse.y = yy;
   }
@@ -150,8 +150,8 @@ Input = function(game){
   }
 
   this.mouseReset = function(){
-    this.mouseClick = [false,false,false];
-    this.mouseRelease = [false,false,false];
+    this.mouseClick = [false, false, false];
+    this.mouseRelease = [false, false, false];
   }
 
   this.mouseRender = function(){
@@ -178,10 +178,10 @@ Input = function(game){
 	this.keyDown = {};
 	this.keyJustDown = {};
 	this.keyJustReleased = {};
-	this.mouse = new Math.Vector2(0,0);
-	this.mouseClick = [false,false,false];
-	this.mouseRelease = [false,false,false];
-	this.mouseHold = [false,false,false];
+	this.mouse = new Math.Vector2(0, 0);
+	this.mouseClick = [false, false, false];
+	this.mouseRelease = [false, false, false];
+	this.mouseHold = [false, false, false];
   this.cursorImage;
 	
 	this.gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads;

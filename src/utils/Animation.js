@@ -10,8 +10,8 @@ Animation = function(time, w, h, frames){
   this.h = h;
   var self = this;
   this.actualFrame = 0;
-  this.timer = new Timer(time,true,null,null,function(){
-    if(self.actualFrame==self.frames.length-1)self.actualFrame = 0;
+  this.timer = new Timer(time, true, null, null, function(){
+    if(self.actualFrame == self.frames.length - 1)self.actualFrame = 0;
     else self.actualFrame ++;
   });
   this.timer.start();
@@ -19,6 +19,6 @@ Animation = function(time, w, h, frames){
 
 Animation.prototype = {
   render: function(src,x,y,w,h){
-    game.graphics.imageSection(src,x,y,this.frames[this.actualFrame][0],this.frames[this.actualFrame][1],this.w,this.h,w,h);
+    game.graphics.imageSection(src, x, y, this.frames[this.actualFrame][0], this.frames[this.actualFrame][1], this.w, this.h, w, h);
   }
 }

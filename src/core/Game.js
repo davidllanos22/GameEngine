@@ -20,15 +20,15 @@ Game = function(width,height,element){
 
 		loadingScreen.render = function(){
 			game.graphics.setClearColor("#0d4c57");
-			var string = "Loading: "+game.loader.numResourcesLoaded+" of "+game.loader.numResources;
-			game.graphics.print(string, game.getSize().x / 2-(string.length*16)/2, game.getSize().y / 2)
+			var string = "Loading: " + game.loader.numResourcesLoaded + " of " + game.loader.numResources;
+			game.graphics.print(string, game.getSize().x / 2 -(string.length * 16) / 2, game.getSize().y / 2)
 		}
 
 		game.currentScene = loadingScreen;
 		game.currentCamera = new Camera(game,"Default Camera");
 		
 		game.loader.onFinish(function(){
-			game.currentScene.changeScene(new Scene(game,"Default Scene"));
+			game.currentScene.changeScene(new Scene(game, "Default Scene"));
 			game.graphics.setClearColor("#000");
 			game.init();
 			originalWidth = size.x;
@@ -55,7 +55,7 @@ Game = function(width,height,element){
 
     //console.log(this.fps)
 
-		dt += Math.min(1,(elapsed)/1000);
+		dt += Math.min(1, (elapsed) / 1000);
 		
 		while(dt > step){
 			dt -= step;
@@ -64,7 +64,7 @@ Game = function(width,height,element){
 
 		renderInternal(game);
 
-		window.requestAnimationFrame(function(){loop(game);});
+		window.requestAnimationFrame(function(){loop(game)});
 	}
 	/**
 	* Internal update function used by the engine. Do not use this function in your game. Use update instead.
@@ -105,8 +105,8 @@ Game = function(width,height,element){
 
 		ctx.scale(gameScale,gameScale);
 		
-		ctx.translate(Math.floor(-game.currentCamera.position.x),Math.floor(-game.currentCamera.position.y));
-		ctx.rotate(game.currentCamera.angle*Math.PI/180);
+		ctx.translate(Math.floor(-game.currentCamera.position.x), Math.floor(-game.currentCamera.position.y));
+		ctx.rotate(game.currentCamera.angle * Math.PI / 180);
 		
 		game.currentScene.renderInternal();
 
@@ -117,11 +117,11 @@ Game = function(width,height,element){
 		ctx.restore();
 		
 		if(showPauseWhenNotFocused && !focused){
-			game.graphics.rect(0,0,game.getSize().x,game.getSize().y,"rgba(0,0,0,0.4)");
-			game.graphics.print("- PAUSED - ",game.getSize().x/2-80,game.getSize().y/2-10);
+			game.graphics.rect(0, 0, game.getSize().x, game.getSize().y, "rgba(0,0,0,0.4)");
+			game.graphics.print("- PAUSED - ", game.getSize().x / 2 - 80, game.getSize().y / 2 - 10);
 		}
 
-		if(showFps)game.graphics.print("FPS: " + fps,8,8);
+		if(showFps)game.graphics.print("FPS: " + fps, 8, 8);
 
 	}
 	/**
@@ -157,7 +157,7 @@ Game = function(width,height,element){
 	* Internal onResize function. Do not use this function in your game. Use onResize instead.
 	*/
 	var onResizeInternal = function(game){
-		if(fillScreen)game.setSize(window.innerWidth,window.innerHeight); // Fill screen if fillScreen = true.
+		if(fillScreen)game.setSize(window.innerWidth, window.innerHeight); // Fill screen if fillScreen = true.
 		else if(fillScreenWithRatio){
 			ratio = size.x / size.y;
 			var nWidth = window.innerWidth / ratio;
@@ -176,7 +176,7 @@ Game = function(width,height,element){
 			}
 			scale = nWidth / originalWidth;
 			scale *= gameScale;
-			game.setSize(Math.floor(nWidth),Math.floor(nHeight));
+			game.setSize(Math.floor(nWidth), Math.floor(nHeight));
 			ctx.scale(scale,scale);
 		}
 		
@@ -296,8 +296,8 @@ Game = function(width,height,element){
 		this.gl = this.cvs.getContext("experimental-webgl") || this.cvs.getContext("webgl");
 		console.log(this.gl);
 
-		this.gl.canvas.width = width*2;
-		this.gl.canvas.height = height*2;
+		this.gl.canvas.width = width * 2;
+		this.gl.canvas.height = height * 2;
 		this.gl.viewport(0, 0, width, height);
 		this.gl.clearColor(1.0, 0.0, 0.0, 1.0);
 		this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -344,11 +344,11 @@ Game = function(width,height,element){
 
 	var self = this;
 
-	cvs.onfocus = function(){onFocusInternal(self);} 
-	cvs.onblur = function(){onBlurInternal(self);} 
-	window.onresize = function(){onResizeInternal(self);}
+	cvs.onfocus = function(){onFocusInternal(self)} 
+	cvs.onblur = function(){onBlurInternal(self)} 
+	window.onresize = function(){onResizeInternal(self)}
 
-	cvs.oncontextmenu = function (e) {e.preventDefault();};
+	cvs.oncontextmenu = function(e){e.preventDefault()};
 
 	initInternal(this); 
 }

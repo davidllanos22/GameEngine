@@ -6,7 +6,7 @@
 * @param {int} size - Size of the sub-image to be cutted.
 * @param {int} separation - Separation between the characters.
 */
-Font = function(img,chars,w,h,separation){
+Font = function(img, chars, w, h, separation){
 
   this.chars = chars || "ABCDEFGHIJKLMNOP"+
                         "QRSTUVWXYZ      "+
@@ -26,12 +26,12 @@ Font = function(img,chars,w,h,separation){
     this.img = img;  
   }
 
-  this.render = function(char,x,y,graphics){
-    for(var i = 0; i<this.chars.length;i++){
+  this.render = function(char, x, y, graphics){
+    for(var i = 0; i < this.chars.length; i++){
       if(this.chars.charAt(i) == char.toUpperCase()){
         var xx = i % 16;
         var yy = Math.floor(i/16);
-        graphics.imageSection(this.img,x,y,xx,yy,this.w,this.h,this.w,this.h);
+        graphics.imageSection(this.img, x, y, xx, yy, this.w, this.h, this.w, this.h);
       }
     }
   }

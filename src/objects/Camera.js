@@ -7,12 +7,13 @@
 Camera = function(game, name){
 
 	this.setPosition = function(x, y, lerp){
-		var newPos = new Math.Vector2(x,y);
+		var newPos = new Math.Vector2(x, y);
 		if(lerp){
-			this.position.lerp(newPos,0.01);
+			this.position.lerp(newPos, 0.01);
 		}else{
 			this.position = newPos;
 		}
+
 		if(this.useLimit){
 			if(this.position.x < 0) this.position.x = 0;
 			if(this.position.y < 0) this.position.y = 0;
@@ -33,8 +34,8 @@ Camera = function(game, name){
 			var originalAngle = this.angle;
 
 			this.shakeTimer = new Timer(time,false,null,function(){ // onTick
-				var r = Math.randomRange(-intensity,intensity);
-				self.setPosition(self.position.x-r,self.position.y-r,false);
+				var r = Math.randomRange(-intensity, intensity);
+				self.setPosition(self.position.x - r, self.position.y - r, false);
 				//self.setRotation(self.angle+r,self.angle+r)
 
 			},function(){ // onFinish
@@ -51,7 +52,7 @@ Camera = function(game, name){
 	this.name = name;
 	this.position = new Math.Vector2(0, 0);
 	this.size = new Math.Vector2((game.width / 2) / game.gameScale, (game.height / 2) / game.gameScale);
-	this.rect = new Rectangle(0,0,this.size.x,this.size.y);
+	this.rect = new Rectangle(0, 0, this.size.x, this.size.y);
 	this.angle = 0;
 	this.shaking = false;
 	this.limit = new Math.Vector2(0,0);
