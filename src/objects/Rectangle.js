@@ -28,8 +28,8 @@ Rectangle = function(x,y,w,h){
 	this.collidesAt = function(rect, xx, yy){
 		var rectMod = this.copy();
   
-	  rectMod.position.x += xx;
-	  rectMod.position.y += yy;
+	  rectMod.position.addX(xx);
+	  rectMod.position.addY(yy);
 	
 	  return rectMod.collides(rect);
 	}

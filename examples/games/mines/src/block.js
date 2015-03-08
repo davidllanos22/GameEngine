@@ -1,7 +1,7 @@
 Block = function(x, y, isMine){
-  Entity.call(this,x,y,"Block");
+  Entity.call(this, x, y, "Block");
   this.isMine = isMine;
-  this.rect = new Rectangle((x+1)*8,(y+6)*8,8,8);
+  this.rect = new Rectangle((x + 1 ) * 8, (y + 6) * 8, 8, 8);
   this.hovered = false;
   this.marked = false;
   this.markN = 0;
