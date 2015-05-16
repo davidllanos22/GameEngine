@@ -88,12 +88,10 @@ Game = function(width,height,element){
 		
 		if(pixelart){
 			ctx.imageSmoothingEnabled = false;
-			ctx.webkitImageSmoothingEnabled = false;
 			ctx.mozImageSmoothingEnabled = false;
 			ctx.msImageSmoothingEnabled = false;
 		}else{
 			ctx.imageSmoothingEnabled = true;
-			ctx.webkitImageSmoothingEnabled = true;
 			ctx.mozImageSmoothingEnabled = true;
 			ctx.msImageSmoothingEnabled = true;
 		}

@@ -1,4 +1,4 @@
-/*! GameEngine 2015-03-07 */
+/*! GameEngine 2015-05-16 */
 Camera = function(a, b) {
     this.setPosition = function(a, b, c) {
         var d = new Math.Vector2(a, b);
@@ -48,7 +48,7 @@ Camera = function(a, b) {
         return null != a ? this.position.x < a.position.x + a.size.x && this.position.x + this.size.x > a.position.x && this.position.y < a.position.y + a.size.y && this.position.y + this.size.y > a.position.y : void 0;
     }, this.collidesAt = function(a, b, c) {
         var d = this.copy();
-        return d.position.x += b, d.position.y += c, d.collides(a);
+        return d.position.addX(b), d.position.addY(c), d.collides(a);
     }, this.copy = function() {
         return new Rectangle(this.position.x, this.position.y, this.size.x, this.size.x);
     }, this.position = new Math.Vector2(a, b), this.size = new Math.Vector2(c, d);
@@ -85,8 +85,7 @@ Camera = function(a, b) {
         a.currentScene.updateInternal(), a.input.gamepad && (a.input.gamepad = navigator.getGamepads && navigator.getGamepads()[0]), 
         a.input.mouseReset());
     }, g = function(a) {
-        C ? (m.imageSmoothingEnabled = !1, m.webkitImageSmoothingEnabled = !1, m.mozImageSmoothingEnabled = !1, 
-        m.msImageSmoothingEnabled = !1) : (m.imageSmoothingEnabled = !0, m.webkitImageSmoothingEnabled = !0, 
+        C ? (m.imageSmoothingEnabled = !1, m.mozImageSmoothingEnabled = !1, m.msImageSmoothingEnabled = !1) : (m.imageSmoothingEnabled = !0, 
         m.mozImageSmoothingEnabled = !0, m.msImageSmoothingEnabled = !0), a.graphics.clear(), 
         a.graphics.renderCounter = 0, m.save(), m.scale(y, y), m.translate(Math.floor(-a.currentCamera.position.x), Math.floor(-a.currentCamera.position.y)), 
         m.rotate(a.currentCamera.angle * Math.PI / 180), a.currentScene.renderInternal(), 
@@ -395,8 +394,8 @@ Animation = function(a, b, c, d) {
         e.actualFrame == e.frames.length - 1 ? e.actualFrame = 0 : e.actualFrame++;
     }), this.timer.start();
 }, Animation.prototype = {
-    render: function(a, b, c, d, e) {
-        game.graphics.imageSection(a, b, c, this.frames[this.actualFrame][0], this.frames[this.actualFrame][1], this.w, this.h, d, e);
+    render: function(a, b, c, d, e, f) {
+        game.graphics.imageSectionRot(a, b, c, this.frames[this.actualFrame][0], this.frames[this.actualFrame][1], this.w, this.h, d, e, f);
     }
 }, Math.lerp = function(a, b, c) {
     return (b - a) * c;
