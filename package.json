@@ -15,10 +15,10 @@
   "homepage": "https://github.com/davidllanos22/GameEngine",
   "devDependencies": {
     "grunt": "*",
+    "grunt-babel": "*",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-connect": "*",
     "grunt-contrib-copy": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-jsdoc": "*"
+    "grunt-contrib-watch": "*"
   }
 }

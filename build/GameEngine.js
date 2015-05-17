@@ -1,4 +1,4 @@
-/*! GameEngine 2015-05-16 */
+/*! GameEngine 2015-05-18 */
 Camera = function(a, b) {
     this.setPosition = function(a, b, c) {
         var d = new Math.Vector2(a, b);
