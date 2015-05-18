@@ -18,6 +18,8 @@ module.exports = function(grunt) {
           "build/files/objects/Rectangle.js" : "src/objects/Rectangle.js",
           "build/files/utils/Animation.js" : "src/utils/Animation.js",
           "build/files/utils/Math.js" : "src/utils/Math.js",
+          "build/files/utils/Shader.js" : "src/utils/Shader.js",
+          "build/files/utils/ShaderList.js" : "src/utils/ShaderList.js",
           "build/files/utils/Timer.js" : "src/utils/Timer.js",
           "build/files/utils/TimerManager.js" : "src/utils/TimerManager.js",
           "build/files/utils/Utils.js" : "src/utils/Utils.js"

@@ -48,7 +48,6 @@ game.init = function() {
 
   Utils.loopSound(loop);
 }
-
 // Menu Scene behavior
 
 menuScene.render = function(){

@@ -64,6 +64,14 @@ function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
 }
 
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}
+
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+}
+
 var _createClass = function() {
     function defineProperties(target, props) {
         for (var i = 0; i < props.length; i++) {
@@ -243,24 +251,23 @@ var _createClass = function() {
 }(), Game = function() {
     function Game(width, height, element) {
         var _this = this;
-        _classCallCheck(this, Game);
-        var useGL = !1;
-        this.cvs = document.createElement("canvas"), this.ctx = null, this.cvs.tabIndex = 1, 
-        this.cvs.style.outline = "none", useGL ? (this.gl = this.cvs.getContext("experimental-webgl") || this.cvs.getContext("webgl"), 
-        console.log(this.gl), this.gl.canvas.width = 2 * width, this.gl.canvas.height = 2 * height, 
-        this.gl.viewport(0, 0, width, height), this.gl.clearColor(1, 0, 0, 1), this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)) : this.ctx = this.cvs.getContext("2d"), 
-        void 0 != element ? element.appendChild(this.cvs) : document.body.appendChild(this.cvs), 
+        _classCallCheck(this, Game), this.cvs = document.createElement("canvas"), this.ctx = this.cvs.getContext("2d"), 
+        this.cvs.tabIndex = 1, this.cvs.style.outline = "none", this.glcvs = document.createElement("canvas"), 
+        this.gl = this.glcvs.getContext("webgl"), this.cvs.style.display = "none", this.glcvs.style.display = "inline", 
+        this.gl.viewport(0, 0, width, height), this.gl.clearColor(0, 0, 0, 1), this.gl.enable(this.gl.DEPTH_TEST), 
+        this.gl.depthFunc(this.gl.LEQUAL), void 0 != element ? (element.appendChild(this.cvs), 
+        element.appendChild(this.glcvs)) : (document.body.appendChild(this.cvs), document.body.appendChild(this.glcvs)), 
         this.focused = !0, this.showPauseWhenNotFocused = !1, this.focused && this.cvs.focus(), 
         this.showFps = !1, this.desiredFps = 60, this.fps = 0, this.dt = 0, this.start = 0, 
         this.step = 10 / this.desiredFps, this.lastLoop = 0, this.size = new Math.Vector2(width, height), 
         this.fillScreen = !1, this.gameScale = 1, this.scale = 1, this.fillScreenWithRatio = !1, 
-        this.ratio = 0, this.pixelart = !0, this.setSize(width, height), this.cvs.onfocus = function() {
+        this.ratio = 0, this.pixelart = !0, this.setSize(width, height), this.glcvs.onfocus = function() {
             _this.onFocusInternal();
-        }, this.cvs.onblur = function() {
+        }, this.glcvs.onblur = function() {
             _this.onBlurInternal();
         }, window.onresize = function() {
             _this.onResizeInternal();
-        }, this.cvs.oncontextmenu = function(e) {
+        }, this.glcvs.oncontextmenu = function(e) {
             e.preventDefault();
         }, this.initInternal();
     }
@@ -279,7 +286,14 @@ var _createClass = function() {
             this.loader.onFinish(function() {
                 _this2.currentScene.changeScene(new Scene(_this2, "Default Scene")), _this2.graphics.setClearColor("#000"), 
                 _this2.init(), _this2.originalWidth = _this2.size.x, _this2.onResizeInternal();
-            }), this.start = new Date().getTime(), this.lastLoop = new Date(), this.loop();
+            });
+            var v = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              uniform float offset;\n              uniform float dX;\n              uniform float dY;\n              varying vec2 f_texcoord;\n\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                texcoord.x += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dX;\n                texcoord.y += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dY;\n                gl_FragColor = texture2D(u_image, texcoord);\n              }\n            ";
+            this.graphics.shaderList.add("wave", new Shader(this.gl, v, f));
+            var v2 = " \n              attribute vec2 a_position;\n              varying vec2 f_texcoord;\n               \n              void main(void){\n\n                gl_Position = vec4(a_position * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (a_position + 1.0) / 2.0;\n              }\n            ", f2 = " \n              \n            precision highp float;\n            uniform vec2 u_resolution;\n            uniform float time;\n\n            uniform sampler2D u_image;\n\n            varying vec2 f_texcoord;\n\n            uniform float speed;\n            uniform vec3 tint;\n            uniform float lineWidth;\n            \n            float rand(vec2 co){\n                return fract(sin(dot(co.xy , vec2(12.9898, 78.233))) * 43758.5453);\n            }\n\n            void main(void){\n                vec2 pixel = gl_FragCoord.xy / u_resolution;\n                \n                vec3 col = texture2D(u_image, f_texcoord).xyz;\n                \n                // start with the source texture and misalign the rays it a bit\n                 // col.r = texture2D(u_image, vec2(pixel.x + 0.002, - pixel.y)).r;\n                 // col.g = texture2D(u_image, vec2(pixel.x + 0.001, - pixel.y)).g;\n                 // col.b = texture2D(u_image, vec2(pixel.x - 0.002, - pixel.y)).b;\n\n                // contrast curve\n                col = clamp(col * 0.5 + 0.5 * col * col * 1.2, 0.0, 1.0);\n\n                //vignette\n                col *= 0.6 + 0.4 * 16.0 * pixel.x * pixel.y * (1.0 - pixel.x) * (1.0 - pixel.y);\n\n                //color tint\n                //col *= vec3(0.9, 1.0, 0.8);\n\n                col *= tint;\n\n                //scanline (last 2 constants are crawl speed and size)\n                col *= 0.8 + 0.2 * sin(speed * time + pixel.y * lineWidth);\n\n                //flickering (semi-randomized)\n                col *= 1.0 - 0.07 * rand(vec2(time, tan(time)));\n\n                gl_FragColor = vec4(col, 1.0);\n            }\n            ";
+            this.graphics.shaderList.add("crt", new Shader(this.gl, v2, f2));
+            var v3 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f3 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                gl_FragColor = texture2D(u_image, texcoord);\n              }\n            ";
+            this.graphics.shaderList.add("normal", new Shader(this.gl, v3, f3)), this.start = new Date().getTime(), 
+            this.lastLoop = new Date(), this.loop();
         }
     }, {
         key: "loop",
@@ -309,7 +323,8 @@ var _createClass = function() {
             this.ctx.rotate(this.currentCamera.angle * Math.PI / 180), this.currentScene.renderInternal(), 
             this.loader.loaded && this.render(), this.ctx.restore(), this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.getSize().x, this.getSize().y, "rgba(0,0,0,0.4)"), 
             this.graphics.print("- PAUSED - ", this.getSize().x / 2 - 80, this.getSize().y / 2 - 10)), 
-            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8);
+            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8), "NORMAL" == this.graphics.effect && this.graphics.normal(), 
+            "WAVE" == this.graphics.effect && this.graphics.wave(50, 100), "CRT" == this.graphics.effect && this.graphics.crt();
         }
     }, {
         key: "init",
@@ -357,7 +372,8 @@ var _createClass = function() {
         value: function(width, height) {
             (0 == width || 0 == height) && Utils.logErr("Width and Height can't be 0."), this.size.x = width, 
             this.size.y = height, this.cvs.width = width, this.cvs.height = height, this.cvs.style.width = width, 
-            this.cvs.style.height = height;
+            this.cvs.style.height = height, this.glcvs.width = width, this.glcvs.height = height, 
+            this.glcvs.style.width = width, this.glcvs.style.height = height;
         }
     }, {
         key: "setScale",
@@ -474,7 +490,8 @@ var _createClass = function() {
 }(), Graphics = function() {
     function Graphics(game) {
         _classCallCheck(this, Graphics), this.game = game, this.ctx = this.game.getContext(), 
-        this.renderCounter = 0, this.clearColor = "#000000", this.font = new Font();
+        this.renderCounter = 0, this.clearColor = "#000000", this.font = new Font(), this.shaderList = new ShaderList(), 
+        this.canvasTexture = this.createTexture(), this.effect = "WAVE";
     }
     return _createClass(Graphics, [ {
         key: "point",
@@ -507,6 +524,8 @@ var _createClass = function() {
         key: "clear",
         value: function() {
             this.rect(0, 0, this.game.getSize().x * this.game.getScale(), this.game.getSize().y * this.game.getScale(), this.clearColor);
+            var gl = this.game.gl;
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         }
     }, {
         key: "print",
@@ -545,6 +564,76 @@ var _createClass = function() {
             w = Math.floor(w), h = Math.floor(h), 0 > w && (w = 0), 0 > h && (h = 0), this.ctx.save(), 
             this.ctx.translate(x + w / 2, y + h / 2), this.ctx.rotate(rot), this.ctx.drawImage(src, xx * sw, yy * sh, sw, sh, -w / 2, -h / 2, w, h), 
             this.ctx.restore(), this.renderCounter++;
+        }
+    }, {
+        key: "wave",
+        value: function(dX, dY) {
+            {
+                var gl = this.game.gl, shader = this.shaderList.get("wave");
+                shader.getProgram();
+            }
+            shader.enable(), shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y), 
+            shader.setUniform1f("dX", dX || 1e4), shader.setUniform1f("dY", dY || 1e4), shader.setUniform1f("offset", this.c), 
+            gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1 ]), gl.STATIC_DRAW), 
+            gl.enableVertexAttribArray(shader.getAttribute("a_position")), gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, !1, 0, 0), 
+            this.c < 2 * Math.PI ? this.c += .1 : this.c = 0, this.updateTexture(this.canvasTexture, this.game.cvs), 
+            shader.setUniform1i("u_image", this.canvasTexture), gl.drawArrays(gl.TRIANGLES, 0, 6), 
+            gl.bindTexture(gl.TEXTURE_2D, null);
+        }
+    }, {
+        key: "normal",
+        value: function() {
+            {
+                var gl = this.game.gl, shader = this.shaderList.get("normal");
+                shader.getProgram();
+            }
+            shader.enable(), shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y), 
+            gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1 ]), gl.STATIC_DRAW), 
+            gl.enableVertexAttribArray(shader.getAttribute("a_position")), gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, !1, 0, 0), 
+            this.c < 2 * Math.PI ? this.c += .1 : this.c = 0, this.updateTexture(this.canvasTexture, this.game.cvs), 
+            shader.setUniform1i("u_image", this.canvasTexture), gl.drawArrays(gl.TRIANGLES, 0, 6), 
+            gl.bindTexture(gl.TEXTURE_2D, null);
+        }
+    }, {
+        key: "crt",
+        value: function(tint, speed, lineWidth) {
+            {
+                var gl = this.game.gl, shader = this.shaderList.get("crt");
+                shader.getProgram();
+            }
+            shader.enable(), shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y), 
+            shader.setUniform1f("speed", 0 == speed ? 0 : speed || 10), shader.setUniform3f("tint", Graphics.hexToRgb(tint).r / 255 || 1.8, Graphics.hexToRgb(tint).g / 255 || 1.8, Graphics.hexToRgb(tint).b / 255 || 1.8), 
+            shader.setUniform1f("lineWidth", 0 == lineWidth ? 0 : lineWidth || 640), shader.setUniform1f("time", this.c), 
+            gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ -1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, 1 ]), gl.STATIC_DRAW), 
+            gl.enableVertexAttribArray(shader.getAttribute("a_position")), gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, !1, 0, 0), 
+            this.c < 2 * Math.PI ? this.c += .05 : this.c = 0, this.updateTexture(this.canvasTexture, this.game.cvs), 
+            shader.setUniform1i("u_image", this.canvasTexture), gl.drawArrays(gl.TRIANGLES, 0, 6), 
+            gl.bindTexture(gl.TEXTURE_2D, null);
+        }
+    }, {
+        key: "createTexture",
+        value: function() {
+            var gl = this.game.gl, texture = gl.createTexture();
+            return gl.bindTexture(gl.TEXTURE_2D, texture), gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE), 
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE), gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST), 
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST), texture;
+        }
+    }, {
+        key: "updateTexture",
+        value: function(texture, src) {
+            var gl = this.game.gl;
+            gl.bindTexture(gl.TEXTURE_2D, texture), gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src || null);
+        }
+    } ], [ {
+        key: "hexToRgb",
+        value: function(hex) {
+            var r = (16711680 & hex) >> 16, g = (65280 & hex) >> 8, b = 255 & hex, a = 1;
+            return {
+                r: r,
+                g: g,
+                b: b,
+                a: a
+            };
         }
     } ]), Graphics;
 }(), _createClass = function() {
@@ -657,7 +746,7 @@ var _createClass = function() {
 }, Input = function() {
     function Input(game) {
         var _this = this;
-        _classCallCheck(this, Input), this.game = game, this.cvs = game.cvs, this.keyC = {}, 
+        _classCallCheck(this, Input), this.game = game, this.cvs = game.glcvs, this.keyC = {}, 
         this.keyP = {}, this.keyR = {}, this.m = new Math.Vector2(0, 0), this.mp = [ !1, !1, !1 ], 
         this.mr = [ !1, !1, !1 ], this.mc = [ !1, !1, !1 ], this.mouseWheel = 0, this.cvs.onkeydown = function(e) {
             _this.onkeyDown(e);
@@ -992,6 +1081,149 @@ Math.lerp = function(from, to, time) {
 };
 
 var _createClass = function() {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+            "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }
+    return function(Constructor, protoProps, staticProps) {
+        return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+        Constructor;
+    };
+}(), Shader = function() {
+    function Shader(gl, vertex, fragment) {
+        _classCallCheck(this, Shader), this.gl = gl, this.vertex = vertex, this.fragment = fragment, 
+        this.vertexShader = this.createShader(gl.VERTEX_SHADER, this.vertex), this.fragmentShader = this.createShader(gl.FRAGMENT_SHADER, this.fragment), 
+        this.program = this.createProgram(this.vertexShader, this.fragmentShader), this.buffers = new Map(), 
+        this.locations = new Map();
+    }
+    return _createClass(Shader, [ {
+        key: "getProgram",
+        value: function() {
+            return this.program;
+        }
+    }, {
+        key: "printDebug",
+        value: function() {
+            console.log(this.gl.getShaderInfoLog(this.vertexShader)), console.log(this.gl.getShaderInfoLog(this.fragmentShader)), 
+            console.log(this.gl.getProgramParameter(this.program, this.gl.LINK_STATUS)), console.log(this.gl.getProgramInfoLog(this.program));
+        }
+    }, {
+        key: "enable",
+        value: function() {
+            this.gl.useProgram(this.program);
+        }
+    }, {
+        key: "disable",
+        value: function() {
+            this.gl.useProgram(null);
+        }
+    }, {
+        key: "createShader",
+        value: function(type, source) {
+            var shader = this.gl.createShader(type);
+            return this.gl.shaderSource(shader, source), this.gl.compileShader(shader), shader;
+        }
+    }, {
+        key: "createProgram",
+        value: function(vs, fs) {
+            var program = this.gl.createProgram();
+            return this.gl.attachShader(program, vs), this.gl.attachShader(program, fs), this.gl.linkProgram(program), 
+            program;
+        }
+    }, {
+        key: "getBuffer",
+        value: function(name) {
+            return this.buffers.has(name) ? this.buffers.get(name) : (this.buffers.set(name, this.gl.createBuffer()), 
+            this.getBuffer(name));
+        }
+    }, {
+        key: "getUniform",
+        value: function(name) {
+            if (this.locations.has(name)) return this.locations.get(name);
+            this.enable();
+            var a = this.gl.getUniformLocation(this.program, name);
+            return this.locations.set(name, a), this.locations.get(name);
+        }
+    }, {
+        key: "getAttribute",
+        value: function(name) {
+            if (this.locations.has(name)) return this.locations.get(name);
+            this.enable();
+            var a = this.gl.getAttribLocation(this.program, name);
+            return this.locations.set(name, a), this.locations.get(name);
+        }
+    }, {
+        key: "setUniform1i",
+        value: function(name, a) {
+            this.gl.uniform1i(this.getUniform(name), a);
+        }
+    }, {
+        key: "setUniform1f",
+        value: function(name, a) {
+            this.gl.uniform1f(this.getUniform(name), a);
+        }
+    }, {
+        key: "setUniform2f",
+        value: function(name, a, b) {
+            this.gl.uniform2f(this.getUniform(name), a, b);
+        }
+    }, {
+        key: "setUniform3f",
+        value: function(name, a, b, c) {
+            this.gl.uniform3f(this.getUniform(name), a, b, c);
+        }
+    }, {
+        key: "setUniform4f",
+        value: function(name, a, b, c, d) {
+            this.gl.uniform4f(this.getUniform(name), a, b, c, d);
+        }
+    }, {
+        key: "setUniformMatrix4f",
+        value: function(name, a) {
+            this.gl.uniformMatrix4fv(this.getUniform(name), !1, a);
+        }
+    } ]), Shader;
+}(), _createClass = function() {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+            "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }
+    return function(Constructor, protoProps, staticProps) {
+        return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+        Constructor;
+    };
+}(), ShaderList = function() {
+    function ShaderList() {
+        _classCallCheck(this, ShaderList), this.shaders = new Map();
+    }
+    return _createClass(ShaderList, [ {
+        key: "getList",
+        value: function() {
+            return this.shaders;
+        }
+    }, {
+        key: "add",
+        value: function(name, program) {
+            return this.shaders.set(name, program), this.get(name);
+        }
+    }, {
+        key: "get",
+        value: function(name) {
+            return this.shaders.get(name);
+        }
+    }, {
+        key: "delete",
+        value: function(name) {
+            return this.shaders["delete"](name);
+        }
+    } ]), ShaderList;
+}(), _createClass = function() {
     function defineProperties(target, props) {
         for (var i = 0; i < props.length; i++) {
             var descriptor = props[i];

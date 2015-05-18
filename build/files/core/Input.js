@@ -122,7 +122,7 @@ var Input = (function () {
     _classCallCheck(this, Input);
 
     this.game = game;
-    this.cvs = game.cvs;
+    this.cvs = game.glcvs;
     this.keyC = {};
     this.keyP = {};
     this.keyR = {};

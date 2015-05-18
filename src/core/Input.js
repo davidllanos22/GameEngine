@@ -111,7 +111,7 @@ var Mouse = {
 class Input{
   constructor(game){
     this.game = game;
-    this.cvs = game.cvs;
+    this.cvs = game.glcvs;
     this.keyC = {};
     this.keyP = {};
     this.keyR = {};

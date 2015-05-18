@@ -7,30 +7,28 @@
 */
 class Game{
 	constructor(width, height, element){
-		var useGL = false;
-
 		this.cvs = document.createElement("canvas");
-		this.ctx = null;
+		this.ctx = this.cvs.getContext("2d");
 		this.cvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
 		this.cvs.style.outline = "none";
-
-		if(!useGL)this.ctx = this.cvs.getContext("2d");
-		else {
-			this.gl = this.cvs.getContext("experimental-webgl") || this.cvs.getContext("webgl");
-			console.log(this.gl);
-
-			this.gl.canvas.width = width * 2;
-			this.gl.canvas.height = height * 2;
-			this.gl.viewport(0, 0, width, height);
-			this.gl.clearColor(1.0, 0.0, 0.0, 1.0);
-			this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-
-		}
+		
+		this.glcvs = document.createElement("canvas");
+		this.gl = this.glcvs.getContext("webgl");
+		
+		this.cvs.style.display = "none";
+		this.glcvs.style.display = "inline";
+		
+		this.gl.viewport(0, 0, width, height);
+		this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    this.gl.enable(this.gl.DEPTH_TEST);
+    this.gl.depthFunc(this.gl.LEQUAL);
 
 		if(element != undefined){
 			element.appendChild(this.cvs);
+			element.appendChild(this.glcvs);
 		}else{
 			document.body.appendChild(this.cvs);
+			document.body.appendChild(this.glcvs);
 		}
 
 		// Focus
@@ -65,11 +63,11 @@ class Game{
 
 		// Events
 
-		this.cvs.onfocus = ()=>{this.onFocusInternal()} 
-		this.cvs.onblur = ()=>{this.onBlurInternal()} 
+		this.glcvs.onfocus = ()=>{this.onFocusInternal()} 
+		this.glcvs.onblur = ()=>{this.onBlurInternal()} 
 		window.onresize = ()=>{this.onResizeInternal()}
 
-		this.cvs.oncontextmenu = (e)=>{e.preventDefault()};
+		this.glcvs.oncontextmenu = (e)=>{e.preventDefault()};
 
 		this.initInternal(); 
 	}
@@ -102,6 +100,135 @@ class Game{
 
 			this.onResizeInternal();
 		});
+
+		var v = ` 
+              attribute vec2 a_position;
+              uniform sampler2D u_image;
+              varying vec2 f_texcoord;
+
+              uniform vec2 u_resolution;
+               
+              void main(void){
+                vec2 zeroToOne = a_position;
+                vec2 zeroToTwo = zeroToOne * 2.0;
+                vec2 clipSpace = zeroToTwo - 1.0;
+
+                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
+                f_texcoord = (clipSpace + 1.0) / 2.0;
+              }
+            `;
+
+    var f = ` 
+              precision mediump float;
+              uniform sampler2D u_image;
+              uniform float offset;
+              uniform float dX;
+              uniform float dY;
+              varying vec2 f_texcoord;
+
+
+              void main(void){
+                vec2 texcoord = f_texcoord;
+                texcoord.x += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dX;
+                texcoord.y += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dY;
+                gl_FragColor = texture2D(u_image, texcoord);
+              }
+            `;
+
+		this.graphics.shaderList.add("wave", new Shader(this.gl, v, f));
+
+		var v2 = ` 
+              attribute vec2 a_position;
+              varying vec2 f_texcoord;
+               
+              void main(void){
+
+                gl_Position = vec4(a_position * vec2(1, -1), 0.0, 1.0);
+                f_texcoord = (a_position + 1.0) / 2.0;
+              }
+            `;
+
+    var f2 = ` 
+              
+            precision highp float;
+            uniform vec2 u_resolution;
+            uniform float time;
+
+            uniform sampler2D u_image;
+
+            varying vec2 f_texcoord;
+
+            uniform float speed;
+            uniform vec3 tint;
+            uniform float lineWidth;
+            
+            float rand(vec2 co){
+                return fract(sin(dot(co.xy , vec2(12.9898, 78.233))) * 43758.5453);
+            }
+
+            void main(void){
+                vec2 pixel = gl_FragCoord.xy / u_resolution;
+                
+                vec3 col = texture2D(u_image, f_texcoord).xyz;
+                
+                // start with the source texture and misalign the rays it a bit
+                 // col.r = texture2D(u_image, vec2(pixel.x + 0.002, - pixel.y)).r;
+                 // col.g = texture2D(u_image, vec2(pixel.x + 0.001, - pixel.y)).g;
+                 // col.b = texture2D(u_image, vec2(pixel.x - 0.002, - pixel.y)).b;
+
+                // contrast curve
+                col = clamp(col * 0.5 + 0.5 * col * col * 1.2, 0.0, 1.0);
+
+                //vignette
+                col *= 0.6 + 0.4 * 16.0 * pixel.x * pixel.y * (1.0 - pixel.x) * (1.0 - pixel.y);
+
+                //color tint
+                //col *= vec3(0.9, 1.0, 0.8);
+
+                col *= tint;
+
+                //scanline (last 2 constants are crawl speed and size)
+                col *= 0.8 + 0.2 * sin(speed * time + pixel.y * lineWidth);
+
+                //flickering (semi-randomized)
+                col *= 1.0 - 0.07 * rand(vec2(time, tan(time)));
+
+                gl_FragColor = vec4(col, 1.0);
+            }
+            `;
+
+            
+		this.graphics.shaderList.add("crt", new Shader(this.gl, v2, f2));
+
+		var v3 = ` 
+              attribute vec2 a_position;
+              uniform sampler2D u_image;
+              varying vec2 f_texcoord;
+
+              uniform vec2 u_resolution;
+               
+              void main(void){
+                vec2 zeroToOne = a_position;
+                vec2 zeroToTwo = zeroToOne * 2.0;
+                vec2 clipSpace = zeroToTwo - 1.0;
+
+                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
+                f_texcoord = (clipSpace + 1.0) / 2.0;
+              }
+            `;
+
+    var f3 = ` 
+              precision mediump float;
+              uniform sampler2D u_image;
+              varying vec2 f_texcoord;
+
+              void main(void){
+                vec2 texcoord = f_texcoord;
+                gl_FragColor = texture2D(u_image, texcoord);
+              }
+            `;
+
+    this.graphics.shaderList.add("normal", new Shader(this.gl, v3, f3));
 
 		this.start = new Date().getTime();
 		this.lastLoop = new Date();
@@ -187,6 +314,16 @@ class Game{
 		}
 
 		if(this.showFps)this.graphics.print("FPS: " + this.fps, 8, 8);
+
+		if(this.graphics.effect == "NORMAL"){
+			this.graphics.normal();
+		}
+		if(this.graphics.effect == "WAVE"){
+			this.graphics.wave(50,100);
+		}
+		if(this.graphics.effect == "CRT"){
+			this.graphics.crt();
+		}
 
 	}
 	/**
@@ -275,8 +412,15 @@ class Game{
 		this.cvs.height = height;
 		this.cvs.style.width = width;
 		this.cvs.style.height = height;
+
+		this.glcvs.width = width;
+		this.glcvs.height = height;
+		this.glcvs.style.width = width;
+		this.glcvs.style.height = height;
+
 	}
 
+	
 	setScale(s){
 		this.gameScale = s > 0 ? s : 0;
 	}

@@ -17,28 +17,28 @@ var Game = (function () {
 
 		_classCallCheck(this, Game);
 
-		var useGL = false;
-
 		this.cvs = document.createElement("canvas");
-		this.ctx = null;
+		this.ctx = this.cvs.getContext("2d");
 		this.cvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
 		this.cvs.style.outline = "none";
 
-		if (!useGL) this.ctx = this.cvs.getContext("2d");else {
-			this.gl = this.cvs.getContext("experimental-webgl") || this.cvs.getContext("webgl");
-			console.log(this.gl);
+		this.glcvs = document.createElement("canvas");
+		this.gl = this.glcvs.getContext("webgl");
 
-			this.gl.canvas.width = width * 2;
-			this.gl.canvas.height = height * 2;
-			this.gl.viewport(0, 0, width, height);
-			this.gl.clearColor(1, 0, 0, 1);
-			this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-		}
+		this.cvs.style.display = "none";
+		this.glcvs.style.display = "inline";
+
+		this.gl.viewport(0, 0, width, height);
+		this.gl.clearColor(0, 0, 0, 1);
+		this.gl.enable(this.gl.DEPTH_TEST);
+		this.gl.depthFunc(this.gl.LEQUAL);
 
 		if (element != undefined) {
 			element.appendChild(this.cvs);
+			element.appendChild(this.glcvs);
 		} else {
 			document.body.appendChild(this.cvs);
+			document.body.appendChild(this.glcvs);
 		}
 
 		// Focus
@@ -72,17 +72,17 @@ var Game = (function () {
 
 		// Events
 
-		this.cvs.onfocus = function () {
+		this.glcvs.onfocus = function () {
 			_this.onFocusInternal();
 		};
-		this.cvs.onblur = function () {
+		this.glcvs.onblur = function () {
 			_this.onBlurInternal();
 		};
 		window.onresize = function () {
 			_this.onResizeInternal();
 		};
 
-		this.cvs.oncontextmenu = function (e) {
+		this.glcvs.oncontextmenu = function (e) {
 			e.preventDefault();
 		};
 
@@ -122,6 +122,24 @@ var Game = (function () {
 
 				_this2.onResizeInternal();
 			});
+
+			var v = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ";
+
+			var f = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              uniform float offset;\n              uniform float dX;\n              uniform float dY;\n              varying vec2 f_texcoord;\n\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                texcoord.x += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dX;\n                texcoord.y += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dY;\n                gl_FragColor = texture2D(u_image, texcoord);\n              }\n            ";
+
+			this.graphics.shaderList.add("wave", new Shader(this.gl, v, f));
+
+			var v2 = " \n              attribute vec2 a_position;\n              varying vec2 f_texcoord;\n               \n              void main(void){\n\n                gl_Position = vec4(a_position * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (a_position + 1.0) / 2.0;\n              }\n            ";
+
+			var f2 = " \n              \n            precision highp float;\n            uniform vec2 u_resolution;\n            uniform float time;\n\n            uniform sampler2D u_image;\n\n            varying vec2 f_texcoord;\n\n            uniform float speed;\n            uniform vec3 tint;\n            uniform float lineWidth;\n            \n            float rand(vec2 co){\n                return fract(sin(dot(co.xy , vec2(12.9898, 78.233))) * 43758.5453);\n            }\n\n            void main(void){\n                vec2 pixel = gl_FragCoord.xy / u_resolution;\n                \n                vec3 col = texture2D(u_image, f_texcoord).xyz;\n                \n                // start with the source texture and misalign the rays it a bit\n                 // col.r = texture2D(u_image, vec2(pixel.x + 0.002, - pixel.y)).r;\n                 // col.g = texture2D(u_image, vec2(pixel.x + 0.001, - pixel.y)).g;\n                 // col.b = texture2D(u_image, vec2(pixel.x - 0.002, - pixel.y)).b;\n\n                // contrast curve\n                col = clamp(col * 0.5 + 0.5 * col * col * 1.2, 0.0, 1.0);\n\n                //vignette\n                col *= 0.6 + 0.4 * 16.0 * pixel.x * pixel.y * (1.0 - pixel.x) * (1.0 - pixel.y);\n\n                //color tint\n                //col *= vec3(0.9, 1.0, 0.8);\n\n                col *= tint;\n\n                //scanline (last 2 constants are crawl speed and size)\n                col *= 0.8 + 0.2 * sin(speed * time + pixel.y * lineWidth);\n\n                //flickering (semi-randomized)\n                col *= 1.0 - 0.07 * rand(vec2(time, tan(time)));\n\n                gl_FragColor = vec4(col, 1.0);\n            }\n            ";
+
+			this.graphics.shaderList.add("crt", new Shader(this.gl, v2, f2));
+
+			var v3 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ";
+
+			var f3 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                gl_FragColor = texture2D(u_image, texcoord);\n              }\n            ";
+
+			this.graphics.shaderList.add("normal", new Shader(this.gl, v3, f3));
 
 			this.start = new Date().getTime();
 			this.lastLoop = new Date();
@@ -220,6 +238,16 @@ var Game = (function () {
 			}
 
 			if (this.showFps) this.graphics.print("FPS: " + this.fps, 8, 8);
+
+			if (this.graphics.effect == "NORMAL") {
+				this.graphics.normal();
+			}
+			if (this.graphics.effect == "WAVE") {
+				this.graphics.wave(50, 100);
+			}
+			if (this.graphics.effect == "CRT") {
+				this.graphics.crt();
+			}
 		}
 	}, {
 		key: "init",
@@ -331,6 +359,11 @@ var Game = (function () {
 			this.cvs.height = height;
 			this.cvs.style.width = width;
 			this.cvs.style.height = height;
+
+			this.glcvs.width = width;
+			this.glcvs.height = height;
+			this.glcvs.style.width = width;
+			this.glcvs.style.height = height;
 		}
 	}, {
 		key: "setScale",
