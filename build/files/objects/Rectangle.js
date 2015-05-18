@@ -8,34 +8,51 @@
 */
 "use strict";
 
-Rectangle = function (x, y, w, h) {
-	this.setPosition = function (x, y) {
-		this.position.x = x;
-		this.position.y = y;
-	};
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	this.setSize = function (w, h) {
-		this.size.x = w;
-		this.size.y = h;
-	};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	this.collides = function (rect) {
-		if (rect != null) return this.position.x < rect.position.x + rect.size.x && this.position.x + this.size.x > rect.position.x && this.position.y < rect.position.y + rect.size.y && this.position.y + this.size.y > rect.position.y;
-	};
+var Rectangle = (function () {
+	function Rectangle(x, y, w, h) {
+		_classCallCheck(this, Rectangle);
 
-	this.collidesAt = function (rect, xx, yy) {
-		var rectMod = this.copy();
+		this.position = new Math.Vector2(x, y);
+		this.size = new Math.Vector2(w, h);
+	}
 
-		rectMod.position.addX(xx);
-		rectMod.position.addY(yy);
+	_createClass(Rectangle, [{
+		key: "setPosition",
+		value: function setPosition(x, y) {
+			this.position.x = x;
+			this.position.y = y;
+		}
+	}, {
+		key: "setSize",
+		value: function setSize(w, h) {
+			this.size.x = w;
+			this.size.y = h;
+		}
+	}, {
+		key: "collides",
+		value: function collides(rect) {
+			if (rect != null) return this.position.x < rect.position.x + rect.size.x && this.position.x + this.size.x > rect.position.x && this.position.y < rect.position.y + rect.size.y && this.position.y + this.size.y > rect.position.y;
+		}
+	}, {
+		key: "collidesAt",
+		value: function collidesAt(rect, xx, yy) {
+			var rectMod = this.copy();
 
-		return rectMod.collides(rect);
-	};
+			rectMod.position.addX(xx);
+			rectMod.position.addY(yy);
 
-	this.copy = function () {
-		return new Rectangle(this.position.x, this.position.y, this.size.x, this.size.x);
-	};
+			return rectMod.collides(rect);
+		}
+	}, {
+		key: "copy",
+		value: function copy() {
+			return new Rectangle(this.position.x, this.position.y, this.size.x, this.size.x);
+		}
+	}]);
 
-	this.position = new Math.Vector2(x, y);
-	this.size = new Math.Vector2(w, h);
-};
+	return Rectangle;
+})();

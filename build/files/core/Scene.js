@@ -6,61 +6,82 @@
 */
 "use strict";
 
-Scene = function (game, name) {
-	this.add = function (child) {
-		child.game = this.game;
-		this.childs.push(child);
-	};
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	this.remove = function (child) {
-		this.childs.splice(this.childs.indexOf(child), 1);
-	};
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-	this.removeAll = function () {
-		var l = this.childs.length;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-		while (l > 0) {
-			this.remove(this.childs[0]);
-			l = this.childs.length;
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var Scene = (function (_Entity) {
+	function Scene(game, name) {
+		_classCallCheck(this, Scene);
+
+		_get(Object.getPrototypeOf(Scene.prototype), "constructor", this).call(this, 0, 0, "Scene");
+		this.name = name;
+		this.game = game;
+		this.ySorting = true;
+		this.init();
+	}
+
+	_inherits(Scene, _Entity);
+
+	_createClass(Scene, [{
+		key: "add",
+		value: function add(child) {
+			child.game = this.game;
+			this.childs.push(child);
 		}
-	};
-
-	this.changeScene = function (scene) {
-		this.game.currentScene = scene;
-		//this.game.currentScene.init();
-	};
-
-	this.renderInternal = function () {
-		this.render();
-		for (var i = 0; i < this.childs.length; i++) {
-			//if(this.childs[i].onScreen())
-			this.childs[i].render();
+	}, {
+		key: "remove",
+		value: function remove(child) {
+			this.childs.splice(this.childs.indexOf(child), 1);
 		}
-	};
+	}, {
+		key: "removeAll",
+		value: function removeAll() {
+			var l = this.childs.length;
 
-	this.updateInternal = function () {
-		if (this.ySorting) this.childs.sort(function (a, b) {
-			var ay = Math.ceil(a.position.y);
-			var by = Math.ceil(b.position.y);
-
-			return ay - by;
-		});
-
-		for (var i = 0; i < this.childs.length; i++) {
-			this.childs[i].update();
+			while (l > 0) {
+				this.remove(this.childs[0]);
+				l = this.childs.length;
+			}
 		}
-		this.update();
-	};
+	}, {
+		key: "changeScene",
+		value: function changeScene(scene) {
+			this.game.currentScene = scene;
+			//this.game.currentScene.init();
+		}
+	}, {
+		key: "renderInternal",
+		value: function renderInternal() {
+			this.render();
+			for (var i = 0; i < this.childs.length; i++) {
+				//if(this.childs[i].onScreen())
+				this.childs[i].render();
+			}
+		}
+	}, {
+		key: "updateInternal",
+		value: function updateInternal() {
+			if (this.ySorting) this.childs.sort(function (a, b) {
+				var ay = Math.ceil(a.position.y);
+				var by = Math.ceil(b.position.y);
 
-	Entity.call(this, 0, 0, "Scene");
-	this.name = name;
-	this.game = game;
-	this.ySorting = true;
-	this.init();
-};
+				return ay - by;
+			});
 
-Scene.prototype = Object.create(Entity.prototype);
-Scene.prototype.constructor = Scene;
+			for (var i = 0; i < this.childs.length; i++) {
+				this.childs[i].update();
+			}
+			this.update();
+		}
+	}]);
+
+	return Scene;
+})(Entity);
 
 /**
 * TransitionScene class.
@@ -69,31 +90,41 @@ Scene.prototype.constructor = Scene;
 * @param {Scene} from - Origen Scene.
 * @param {Scene} to - End Scene.
 */
-TransitionScene = function (from, to) {
-	this.render = function () {
-		this.visible.renderInternal();
-		if (this.fadeIn.isRunning) this.game.graphics.rect(0, 0, this.game.getSize().x, this.game.getSize().y, "rgba(255,255,255," + this.fadeIn.time / this.time + ")");else this.game.graphics.rect(0, 0, this.game.getSize().x, this.game.getSize().y, "rgba(255,255,255," + (this.time - this.fadeOut.time) / this.time + ")");
-	};
 
-	Scene.call(this, to.game, "Transition Scene");
-	var self = this;
-	this.from = from;
-	this.to = to;
-	this.visible = this.from;
-	this.time = 300;
+var TransitionScene = (function (_Scene) {
+	function TransitionScene(game, from, to) {
+		var _this = this;
 
-	this.fadeOut = new Timer(this.time, false, null, null, function () {
-		this.game.currentScene.changeScene(to);
-	});
+		_classCallCheck(this, TransitionScene);
 
-	this.fadeIn = new Timer(this.time, false, null, null, function () {
-		self.visible = to;
-		to.init();
-		self.fadeOut.start();
-	});
+		_get(Object.getPrototypeOf(TransitionScene.prototype), "constructor", this).call(this, game, "Transition");
+		this.from = from;
+		this.to = to;
+		this.visible = this.from;
+		this.time = 300;
 
-	this.fadeIn.start();
-};
+		this.fadeOut = new Timer(game, this.time, false, null, null, function () {
+			_this.game.currentScene.changeScene(_this.to);
+		});
 
-TransitionScene.prototype = Object.create(Scene.prototype);
-TransitionScene.prototype.constructor = TransitionScene;
+		this.fadeIn = new Timer(game, this.time, false, null, null, function () {
+			_this.visible = to;
+			_this.to.init();
+			_this.fadeOut.start();
+		});
+
+		this.fadeIn.start();
+	}
+
+	_inherits(TransitionScene, _Scene);
+
+	_createClass(TransitionScene, [{
+		key: "render",
+		value: function render() {
+			this.visible.renderInternal();
+			if (this.fadeIn.isRunning) this.game.graphics.rect(0, 0, this.game.getSize().x, this.game.getSize().y, "rgba(255,255,255," + this.fadeIn.time / this.time + ")");else this.game.graphics.rect(0, 0, this.game.getSize().x, this.game.getSize().y, "rgba(255,255,255," + (this.time - this.fadeOut.time) / this.time + ")");
+		}
+	}]);
+
+	return TransitionScene;
+})(Scene);

@@ -1,6 +1,6 @@
 var game = new Game(640, 480); // Create a new instance of the game.
 
-var timer = new Timer(10, true, start, null, null); // Create a new looped timer with a callbacks.
+var timer = new Timer(game, 10, true, start, null, null); // Create a new looped timer with a callbacks.
 
 var rectCount = 0;
 var col = row = 0;

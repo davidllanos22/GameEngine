@@ -3,24 +3,26 @@
 * @constructor
 * @param {Game} game - Instance of the Game class.
 */
-TimerManager = function(game){
-  this.add = function(timer){
+class TimerManager{
+  constructor(game){
+    this.game = game;
+    this.timers = [];
+  }
+
+  add(timer){
     if(this.timers.indexOf(timer) == -1){
       timer.game = game;
       this.timers.push(timer);
     }
   }
 
-  this.remove = function(timer){
+  remove(timer){
     this.timers.splice(this.timers.indexOf(timer),1);
   }
   
-  this.update = function(){
+  update(){
     for(var i = 0; i<this.timers.length; i++){
       if(this.timers[i].isRunning)this.timers[i].run();
     }
   }
-
-  this.game = game;
-  this.timers = [];
 }

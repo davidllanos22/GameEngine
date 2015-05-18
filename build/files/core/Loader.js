@@ -4,63 +4,83 @@
 */
 "use strict";
 
-Loader = function () {
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	this.loadImage = function (url) {
-		var img = new Image();
-		img.src = url + "?" + new Date().getTime();
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-		this.numResources++;
+var Loader = (function () {
+	function Loader() {
+		_classCallCheck(this, Loader);
 
-		img.onload = function () {
-			console.log("Image loaded " + url);
-			self.numResourcesLoaded++;
-			self.check();
-		};
-		return img;
-	};
+		this.resources = [];
+		this.numResources = 0;
+		this.numResourcesLoaded = 0;
+		this.onFinish;
+		this.loaded = false;
+	}
 
-	this.loadSound = function (url) {
-		var audio = new Audio();
-		audio.src = url + "?" + new Date().getTime();
+	_createClass(Loader, [{
+		key: "loadImage",
+		value: function loadImage(url) {
+			var _this = this;
 
-		this.numResources++;
+			var img = new Image();
+			img.src = url + "?" + new Date().getTime();
 
-		audio.addEventListener("loadeddata", function () {
-			console.log("Audio loaded " + url);
-			self.numResourcesLoaded++;
-			self.check();
-		}, false);
+			this.numResources++;
 
-		return audio;
-	};
-
-	this.loadData = function (url, callback) {
-		var req = new XMLHttpRequest();
-		req.onreadystatechange = function () {
-			if (req.readyState == 4) {
-				console.log("Data loaded " + url);
-				callback(req.responseText);
-			}
-		};
-		req.open("GET", url, true);
-		req.send();
-	};
-
-	this.onFinish = function (onFinish) {
-		this.onFinish = onFinish;
-	};
-
-	this.check = function () {
-		if (this.numResourcesLoaded == this.numResources) {
-			this.loaded = true;
-			this.onFinish();
+			img.onload = function () {
+				console.log("Image loaded " + url);
+				_this.numResourcesLoaded++;
+				_this.check();
+			};
+			return img;
 		}
-	};
-	var self = this;
-	this.resources = [];
-	this.numResources = 0;
-	this.numResourcesLoaded = 0;
-	this.onFinish;
-	this.loaded = false;
-};
+	}, {
+		key: "loadSound",
+		value: function loadSound(url) {
+			var _this2 = this;
+
+			var audio = new Audio();
+			audio.src = url + "?" + new Date().getTime();
+
+			this.numResources++;
+
+			audio.addEventListener("loadeddata", function () {
+				console.log("Audio loaded " + url);
+				_this2.numResourcesLoaded++;
+				_this2.check();
+			}, false);
+
+			return audio;
+		}
+	}, {
+		key: "loadData",
+		value: function loadData(url, callback) {
+			var req = new XMLHttpRequest();
+			req.onreadystatechange = function () {
+				if (req.readyState == 4) {
+					console.log("Data loaded " + url);
+					callback(req.responseText);
+				}
+			};
+			req.open("GET", url, true);
+			req.send();
+		}
+	}, {
+		key: "onFinish",
+		value: function onFinish(_onFinish) {
+			this.onFinish = _onFinish;
+		}
+	}, {
+		key: "check",
+		value: function check() {
+			if (this.numResourcesLoaded == this.numResources) {
+				this.loaded = true;
+				this.onFinish();
+			}
+		}
+	}]);
+
+	return Loader;
+})();

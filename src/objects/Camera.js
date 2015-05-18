@@ -4,9 +4,20 @@
 * @param {Game} game - instance of the Game class.
 * @param {String} name - Name of the Scene.
 */
-Camera = function(game, name){
+class Camera{ 
+	constructor(game, name){
+		this.game = game;
+		this.name = name;
+		this.position = new Math.Vector2(0, 0);
+		this.size = new Math.Vector2((game.width / 2) / game.gameScale, (game.height / 2) / game.gameScale);
+		this.rect = new Rectangle(0, 0, this.size.x, this.size.y);
+		this.angle = 0;
+		this.shaking = false;
+		this.limit = new Math.Vector2(0,0);
+		this.useLimit = false;
+	}
 
-	this.setPosition = function(x, y, lerp){
+	setPosition(x, y, lerp){
 		var newPos = new Math.Vector2(x, y);
 		if(lerp){
 			this.position.lerp(newPos, 0.01);
@@ -23,11 +34,11 @@ Camera = function(game, name){
 		this.rect.position = this.position;
 	}
 
-	this.setRotation = function(angle){
+	setRotation(angle){
 		this.angle = angle;
 	}
 
-	this.shake = function(time,intensity){
+	shake(time,intensity){
 		if(!this.shaking){
 			var self = this;
 			var originalPos = this.position.copy(); // copy position vector
@@ -43,20 +54,11 @@ Camera = function(game, name){
 				self.angle = originalAngle;
 				self.shaking = false;
 			});
+			
 			this.shakeTimer.start();
 			this.shaking = true;
 		}
 	}
-
-	this.game = game;
-	this.name = name;
-	this.position = new Math.Vector2(0, 0);
-	this.size = new Math.Vector2((game.width / 2) / game.gameScale, (game.height / 2) / game.gameScale);
-	this.rect = new Rectangle(0, 0, this.size.x, this.size.y);
-	this.angle = 0;
-	this.shaking = false;
-	this.limit = new Math.Vector2(0,0);
-	this.useLimit = false;
 }
 
 

@@ -2,41 +2,47 @@
 * Loader class.
 * @constructor
 */
-Loader = function(){
+class Loader{
+	constructor(){
+		this.resources = [];
+		this.numResources = 0;
+		this.numResourcesLoaded = 0;
+		this.onFinish;
+		this.loaded = false;
+	}
 	
-	
-	this.loadImage = function(url){
+	loadImage(url){
 		var img = new Image();
 		img.src = url + "?" + new Date().getTime();
 		
 		this.numResources++;
 
-		img.onload = function () {
+		img.onload = ()=>{
 			console.log("Image loaded " + url);
-			self.numResourcesLoaded++;
-			self.check();
+			this.numResourcesLoaded++;
+			this.check();
 		}	
 		return img;
 	}
 
-	this.loadSound = function(url){
+	loadSound(url){
 		var audio = new Audio();
 		audio.src = url + "?" + new Date().getTime();
 
 		this.numResources++;
 
-		audio.addEventListener('loadeddata', function(){
+		audio.addEventListener('loadeddata', ()=>{
     	console.log("Audio loaded " + url);
-			self.numResourcesLoaded++;
-			self.check();
+			this.numResourcesLoaded++;
+			this.check();
 		}, false);
 
 		return audio;
 	}
 	
-	this.loadData = function(url,callback){
+	loadData(url,callback){
 		var req = new XMLHttpRequest();
-		req.onreadystatechange = function(){
+		req.onreadystatechange = ()=>{
 			if (req.readyState == 4) {
 				console.log("Data loaded " + url);
 		    callback(req.responseText);
@@ -46,20 +52,15 @@ Loader = function(){
 		req.send();
 	}
 
-	this.onFinish = function(onFinish){
+	onFinish(onFinish){
 		this.onFinish = onFinish;
 	}
 
-	this.check = function(){
+	check(){
 		if(this.numResourcesLoaded == this.numResources){ 
 			this.loaded = true;
 			this.onFinish();	
 		}
 	}
-	var self = this;
-	this.resources = [];
-	this.numResources = 0;
-	this.numResourcesLoaded = 0;
-	this.onFinish;
-	this.loaded = false;
+	
 }

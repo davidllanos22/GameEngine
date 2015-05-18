@@ -1,38 +1,40 @@
 /**
 * Contains a list of Keyboard Keys.
 */
-Keys = {
-	BACKSPACE: 8,    
+var Keys = {
+  NONE: -2,
+  ANY: -1,
+  BACKSPACE: 8,    
   TAB: 9,    
   ENTER: 13,   
   SHIFT: 16,   
   CTRL: 17,   
   ALT: 18,   
   PAUSE: 19,   
-  CAPS_LOCK: 20,   
+  CAPSLOCK: 20,   
   ESC: 27,   
   SPACE: 32,   
-  PAGE_UP: 33,   
-  PAGE_DOWN: 34,   
+  PAGEUP: 33,   
+  PAGEDOWN: 34,   
   END: 35,   
   HOME: 36,   
   LEFT: 37,   
   UP: 38,   
   RIGHT: 39,   
   DOWN: 40,   
-  PRINT_SCREEN: 44,   
+  PRINTSCREEN: 44,   
   INSERT: 45,   
   DELETE: 46,   
-  NUM_0: 48,   
-  NUM_1: 49,   
-  NUM_2: 50,   
-  NUM_3: 51,   
-  NUM_4: 52,   
-  NUM_5: 53,   
-  NUM_6: 54,   
-  NUM_7: 55,   
-  NUM_8: 56,   
-  NUM_9: 57,   
+  NUM0: 48,   
+  NUM1: 49,   
+  NUM2: 50,   
+  NUM3: 51,   
+  NUM4: 52,   
+  NUM5: 53,   
+  NUM6: 54,   
+  NUM7: 55,   
+  NUM8: 56,   
+  NUM9: 57,   
   A: 65,   
   B: 66,   
   C: 67,   
@@ -59,21 +61,21 @@ Keys = {
   X: 88,   
   Y: 89,   
   Z: 90,   
-  NUM_ZERO: 96,   
-  NUM_ONE: 97,   
-  NUM_TWO: 98,   
-  NUM_THREE: 99,   
-  NUM_FOUR: 100,  
-  NUM_FIVE: 101,  
-  NUM_SIX: 102,  
-  NUM_SEVEN: 103,  
-  NUM_EIGHT: 104,  
-  NUM_NINE: 105,  
-  NUM_MULTIPLY: 106,  
-  NUM_PLUS: 107,  
-  NUM_MINUS: 109,  
-  NUM_PERIOD: 110,  
-  NUM_DIVISION: 111,  
+  NUMZERO: 96,   
+  NUMONE: 97,   
+  NUMTWO: 98,   
+  NUMTHREE: 99,   
+  NUMFOUR: 100,  
+  NUMFIVE: 101,  
+  NUMSIX: 102,  
+  NUMSEVEN: 103,  
+  NUMEIGHT: 104,  
+  NUMNINE: 105,  
+  NUMMULTIPLY: 106,  
+  NUMPLUS: 107,  
+  NUMMINUS: 109,  
+  NUMPERIOD: 110,  
+  NUMDIVISION: 111,  
   F1: 112,  
   F2: 113,  
   F3: 114,  
@@ -91,107 +93,174 @@ Keys = {
 }
 
 /**
+* Contains a list of Mouse Buttons.
+*/
+var Mouse = {
+  NONE: -2,
+  ANY: -1,
+  LEFT: 0,
+  MIDDLE: 1,
+  RIGHT: 2
+}
+
+/**
 * Input class.
 * @constructor
 * @param {Game} game - instance of the Game class.
 */
-Input = function(game){
-
-  this.onKeyDown = function(e){
-    this.keyDown[e.keyCode] = true;
-    if(this.keyJustDown[e.keyCode] != 0)this.keyJustDown[e.keyCode] = true;
-    delete this.keyJustReleased[e.keyCode];
+class Input{
+  constructor(game){
+    this.game = game;
+    this.cvs = game.cvs;
+    this.keyC = {};
+    this.keyP = {};
+    this.keyR = {};
+    this.m = new Math.Vector2(0, 0);
+    this.mp = [false, false, false];
+    this.mr = [false, false, false];
+    this.mc = [false, false, false];
+    this.mouseWheel = 0;
+    
+    this.cvs.onkeydown = (e) => {this.onkeyDown(e);}
+    this.cvs.onkeyup = (e) => {this.onKeyUp(e);}
+    this.cvs.onmousemove = (e) => {this.onMouseMove(e);}
+    this.cvs.onmousedown = (e) => {this.onMouseDown(e);}
+    this.cvs.onmouseup = (e) => {this.onMouseUp(e);}
+    this.cvs.onmousewheel = (e) => {this.onMouseWheel(e);}
   }
 
-  this.onKeyUp = function(e){
-    if(this.keyJustReleased[e.keyCode] != 0)this.keyJustReleased[e.keyCode] = true;
-    delete this.keyDown[e.keyCode];
-    delete this.keyJustDown[e.keyCode];
+  onkeyDown(e){
+    this.keyC[e.keyCode] = true;
+    if(this.keyP[e.keyCode] != 0)this.keyP[e.keyCode] = true;
+    delete this.keyR[e.keyCode];
   }
 
-  this.check = function(key){
-    return this.keyDown[key];
+  onKeyUp(e){
+    if(this.keyR[e.keyCode] != 0)this.keyR[e.keyCode] = true;
+    delete this.keyC[e.keyCode];
+    delete this.keyP[e.keyCode];
   }
 
-  this.pressed = function(key){
-    if(this.keyJustDown[key]){
-      this.keyJustDown[key] = 0;
+  onMouseMove(e){
+    var rect = this.cvs.getBoundingClientRect();
+    var xx = (e.clientX - rect.left) / (rect.right - rect.left) * this.game.getSize().x;
+    var yy = (e.clientY - rect.top) / (rect.bottom - rect.top) * this.game.getSize().y;
+    this.m.set(Math.floor(xx), Math.floor(yy));
+  }
+
+  onMouseDown(e){
+    this.mp[e.button] = true;
+    this.mc[e.button] = true;
+  }
+
+  onMouseUp(e){
+    this.mr[e.button] = true;
+    this.mc[e.button] = false;
+  }
+  
+  onMouseWheel(e){
+    this.mouseWheel = e.wheelDelta;
+  }
+
+  mouseCheck(button){
+    if(button == Mouse.NONE){
+      var pressed = false;
+      for(var i = 0; i < this.mc.length; i++){
+        if(this.mc[i]) pressed = this.mc[i];
+      }
+      return !pressed;
+    }else if(button == Mouse.ANY){
+      var pressed = false;
+      var i = 0;
+      while(i < this.mc.length && !pressed){
+        pressed = this.mc[i];
+        i++;
+      }
+      return pressed;
+    }
+    return this.mc[button];
+  }
+
+  mousePressed(button){
+    if(button == Mouse.NONE){
+      console.warn("Please, use mc(Mouse.NONE) instead.");
+      return true;
+    }else if(button == Mouse.ANY){
+      var pressed = false;
+      var i = 0;
+      while(i < this.mp.length && !pressed){
+        pressed = this.mp[i];
+        i++;
+      }
+      return pressed;
+    }
+    return this.mp[button];
+  }
+
+  mouseReleased(button){
+    if(button == Mouse.NONE){
+      console.warn("Please, use mc(Mouse.NONE) instead.");
+      return true;
+    }else if(button == Mouse.ANY){
+      var pressed = false;
+      var i = 0;
+      while(i < this.mr.length && !pressed){
+        pressed = this.mr[i];
+        i++;
+      }
+      return pressed;
+    }
+    return this.mr[button];
+  }
+
+  mouseWheelUp(){
+    return this.mouseWheel > 0;
+  }
+
+  mouseWheelDown(){
+    return this.mouseWheel < 0;
+  }
+
+  mouse(){
+    return this.m;
+  }
+
+  keyCheck(key){
+    if(key == Keys.NONE) return Object.keys(this.keyC).length == 0;
+    else if(key == Keys.ANY) return Object.keys(this.keyC).length > 0;
+
+    return this.keyC[key];
+  }
+
+  keyPressed(key){
+    if(key == Keys.NONE) return Object.keys(this.keyP).length == 0;
+    else if(key == Keys.ANY) return Object.keys(this.keyP).length > 0;
+
+    if(this.keyP[key]){
+      this.keyP[key] = 0;
       return true;
     }
     else return false;
   }
 
-  this.released = function(key){
-    if(this.keyJustReleased[key]){
-      this.keyJustReleased[key] = 0;
+  keyReleased(key){
+    if(key == Keys.NONE) return Object.keys(this.keyR).length == 0;
+    else if(key == Keys.ANY) return Object.keys(this.keyR).length > 0;
+
+    if(this.keyR[key]){
+      this.keyR[key] = 0;
       return true;
-    }else 
-      return false;
-  }
-
-  this.onMouseMove = function(input, e){
-    var rect = this.game.getCanvas().getBoundingClientRect();
-    var xx = (e.clientX - rect.left) / (rect.right - rect.left) * this.game.getSize().x;
-    var yy = (e.clientY - rect.top) / (rect.bottom - rect.top) * this.game.getSize().y;
-    this.mouse.x = xx;
-    this.mouse.y = yy;
-  }
-  
-  this.onMouseDown = function(input, e){
-    this.mouseClick[e.button] = true;
-    this.mouseHold[e.button] = true;
-    
-  }
-
-  this.onMouseUp = function(input, e){
-    this.mouseRelease[e.button] = true;
-    this.mouseHold[e.button] = false;
-    
-  }
-
-  this.mouseReset = function(){
-    this.mouseClick = [false, false, false];
-    this.mouseRelease = [false, false, false];
-  }
-
-  this.mouseRender = function(){
-    if(this.cursorImage != null){
-      if(this.cursorImage instanceof Image)
-        this.game.graphics.image(this.input.cursorImage, this.game.input.mouse.x, this.game.input.mouse.y)
-      if(this.game.input.cursorImage instanceof Animation){
-        //this.cursorImage.render(this.input.cursorImage.image, game.input.mouse.x, game.input.mouse.y)
-      }
     }
+    else return false;
   }
 
-  this.setCursorStyle = function(a){
-    this.game.getCanvas().style.cursor = a;
+  mouseReset(){
+    this.mp = [false, false, false];
+    this.mr = [false, false, false];
+    this.mouseWheel = 0;
   }
 
-  this.setCursorImage = function(a){
-    this.setCursorStyle("none");
-    this.cursorImage = a;
+  setCursorStyle(a){
+    this.cvs.style.cursor = a;
   }
-
-	this.game = game;
-  this.cvs = game.getCanvas();
-	this.keyDown = {};
-	this.keyJustDown = {};
-	this.keyJustReleased = {};
-	this.mouse = new Math.Vector2(0, 0);
-	this.mouseClick = [false, false, false];
-	this.mouseRelease = [false, false, false];
-	this.mouseHold = [false, false, false];
-  this.cursorImage;
-	
-	this.gamepadSupportAvailable = !!navigator.webkitGetGamepads || !!navigator.webkitGamepads;
-	this.gamepad = navigator.getGamepads && navigator.getGamepads()[0];
-
-	var self = this;
-
-	this.cvs.onkeydown = function(e){self.onKeyDown(e);}
-	this.cvs.onkeyup = function(e){self.onKeyUp(e);}
-	this.cvs.onmousemove = function(e){self.onMouseMove(this, e);}
-	this.cvs.onmousedown = function(e){self.onMouseDown(this, e);}
-	this.cvs.onmouseup = function(e){self.onMouseUp(this, e);}
 }

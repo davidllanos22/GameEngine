@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
 	grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
     "babel": {
       options: {
         sourceMap: false
@@ -19,7 +18,6 @@ module.exports = function(grunt) {
           "build/files/objects/Rectangle.js" : "src/objects/Rectangle.js",
           "build/files/utils/Animation.js" : "src/utils/Animation.js",
           "build/files/utils/Math.js" : "src/utils/Math.js",
-          "build/files/utils/StateMachine.js" : "src/utils/StateMachine.js",
           "build/files/utils/Timer.js" : "src/utils/Timer.js",
           "build/files/utils/TimerManager.js" : "src/utils/TimerManager.js",
           "build/files/utils/Utils.js" : "src/utils/Utils.js"
@@ -27,32 +25,31 @@ module.exports = function(grunt) {
       }
     },
     uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-      },
       build: {
         options: {
-          beautify: true  
+          beautify: true,
+          mangle: false
         },
         src: [	
-            'src/objects/*.js',
-        		'src/core/*.js',
-        		'src/utils/*.js',
-        		'src/vendor/*.js'
+            'build/files/objects/*.js',
+        		'build/files/core/*.js',
+        		'build/files/utils/*.js',
+        		'build/files/vendor/*.js'
         ],
-        dest: 'build/<%= pkg.name %>.js'
+        dest: 'build/GameEngine.js'
       },
       buildMin: {
         options: {
-          beautify: false  
+          beautify: false,
+          mangle: false 
         },
         src: [  
-            'src/objects/*.js',
-            'src/core/*.js',
-            'src/utils/*.js',
-            'src/vendor/*.js'
+            'build/files/objects/*.js',
+            'build/files/core/*.js',
+            'build/files/utils/*.js',
+            'build/files/vendor/*.js'
         ],
-        dest: 'build/<%= pkg.name %>.min.js'
+        dest: 'build/GameEngine.min.js'
       }
     },
     connect: {

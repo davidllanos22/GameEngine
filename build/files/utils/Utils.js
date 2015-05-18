@@ -2,63 +2,85 @@
 
 "use strict";
 
-Utils = {};
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-/**
-* Gets an screenshoot of the current canvas. 
-* 
-* @param {Game} game - A game instance.
-* @return Screenshoot in base64 format.
-*/
-Utils.getScreenShoot = function (game) {
-  var data = game.getCanvas().toDataURL();
-  window.open(data, "_blank");
-  return data;
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
-* Gets the base64 value of an image. 
-* 
-* @param {Image} img - Image file to process.
-* @return The image in base64 format.
-*/
-Utils.getBase64Image = function (img) {
-  var cvs = document.createElement("canvas");
-  cvs.width = img.width;
-  cvs.height = img.height;
+var Utils = (function () {
+  function Utils() {
+    _classCallCheck(this, Utils);
+  }
 
-  var ctx = cvs.getContext("2d");
-  ctx.drawImage(img, 0, 0);
+  _createClass(Utils, null, [{
+    key: "getScreenShoot",
 
-  return cvs.toDataURL("image/png");
-};
+    /**
+    * Gets an screenshoot of the current canvas. 
+    * 
+    * @param {Game} game - A game instance.
+    * @return Screenshoot in base64 format.
+    */
+    value: function getScreenShoot(game) {
+      var data = game.getCanvas().toDataURL();
+      window.open(data, "_blank");
+      return data;
+    }
+  }, {
+    key: "getBase64Image",
 
-/**
-* Plays a sound once.
-* 
-* @param {Sound} sound - The sound file to play.
-*/
-Utils.playSound = function (sound) {
-  sound = sound.cloneNode();
-  sound.play();
-};
+    /**
+    * Gets the base64 value of an image. 
+    * 
+    * @param {Image} img - Image file to process.
+    * @return The image in base64 format.
+    */
+    value: function getBase64Image(img) {
+      var cvs = document.createElement("canvas");
+      cvs.width = img.width;
+      cvs.height = img.height;
 
-/**
-* Stops a sound.
-* 
-* @param {Sound} sound - The sound to stop.
-*/
-Utils.stopSound = function (sound) {};
+      var ctx = cvs.getContext("2d");
+      ctx.drawImage(img, 0, 0);
 
-/**
-* Plays a sound repeatedly.
-* 
-* @param {Sound} sound - The sound file to play.
-*/
-Utils.loopSound = function (sound) {
-  sound.loop = true;
-  sound = sound.cloneNode();
-  sound.play();
-};
+      return cvs.toDataURL("image/png");
+    }
+  }, {
+    key: "playSound",
+
+    /**
+    * Plays a sound once.
+    * 
+    * @param {Sound} sound - The sound file to play.
+    */
+    value: function playSound(sound) {
+      sound = sound.cloneNode();
+      sound.play();
+    }
+  }, {
+    key: "stopSound",
+
+    /**
+    * Stops a sound.
+    * 
+    * @param {Sound} sound - The sound to stop.
+    */
+    value: function stopSound(sound) {}
+  }, {
+    key: "loopSound",
+
+    /**
+    * Plays a sound repeatedly.
+    * 
+    * @param {Sound} sound - The sound file to play.
+    */
+    value: function loopSound(sound) {
+      sound.loop = true;
+      sound = sound.cloneNode();
+      sound.play();
+    }
+  }]);
+
+  return Utils;
+})();
 
 //TODO

@@ -15,6 +15,6 @@ game.render = function(){
 	game.graphics.print("play a sound", xx - 90, yy - 20); // Draw a string.
 }
 game.update = function(){
-	if(game.input.pressed(Keys.ENTER))
+	if(game.input.keyPressed(Keys.ENTER))
 		Utils.playSound(Math.randomTo(4) < 2 ? sound01 : sound02); // Play a random sound.
 }

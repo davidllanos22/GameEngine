@@ -14,8 +14,8 @@ game.render = function(){
 }
 
 game.update = function(){
-	if(game.input.check(Keys.D) || game.input.check(Keys.RIGHT)) pos.addX(v); // Move the rectangle.
-	if(game.input.check(Keys.A) || game.input.check(Keys.LEFT)) pos.subtractX(v); // Move the rectangle.
-	if(game.input.check(Keys.W ) || game.input.check(Keys.UP)) pos.subtractY(v); // Move the rectangle.
-	if(game.input.check(Keys.S) || game.input.check(Keys.DOWN)) pos.addY(v); // Move the rectangle.
+	if(game.input.keyCheck(Keys.D) || game.input.keyCheck(Keys.RIGHT)) pos.addX(v); // Move the rectangle.
+	if(game.input.keyCheck(Keys.A) || game.input.keyCheck(Keys.LEFT)) pos.subtractX(v); // Move the rectangle.
+	if(game.input.keyCheck(Keys.W ) || game.input.keyCheck(Keys.UP)) pos.subtractY(v); // Move the rectangle.
+	if(game.input.keyCheck(Keys.S) || game.input.keyCheck(Keys.DOWN)) pos.addY(v); // Move the rectangle.
 }

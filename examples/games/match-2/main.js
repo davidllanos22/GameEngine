@@ -1,11 +1,11 @@
 // Create a new instance of the game
 
-var game = new Game(640,480); 
+var game = new Game(640, 480); 
 
 // Create Scenes
 
-var menuScene = new Scene(game,"Menu");
-var gameScene = new Scene(game,"Game");
+var menuScene = new Scene(game, "Menu");
+var gameScene = new Scene(game, "Game");
 
 // Create and load Images
 var title = game.loader.loadImage("media/images/title.png");
@@ -31,10 +31,10 @@ game.init = function() {
   game.waveSpeed = 1;
   game.waveMax  = 0.10;
 
-  game.actionTimer = new Timer(100, false, null, null, actionCardFinish);
-  game.restartTimer = new Timer(200, false, null, null, actionRestartFinish);
-  game.playTimer = new Timer(200, true, null, null, function(){ game.showPlay = !game.showPlay;});
-  game.waveTimer = new Timer(200, true, null, function(){
+  game.actionTimer = new Timer(game, 100, false, null, null, actionCardFinish);
+  game.restartTimer = new Timer(game, 200, false, null, null, actionRestartFinish);
+  game.playTimer = new Timer(game, 200, true, null, null, function(){ game.showPlay = !game.showPlay;});
+  game.waveTimer = new Timer(game, 200, true, null, function(){
     if(Math.abs(game.wave) >= game.waveMax){
       game.waveSpeed *= -1;
 
@@ -47,7 +47,6 @@ game.init = function() {
   this.colors = [0,1,2,3,4,5];
 
   Utils.loopSound(loop);
-
 }
 
 // Menu Scene behavior
@@ -66,8 +65,8 @@ menuScene.render = function(){
   if(game.showPlay)game.graphics.imageSection(play,130,350,0,0,play.width,play.height,play.width*2,play.height*2);
 }
 menuScene.update = function(){
-  if(game.input.mouseClick[0]){
-    game.currentScene.changeScene(new TransitionScene(game.currentScene,gameScene));
+  if(game.input.mousePressed(Mouse.LEFT)){
+    game.currentScene.changeScene(new TransitionScene(game, game.currentScene, gameScene));
   }
 }
 
@@ -86,6 +85,7 @@ gameScene.render = function(){
   }
   game.graphics.print("Moves: " + game.moves, 8, 4);
 }
+
 game.update = function(){
   game.input.setCursorStyle("default");
 }
@@ -161,6 +161,7 @@ var setSelected = function(card){
 
 Card = function(x,y,color,cardSize) {
   Entity.call(this,x,y,"Card");
+  this.position = new Math.Vector2(x,y);
   this.rect = new Rectangle(x,y,cardSize,100);
   this.size = new Math.Vector2(cardSize,100);
   this.cardSize = cardSize;
@@ -184,10 +185,10 @@ Card.prototype.render = function() {
 }
 
 Card.prototype.update = function() {
-  if(this.rect.collides(new Rectangle(game.input.mouse.x,game.input.mouse.y,1,1))){
+  if(this.rect.collides(new Rectangle(game.input.mouse().x, game.input.mouse().y,1,1))){
     this.hover = true;
     game.input.setCursorStyle("pointer");
-    if(game.input.mouseClick[0] && !this.flipped && !game.actionCard) this.flip();
+    if(game.input.mousePressed(Mouse.LEFT) && !this.flipped && !game.actionCard) this.flip();
   }else{
     this.hover = false;
   }
