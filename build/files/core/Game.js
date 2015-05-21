@@ -142,13 +142,13 @@ var Game = (function () {
 
 			var v4 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ";
 
-			var f4 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float avg = (r + g + b) / 3.0;\n                col = vec3(avg, avg, avg);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
+			var f4 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n              uniform float amount;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float avg = (r + g + b) / 3.0;\n\n                float rr = r * (1.0 - amount) + avg * amount;\n                float gg = g * (1.0 - amount) + avg * amount;\n                float bb = b * (1.0 - amount) + avg * amount;\n\n                col = vec3(rr, gg, bb);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
 
 			this.graphics.shaderList.add("blackAndWhite", new Shader(this.gl, v4, f4));
 
-			var v5 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ";
+			var v5 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ";
 
-			var f5 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float red = (r * 0.393) + (g * 0.769) + (b * 0.189);\n                float green = (r * 0.349) + (g * 0.686) + (b * 0.168);\n                float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);\n\n                col = vec3(red, green, blue);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
+			var f5 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n              uniform float amount;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float red = (r * 0.393) + (g * 0.769) + (b * 0.189);\n                float green = (r * 0.349) + (g * 0.686) + (b * 0.168);\n                float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);\n\n                float rr = r * (1.0 - amount) + red * amount;\n                float gg = g * (1.0 - amount) + green * amount;\n                float bb = b * (1.0 - amount) + blue * amount;\n\n                col = vec3(rr, gg, bb);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
 
 			this.graphics.shaderList.add("sepia", new Shader(this.gl, v5, f5));
 
@@ -250,7 +250,7 @@ var Game = (function () {
 
 			if (this.showFps) this.graphics.print("FPS: " + this.fps, 8, 8);
 
-			this.graphics.sepia();
+			//this.graphics.crt();
 		}
 	}, {
 		key: "init",
@@ -354,7 +354,7 @@ var Game = (function () {
   * @param {int} height - The height of the window.
   */
 		value: function setSize(width, height) {
-			if (width == 0 || height == 0) Utils.logErr("Width and Height can't be 0.");
+			if (width == 0 || height == 0) console.error("Width and Height can't be 0.");
 
 			this.size.x = width;
 			this.size.y = height;

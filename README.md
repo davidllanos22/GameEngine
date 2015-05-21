@@ -10,18 +10,16 @@ This project is under the <a href="http://opensource.org/licenses/mit-license.ph
 ##Features
 * Standalone library, no dependencies.
 * Optional entity component system.
-* Scenes.
 * Timers.
 * Cameras.
 * Rectangle collisions.
 * Animations based on Sprite Sheets.
-* State Machines.
 * Preloader.
-* Audio, Image and Data loader.
-* Custom bitmap Font rendering.
-* Math library with some utilities such a Vector2 class.
-* Input class with check(), pressed(), and released() functions for keyboard and mouseButtons/touchScreen.
-* Graphics class with some lowLevel drawing functions such as rect(),image(),imageSection().
+* Audio, image and data loader.
+* Custom bitmap font rendering.
+* Adds more functions to the default Math library such a Vector2 class.
+* Input class with check, pressed, and released functions for keyboard and mouse buttons/touch screen.
+* Graphics class with low level drawing functions to draw shapes and images.
 
 ##Usage
 

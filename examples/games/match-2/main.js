@@ -40,12 +40,12 @@ game.init = function() {
       game.waveSpeed *= -1;
 
     }
-    game.wave += Math.lerp(game.wave,(game.waveMax+0.1)*game.waveSpeed,0.003)*0.2;
+    game.wave += Math.lerp(game.wave, (game.waveMax + 0.1) * game.waveSpeed, 0.003) * 0.2;
   }, null);
 
   game.playTimer.start();
   game.waveTimer.start();
-  this.colors = [0,1,2,3,4,5];
+  this.colors = [0, 1, 2, 3, 4, 5];
 
   Utils.loopSound(loop);
 }
@@ -54,15 +54,14 @@ game.init = function() {
 menuScene.render = function(){
   // Background rendering
   for(var i = 0; i<8; i++){
-    game.graphics.imageSection(playmat,0,i*60,0,0,60,60,60,60);
-    game.graphics.imageSection(playmat,this.game.getSize().x-60,i*60,1,0,60,60,60,60);
+    game.graphics.imageSection(playmat, 0, i * 60, 0, 0, 60, 60, 60, 60);
+    game.graphics.imageSection(playmat, this.game.getSize().x - 60, i * 60, 1, 0, 60, 60, 60, 60);
   }
-  
   // Title rendering
-  game.graphics.imageSectionRot(title,-123,-40,0,0,title.width,title.height,title.width*2,title.height*2,game.wave);
+  game.graphics.imageSectionRot(title, -123, -40, 0, 0, title.width, title.height, title.width * 2, title.height * 2, game.wave);
 
   // Flashing click to play
-  if(game.showPlay)game.graphics.imageSection(play,130,350,0,0,play.width,play.height,play.width*2,play.height*2);
+  if(game.showPlay)game.graphics.imageSection(play, 130, 350, 0, 0, play.width, play.height, play.width * 2, play.height * 2);
 }
 menuScene.update = function(){
   if(game.input.mousePressed(Mouse.LEFT)){
@@ -134,10 +133,10 @@ var reset = function() {
 
   for (i = 0; i < 4; i++) {
     for (j = 0; j < 3; j++) {
-      var n = Math.randomTo(game.colors2.length-1);
-      var card = new Card(105+i*(game.cardSize+50), 40+j*(100+50),game.colors2[n],game.cardSize);
-      game.cardCount++;
-      game.colors2.splice(n,1);
+      var n = Math.randomTo(game.colors2.length - 1);
+      var card = new Card(105 + i * (game.cardSize + 50), 40 + j * (100 + 50), game.colors2[n], game.cardSize);
+      game.cardCount ++;
+      game.colors2.splice(n, 1);
       gameScene.add(card); 
     }   
   }
@@ -158,12 +157,11 @@ var setSelected = function(card){
 
 
 // Card Class
-
-Card = function(x,y,color,cardSize) {
-  Entity.call(this,x,y,"Card");
-  this.position = new Math.Vector2(x,y);
-  this.rect = new Rectangle(x,y,cardSize,100);
-  this.size = new Math.Vector2(cardSize,100);
+Card = function(x, y, color, cardSize) {
+  Entity.call(this, x, y, "Card");
+  this.position = new Math.Vector2(x, y);
+  this.rect = new Rectangle(x, y, cardSize, 100);
+  this.size = new Math.Vector2(cardSize, 100);
   this.cardSize = cardSize;
   this.hover = false;
   this.flipping = false;
@@ -171,7 +169,7 @@ Card = function(x,y,color,cardSize) {
   this.alreadyFlipped = false;
   this.flipN = 0;
   this.color = color;
-  this.oX=x;
+  this.oX = x;
   this.flipRate = 0.07;
 }
 
@@ -179,13 +177,13 @@ Card.prototype = Object.create(Entity.prototype);
 Card.prototype.constructor = Card;
 
 Card.prototype.render = function() {
-  if(this.hover && !this.flipping)game.graphics.rect(this.position.x-2,this.position.y-2,this.size.x+4,this.size.y+4, "white");
-  game.graphics.imageSection(cards,this.position.x,this.position.y,this.flipped ? 1 : 0,0,60,100,this.size.x,100);
-  if(this.flipped) game.graphics.imageSection(cards,this.position.x,this.position.y,this.color + 1 ,0,60,100,this.size.x,100);
+  if(this.hover && !this.flipping)game.graphics.rect(this.position.x - 2, this.position.y - 2, this.size.x + 4, this.size.y + 4, "white");
+  game.graphics.imageSection(cards, this.position.x, this.position.y, this.flipped ? 1 : 0, 0, 60, 100, this.size.x, 100);
+  if(this.flipped) game.graphics.imageSection(cards, this.position.x, this.position.y, this.color + 1 , 0, 60, 100, this.size.x, 100);
 }
 
 Card.prototype.update = function() {
-  if(this.rect.collides(new Rectangle(game.input.mouse().x, game.input.mouse().y,1,1))){
+  if(this.rect.collides(new Rectangle(game.input.mouse().x, game.input.mouse().y, 1, 1))){
     this.hover = true;
     game.input.setCursorStyle("pointer");
     if(game.input.mousePressed(Mouse.LEFT) && !this.flipped && !game.actionCard) this.flip();
@@ -200,7 +198,7 @@ Card.prototype.update = function() {
 
     if(this.size.x<= 0){
       if(!this.alreadyFlipped){
-        if(!this.flipped )setSelected(this);
+        if(!this.flipped)setSelected(this);
         this.flipped = !this.flipped;
         this.alreadyFlipped = true;
       }

@@ -249,6 +249,7 @@ class Game{
               precision mediump float;
               uniform sampler2D u_image;
               varying vec2 f_texcoord;
+              uniform float amount;
 
               void main(void){
                 vec2 texcoord = f_texcoord;
@@ -258,7 +259,12 @@ class Game{
                 float b = col.b;
 
                 float avg = (r + g + b) / 3.0;
-                col = vec3(avg, avg, avg);
+
+                float rr = r * (1.0 - amount) + avg * amount;
+                float gg = g * (1.0 - amount) + avg * amount;
+                float bb = b * (1.0 - amount) + avg * amount;
+
+                col = vec3(rr, gg, bb);
 
                 gl_FragColor = vec4(col, 1.0);
               }
@@ -272,6 +278,7 @@ class Game{
               varying vec2 f_texcoord;
 
               uniform vec2 u_resolution;
+
                
               void main(void){
                 vec2 zeroToOne = a_position;
@@ -287,6 +294,7 @@ class Game{
               precision mediump float;
               uniform sampler2D u_image;
               varying vec2 f_texcoord;
+              uniform float amount;
 
               void main(void){
                 vec2 texcoord = f_texcoord;
@@ -299,7 +307,11 @@ class Game{
                 float green = (r * 0.349) + (g * 0.686) + (b * 0.168);
                 float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);
 
-                col = vec3(red, green, blue);
+                float rr = r * (1.0 - amount) + red * amount;
+                float gg = g * (1.0 - amount) + green * amount;
+                float bb = b * (1.0 - amount) + blue * amount;
+
+                col = vec3(rr, gg, bb);
 
                 gl_FragColor = vec4(col, 1.0);
               }
@@ -392,7 +404,7 @@ class Game{
 
 		if(this.showFps)this.graphics.print("FPS: " + this.fps, 8, 8);
 
-		this.graphics.sepia();
+		//this.graphics.crt();
 	}
 	/**
 	* Main init function.
@@ -472,7 +484,7 @@ class Game{
 	* @param {int} height - The height of the window.
 	*/
 	setSize(width, height){
-		if(width == 0 || height == 0) Utils.logErr("Width and Height can't be 0.");
+		if(width == 0 || height == 0) console.error("Width and Height can't be 0.");
 
 		this.size.x = width;
 		this.size.y = height;

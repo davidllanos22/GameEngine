@@ -200,7 +200,7 @@ var Graphics = (function () {
         }
     }, {
         key: "blackAndWhite",
-        value: function blackAndWhite() {
+        value: function blackAndWhite(amount) {
             var gl = this.game.gl;
 
             var shader = this.shaderList.get("blackAndWhite");
@@ -208,6 +208,7 @@ var Graphics = (function () {
             shader.enable();
 
             shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y);
+            shader.setUniform1f("amount", amount || 1);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos"));
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1]), gl.STATIC_DRAW);
@@ -226,7 +227,7 @@ var Graphics = (function () {
         }
     }, {
         key: "sepia",
-        value: function sepia() {
+        value: function sepia(amount) {
             var gl = this.game.gl;
 
             var shader = this.shaderList.get("sepia");
@@ -234,6 +235,7 @@ var Graphics = (function () {
             shader.enable();
 
             shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y);
+            shader.setUniform1f("amount", amount || 1);
 
             gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos"));
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1]), gl.STATIC_DRAW);
@@ -259,7 +261,7 @@ var Graphics = (function () {
             var program = shader.getProgram();
             shader.enable();
 
-            shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y);
+            shader.setUniform2f("u_resolution", this.game.getSize().x + 1000, this.game.getSize().y);
             shader.setUniform1f("speed", speed == 0 ? 0 : speed || 10);
             shader.setUniform3f("tint", Graphics.hexToRgb(tint).r / 255 || 1.8, Graphics.hexToRgb(tint).g / 255 || 1.8, Graphics.hexToRgb(tint).b / 255 || 1.8);
             shader.setUniform1f("lineWidth", lineWidth == 0 ? 0 : lineWidth || 640);

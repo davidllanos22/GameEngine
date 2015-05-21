@@ -17,7 +17,6 @@ var Font = (function () {
     _classCallCheck(this, Font);
 
     this.chars = chars || "ABCDEFGHIJKLMNOP" + "QRSTUVWXYZ      " + "0123456789      " + "!?.;:,-         ";
-
     this.w = w || 16;
     this.h = h || 20;
 

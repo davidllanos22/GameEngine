@@ -293,9 +293,9 @@ var _createClass = function() {
             this.graphics.shaderList.add("crt", new Shader(this.gl, v2, f2));
             var v3 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f3 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                gl_FragColor = texture2D(u_image, texcoord);\n              }\n            ";
             this.graphics.shaderList.add("normal", new Shader(this.gl, v3, f3));
-            var v4 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f4 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float avg = (r + g + b) / 3.0;\n                col = vec3(avg, avg, avg);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
+            var v4 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f4 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n              uniform float amount;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float avg = (r + g + b) / 3.0;\n\n                float rr = r * (1.0 - amount) + avg * amount;\n                float gg = g * (1.0 - amount) + avg * amount;\n                float bb = b * (1.0 - amount) + avg * amount;\n\n                col = vec3(rr, gg, bb);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
             this.graphics.shaderList.add("blackAndWhite", new Shader(this.gl, v4, f4));
-            var v5 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f5 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float red = (r * 0.393) + (g * 0.769) + (b * 0.189);\n                float green = (r * 0.349) + (g * 0.686) + (b * 0.168);\n                float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);\n\n                col = vec3(red, green, blue);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
+            var v5 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f5 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n              uniform float amount;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float red = (r * 0.393) + (g * 0.769) + (b * 0.189);\n                float green = (r * 0.349) + (g * 0.686) + (b * 0.168);\n                float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);\n\n                float rr = r * (1.0 - amount) + red * amount;\n                float gg = g * (1.0 - amount) + green * amount;\n                float bb = b * (1.0 - amount) + blue * amount;\n\n                col = vec3(rr, gg, bb);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
             this.graphics.shaderList.add("sepia", new Shader(this.gl, v5, f5)), this.start = new Date().getTime(), 
             this.lastLoop = new Date(), this.loop();
         }
@@ -327,7 +327,7 @@ var _createClass = function() {
             this.ctx.rotate(this.currentCamera.angle * Math.PI / 180), this.currentScene.renderInternal(), 
             this.loader.loaded && this.render(), this.ctx.restore(), this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.getSize().x, this.getSize().y, "rgba(0,0,0,0.4)"), 
             this.graphics.print("- PAUSED - ", this.getSize().x / 2 - 80, this.getSize().y / 2 - 10)), 
-            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8), this.graphics.sepia();
+            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8);
         }
     }, {
         key: "init",
@@ -372,7 +372,7 @@ var _createClass = function() {
     }, {
         key: "setSize",
         value: function(width, height) {
-            (0 == width || 0 == height) && Utils.logErr("Width and Height can't be 0."), this.size.x = width, 
+            (0 == width || 0 == height) && console.error("Width and Height can't be 0."), this.size.x = width, 
             this.size.y = height, this.cvs.width = width, this.cvs.height = height, this.cvs.style.width = width, 
             this.cvs.style.height = height, this.glcvs.width = width, this.glcvs.height = height, 
             this.glcvs.style.width = width, this.glcvs.style.height = height;
@@ -598,13 +598,14 @@ var _createClass = function() {
         }
     }, {
         key: "blackAndWhite",
-        value: function() {
+        value: function(amount) {
             {
                 var gl = this.game.gl, shader = this.shaderList.get("blackAndWhite");
                 shader.getProgram();
             }
             shader.enable(), shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y), 
-            gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1 ]), gl.STATIC_DRAW), 
+            shader.setUniform1f("amount", amount || 1), gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), 
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1 ]), gl.STATIC_DRAW), 
             gl.enableVertexAttribArray(shader.getAttribute("a_position")), gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, !1, 0, 0), 
             this.c < 2 * Math.PI ? this.c += .1 : this.c = 0, this.updateTexture(this.canvasTexture, this.game.cvs), 
             shader.setUniform1i("u_image", this.canvasTexture), gl.drawArrays(gl.TRIANGLES, 0, 6), 
@@ -612,13 +613,14 @@ var _createClass = function() {
         }
     }, {
         key: "sepia",
-        value: function() {
+        value: function(amount) {
             {
                 var gl = this.game.gl, shader = this.shaderList.get("sepia");
                 shader.getProgram();
             }
             shader.enable(), shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y), 
-            gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1 ]), gl.STATIC_DRAW), 
+            shader.setUniform1f("amount", amount || 1), gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), 
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1 ]), gl.STATIC_DRAW), 
             gl.enableVertexAttribArray(shader.getAttribute("a_position")), gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, !1, 0, 0), 
             this.c < 2 * Math.PI ? this.c += .1 : this.c = 0, this.updateTexture(this.canvasTexture, this.game.cvs), 
             shader.setUniform1i("u_image", this.canvasTexture), gl.drawArrays(gl.TRIANGLES, 0, 6), 
@@ -631,7 +633,7 @@ var _createClass = function() {
                 var gl = this.game.gl, shader = this.shaderList.get("crt");
                 shader.getProgram();
             }
-            shader.enable(), shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y), 
+            shader.enable(), shader.setUniform2f("u_resolution", this.game.getSize().x + 1e3, this.game.getSize().y), 
             shader.setUniform1f("speed", 0 == speed ? 0 : speed || 10), shader.setUniform3f("tint", Graphics.hexToRgb(tint).r / 255 || 1.8, Graphics.hexToRgb(tint).g / 255 || 1.8, Graphics.hexToRgb(tint).b / 255 || 1.8), 
             shader.setUniform1f("lineWidth", 0 == lineWidth ? 0 : lineWidth || 640), shader.setUniform1f("time", this.c), 
             gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ -1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, 1 ]), gl.STATIC_DRAW), 

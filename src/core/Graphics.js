@@ -191,7 +191,7 @@ class Graphics{
     gl.bindTexture(gl.TEXTURE_2D, null);
   }
 
-  blackAndWhite(){
+  blackAndWhite(amount){
     var gl = this.game.gl;
 
     var shader = this.shaderList.get("blackAndWhite");
@@ -199,6 +199,7 @@ class Graphics{
     shader.enable();
 
     shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y);
+    shader.setUniform1f("amount", amount || 1.0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos"));
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -223,7 +224,7 @@ class Graphics{
     gl.bindTexture(gl.TEXTURE_2D, null);
   }
 
-  sepia(){
+  sepia(amount){
     var gl = this.game.gl;
 
     var shader = this.shaderList.get("sepia");
@@ -231,6 +232,7 @@ class Graphics{
     shader.enable();
 
     shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y);
+    shader.setUniform1f("amount", amount || 1.0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos"));
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -262,7 +264,7 @@ class Graphics{
     var program = shader.getProgram();
     shader.enable();
 
-    shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y);
+    shader.setUniform2f("u_resolution", this.game.getSize().x + 1000 , this.game.getSize().y);
     shader.setUniform1f("speed", speed == 0 ? 0 : speed || 10);
     shader.setUniform3f("tint", Graphics.hexToRgb(tint).r / 255 || 1.8, Graphics.hexToRgb(tint).g / 255 || 1.8, Graphics.hexToRgb(tint).b / 255 || 1.8);
     shader.setUniform1f("lineWidth", lineWidth == 0 ? 0 : lineWidth || 640);

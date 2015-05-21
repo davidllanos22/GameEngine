@@ -12,7 +12,6 @@ class Font{
                           "QRSTUVWXYZ      "+
                           "0123456789      "+
                           "!?.;:,-         ";
-                      
     this.w = w || 16;
     this.h = h || 20;
 
