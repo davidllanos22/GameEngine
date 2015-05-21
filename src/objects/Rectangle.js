@@ -1,16 +1,17 @@
 /**
 * Rectangle class.
 * @constructor
-* @param {int} x - X position of the new instance.
-* @param {int} y - Y position of the new instance.
-* @param {int} w - Width new instance.
-* @param {int} h - Height of the new instance.
+* @param {int} x - X position in the space.
+* @param {int} y - Y position in the space.
+* @param {int} w - Width of the rectangle.
+* @param {int} h - Height of the rectangle.
 */
 class Rectangle{
-	constructor(x,y,w,h){
-		this.position = new Math.Vector2(x,y);
-		this.size = new Math.Vector2(w,h);
+	constructor(x, y, w, h){
+		this.position = new Math.Vector2(x, y);
+		this.size = new Math.Vector2(w, h);
 	}
+
 	setPosition(x,y){
 		this.position.x = x;
 		this.position.y = y;
@@ -36,6 +37,10 @@ class Rectangle{
 	  rectMod.position.addY(yy);
 	
 	  return rectMod.collides(rect);
+	}
+
+	render(graphics, color){
+		graphics.rect(this.position.x, this.position.y, this.size.x, this.size.y, color);
 	}
 
 	copy(){

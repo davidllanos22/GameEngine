@@ -155,6 +155,10 @@ var Input = (function () {
   _createClass(Input, [{
     key: "onkeyDown",
     value: function onkeyDown(e) {
+      if (e == 32 || e == 37 || e == 38 || e == 39 || e == 40) {
+        e.preventDefault();
+      }
+
       this.keyC[e.keyCode] = true;
       if (this.keyP[e.keyCode] != 0) this.keyP[e.keyCode] = true;
       delete this.keyR[e.keyCode];
@@ -298,6 +302,11 @@ var Input = (function () {
     key: "setCursorStyle",
     value: function setCursorStyle(a) {
       this.cvs.style.cursor = a;
+    }
+  }, {
+    key: "getCursorStyle",
+    value: function getCursorStyle() {
+      return this.cvs.style.cursor;
     }
   }]);
 

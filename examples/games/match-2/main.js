@@ -1,9 +1,7 @@
 // Create a new instance of the game
-
 var game = new Game(640, 480); 
 
 // Create Scenes
-
 var menuScene = new Scene(game, "Menu");
 var gameScene = new Scene(game, "Game");
 
@@ -14,14 +12,12 @@ var playmat = game.loader.loadImage("media/images/playmat.png");
 var play = game.loader.loadImage("media/images/play.png");
 
 // Create and load Sounds
-
 var cardFlip = game.loader.loadSound("media/sounds/card-flip.wav");
 var cardFlip2 = game.loader.loadSound("media/sounds/card-flip2.wav");
 var yay = game.loader.loadSound("media/sounds/yay.wav");
 var loop = game.loader.loadSound("media/sounds/loop.mp3");
 
 // Starting point of the game.
-
 game.init = function() {
   game.graphics.setClearColor("#c9003d");
   game.cardSize = 70;
@@ -70,7 +66,6 @@ menuScene.update = function(){
 }
 
 // Game Scene Behavior
-
 gameScene.init = function(){
   reset();
   game.waveTimer.pause();
@@ -86,11 +81,11 @@ gameScene.render = function(){
 }
 
 game.update = function(){
-  game.input.setCursorStyle("default");
+  if(game.input.getCursorStyle() == "pointer") 
+    game.input.setCursorStyle("default");
 }
 
 // Custom functions
-
 var actionCardFinish = function(){
   if(game.lastCard.color == game.actualCard.color){
     game.lastCard.destroy();
@@ -101,16 +96,13 @@ var actionCardFinish = function(){
       game.waveTimer.reset();
       game.restartTimer.start();
     }
-
   }else{
     Utils.playSound(cardFlip);
     game.actualCard.flip();
     game.lastCard.flip();
   }
-
   game.actualCard = null;
   game.lastCard = null;
-
 }
 
 var actionRestartFinish = function(){
@@ -220,4 +212,3 @@ Card.prototype.flip = function() {
     this.flipN = 0;
   }
 }
-

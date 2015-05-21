@@ -99,225 +99,220 @@ class Game{
 			this.onResizeInternal();
 		});
 
-		var v = ` 
-              attribute vec2 a_position;
-              uniform sampler2D u_image;
-              varying vec2 f_texcoord;
+    var normal_v = ` 
+                    attribute vec2 a_position;
+                    uniform sampler2D u_image;
+                    varying vec2 f_texcoord;
 
-              uniform vec2 u_resolution;
-               
-              void main(void){
-                vec2 zeroToOne = a_position;
-                vec2 zeroToTwo = zeroToOne * 2.0;
-                vec2 clipSpace = zeroToTwo - 1.0;
+                    uniform vec2 u_resolution;
+                     
+                    void main(void){
+                      vec2 zeroToOne = a_position;
+                      vec2 zeroToTwo = zeroToOne * 2.0;
+                      vec2 clipSpace = zeroToTwo - 1.0;
 
-                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
-                f_texcoord = (clipSpace + 1.0) / 2.0;
-              }
-            `;
+                      gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
+                      f_texcoord = (clipSpace + 1.0) / 2.0;
+                    }
+                  `;
 
-    var f = ` 
-              precision mediump float;
-              uniform sampler2D u_image;
-              uniform float offset;
-              uniform float dX;
-              uniform float dY;
-              varying vec2 f_texcoord;
+    var normal_f = ` 
+                    precision mediump float;
+                    uniform sampler2D u_image;
+                    varying vec2 f_texcoord;
+
+                    void main(void){
+                      vec2 texcoord = f_texcoord;
+                      gl_FragColor = texture2D(u_image, texcoord);
+                    }
+                  `;
+
+		var wave_v = ` 
+                  attribute vec2 a_position;
+                  uniform sampler2D u_image;
+                  varying vec2 f_texcoord;
+
+                  uniform vec2 u_resolution;
+                   
+                  void main(void){
+                    vec2 zeroToOne = a_position;
+                    vec2 zeroToTwo = zeroToOne * 2.0;
+                    vec2 clipSpace = zeroToTwo - 1.0;
+
+                    gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
+                    f_texcoord = (clipSpace + 1.0) / 2.0;
+                  }
+                `;
+
+    var wave_f = ` 
+                  precision mediump float;
+                  uniform sampler2D u_image;
+                  uniform float offset;
+                  uniform float dX;
+                  uniform float dY;
+                  varying vec2 f_texcoord;
 
 
-              void main(void){
-                vec2 texcoord = f_texcoord;
-                texcoord.x += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dX;
-                texcoord.y += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dY;
-                gl_FragColor = texture2D(u_image, texcoord);
-              }
-            `;
+                  void main(void){
+                    vec2 texcoord = f_texcoord;
+                    texcoord.x += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dX;
+                    texcoord.y += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dY;
+                    gl_FragColor = texture2D(u_image, texcoord);
+                  }
+                `;
 
-		this.graphics.shaderList.add("wave", new Shader(this.gl, v, f));
+		var crt_v = ` 
+                  attribute vec2 a_position;
+                  varying vec2 f_texcoord;
+                   
+                  void main(void){
 
-		var v2 = ` 
-              attribute vec2 a_position;
-              varying vec2 f_texcoord;
-               
-              void main(void){
+                    gl_Position = vec4(a_position * vec2(1, -1), 0.0, 1.0);
+                    f_texcoord = (a_position + 1.0) / 2.0;
+                  }
+                `;
 
-                gl_Position = vec4(a_position * vec2(1, -1), 0.0, 1.0);
-                f_texcoord = (a_position + 1.0) / 2.0;
-              }
-            `;
+    var crt_f = ` 
+                  
+                precision highp float;
+                uniform vec2 u_resolution;
+                uniform float time;
 
-    var f2 = ` 
-              
-            precision highp float;
-            uniform vec2 u_resolution;
-            uniform float time;
+                uniform sampler2D u_image;
 
-            uniform sampler2D u_image;
+                varying vec2 f_texcoord;
 
-            varying vec2 f_texcoord;
-
-            uniform float speed;
-            uniform vec3 tint;
-            uniform float lineWidth;
-            
-            float rand(vec2 co){
-                return fract(sin(dot(co.xy , vec2(12.9898, 78.233))) * 43758.5453);
-            }
-
-            void main(void){
-                vec2 pixel = gl_FragCoord.xy / u_resolution;
+                uniform float speed;
+                uniform vec3 tint;
+                uniform float lineWidth;
                 
-                vec3 col = texture2D(u_image, f_texcoord).xyz;
-                
-                // start with the source texture and misalign the rays it a bit
-                 // col.r = texture2D(u_image, vec2(pixel.x + 0.002, - pixel.y)).r;
-                 // col.g = texture2D(u_image, vec2(pixel.x + 0.001, - pixel.y)).g;
-                 // col.b = texture2D(u_image, vec2(pixel.x - 0.002, - pixel.y)).b;
+                float rand(vec2 co){
+                    return fract(sin(dot(co.xy , vec2(12.9898, 78.233))) * 43758.5453);
+                }
 
-                // contrast curve
-                col = clamp(col * 0.5 + 0.5 * col * col * 1.2, 0.0, 1.0);
+                void main(void){
+                    vec2 pixel = gl_FragCoord.xy / u_resolution;
+                    
+                    vec3 col = texture2D(u_image, f_texcoord).xyz;
+                    
+                    // start with the source texture and misalign the rays it a bit
+                     // col.r = texture2D(u_image, vec2(pixel.x + 0.002, - pixel.y)).r;
+                     // col.g = texture2D(u_image, vec2(pixel.x + 0.001, - pixel.y)).g;
+                     // col.b = texture2D(u_image, vec2(pixel.x - 0.002, - pixel.y)).b;
 
-                //vignette
-                col *= 0.6 + 0.4 * 16.0 * pixel.x * pixel.y * (1.0 - pixel.x) * (1.0 - pixel.y);
+                    // contrast curve
+                    col = clamp(col * 0.5 + 0.5 * col * col * 1.2, 0.0, 1.0);
 
-                //color tint
-                //col *= vec3(0.9, 1.0, 0.8);
+                    //vignette
+                    col *= 0.6 + 0.4 * 16.0 * pixel.x * pixel.y * (1.0 - pixel.x) * (1.0 - pixel.y);
 
-                col *= tint;
+                    //color tint
+                    //col *= vec3(0.9, 1.0, 0.8);
 
-                //scanline (last 2 constants are crawl speed and size)
-                col *= 0.8 + 0.2 * sin(speed * time + pixel.y * lineWidth);
+                    col *= tint;
 
-                //flickering (semi-randomized)
-                col *= 1.0 - 0.07 * rand(vec2(time, tan(time)));
+                    //scanline (last 2 constants are crawl speed and size)
+                    col *= 0.8 + 0.2 * sin(speed * time + pixel.y * lineWidth);
 
-                gl_FragColor = vec4(col, 1.0);
-            }
-            `;
+                    //flickering (semi-randomized)
+                    col *= 1.0 - 0.07 * rand(vec2(time, tan(time)));
 
-            
-		this.graphics.shaderList.add("crt", new Shader(this.gl, v2, f2));
+                    gl_FragColor = vec4(col, 1.0);
+                }
+                `;
 
-		var v3 = ` 
-              attribute vec2 a_position;
-              uniform sampler2D u_image;
-              varying vec2 f_texcoord;
+    var baw_v = ` 
+                  attribute vec2 a_position;
+                  uniform sampler2D u_image;
+                  varying vec2 f_texcoord;
 
-              uniform vec2 u_resolution;
-               
-              void main(void){
-                vec2 zeroToOne = a_position;
-                vec2 zeroToTwo = zeroToOne * 2.0;
-                vec2 clipSpace = zeroToTwo - 1.0;
+                  uniform vec2 u_resolution;
+                   
+                  void main(void){
+                    vec2 zeroToOne = a_position;
+                    vec2 zeroToTwo = zeroToOne * 2.0;
+                    vec2 clipSpace = zeroToTwo - 1.0;
 
-                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
-                f_texcoord = (clipSpace + 1.0) / 2.0;
-              }
-            `;
+                    gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
+                    f_texcoord = (clipSpace + 1.0) / 2.0;
+                  }
+                `;
 
-    var f3 = ` 
-              precision mediump float;
-              uniform sampler2D u_image;
-              varying vec2 f_texcoord;
+    var baw_f = ` 
+                  precision mediump float;
+                  uniform sampler2D u_image;
+                  varying vec2 f_texcoord;
+                  uniform float amount;
 
-              void main(void){
-                vec2 texcoord = f_texcoord;
-                gl_FragColor = texture2D(u_image, texcoord);
-              }
-            `;
+                  void main(void){
+                    vec2 texcoord = f_texcoord;
+                    vec3 col = texture2D(u_image, f_texcoord).rgb;
+                    float r = col.r;
+                    float g = col.g;
+                    float b = col.b;
 
-    this.graphics.shaderList.add("normal", new Shader(this.gl, v3, f3));
+                    float avg = (r + g + b) / 3.0;
 
-    var v4 = ` 
-              attribute vec2 a_position;
-              uniform sampler2D u_image;
-              varying vec2 f_texcoord;
+                    float rr = r * (1.0 - amount) + avg * amount;
+                    float gg = g * (1.0 - amount) + avg * amount;
+                    float bb = b * (1.0 - amount) + avg * amount;
 
-              uniform vec2 u_resolution;
-               
-              void main(void){
-                vec2 zeroToOne = a_position;
-                vec2 zeroToTwo = zeroToOne * 2.0;
-                vec2 clipSpace = zeroToTwo - 1.0;
+                    col = vec3(rr, gg, bb);
 
-                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
-                f_texcoord = (clipSpace + 1.0) / 2.0;
-              }
-            `;
+                    gl_FragColor = vec4(col, 1.0);
+                  }
+                `;
 
-    var f4 = ` 
-              precision mediump float;
-              uniform sampler2D u_image;
-              varying vec2 f_texcoord;
-              uniform float amount;
+    var sepia_v = ` 
+                  attribute vec2 a_position;
+                  uniform sampler2D u_image;
+                  varying vec2 f_texcoord;
 
-              void main(void){
-                vec2 texcoord = f_texcoord;
-                vec3 col = texture2D(u_image, f_texcoord).rgb;
-                float r = col.r;
-                float g = col.g;
-                float b = col.b;
+                  uniform vec2 u_resolution;
 
-                float avg = (r + g + b) / 3.0;
+                   
+                  void main(void){
+                    vec2 zeroToOne = a_position;
+                    vec2 zeroToTwo = zeroToOne * 2.0;
+                    vec2 clipSpace = zeroToTwo - 1.0;
 
-                float rr = r * (1.0 - amount) + avg * amount;
-                float gg = g * (1.0 - amount) + avg * amount;
-                float bb = b * (1.0 - amount) + avg * amount;
+                    gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
+                    f_texcoord = (clipSpace + 1.0) / 2.0;
+                  }
+                `;
 
-                col = vec3(rr, gg, bb);
+    var sepia_f = ` 
+                  precision mediump float;
+                  uniform sampler2D u_image;
+                  varying vec2 f_texcoord;
+                  uniform float amount;
 
-                gl_FragColor = vec4(col, 1.0);
-              }
-            `;
+                  void main(void){
+                    vec2 texcoord = f_texcoord;
+                    vec3 col = texture2D(u_image, f_texcoord).rgb;
+                    float r = col.r;
+                    float g = col.g;
+                    float b = col.b;
 
-    this.graphics.shaderList.add("blackAndWhite", new Shader(this.gl, v4, f4));
+                    float red = (r * 0.393) + (g * 0.769) + (b * 0.189);
+                    float green = (r * 0.349) + (g * 0.686) + (b * 0.168);
+                    float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);
 
-    var v5 = ` 
-              attribute vec2 a_position;
-              uniform sampler2D u_image;
-              varying vec2 f_texcoord;
+                    float rr = r * (1.0 - amount) + red * amount;
+                    float gg = g * (1.0 - amount) + green * amount;
+                    float bb = b * (1.0 - amount) + blue * amount;
 
-              uniform vec2 u_resolution;
+                    col = vec3(rr, gg, bb);
 
-               
-              void main(void){
-                vec2 zeroToOne = a_position;
-                vec2 zeroToTwo = zeroToOne * 2.0;
-                vec2 clipSpace = zeroToTwo - 1.0;
+                    gl_FragColor = vec4(col, 1.0);
+                  }
+                `;
 
-                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
-                f_texcoord = (clipSpace + 1.0) / 2.0;
-              }
-            `;
-
-    var f5 = ` 
-              precision mediump float;
-              uniform sampler2D u_image;
-              varying vec2 f_texcoord;
-              uniform float amount;
-
-              void main(void){
-                vec2 texcoord = f_texcoord;
-                vec3 col = texture2D(u_image, f_texcoord).rgb;
-                float r = col.r;
-                float g = col.g;
-                float b = col.b;
-
-                float red = (r * 0.393) + (g * 0.769) + (b * 0.189);
-                float green = (r * 0.349) + (g * 0.686) + (b * 0.168);
-                float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);
-
-                float rr = r * (1.0 - amount) + red * amount;
-                float gg = g * (1.0 - amount) + green * amount;
-                float bb = b * (1.0 - amount) + blue * amount;
-
-                col = vec3(rr, gg, bb);
-
-                gl_FragColor = vec4(col, 1.0);
-              }
-            `;
-
-    this.graphics.shaderList.add("sepia", new Shader(this.gl, v5, f5));
+    this.graphics.shaderList.add("normal", new Shader(this.gl, normal_v, normal_f));            
+    this.graphics.shaderList.add("wave", new Shader(this.gl, wave_v, wave_f));
+    this.graphics.shaderList.add("crt", new Shader(this.gl, crt_v, crt_f));
+    this.graphics.shaderList.add("blackAndWhite", new Shader(this.gl, baw_v, baw_f));
+    this.graphics.shaderList.add("sepia", new Shader(this.gl, sepia_v, sepia_f));
 
 		this.start = new Date().getTime();
 		this.lastLoop = new Date();
@@ -404,7 +399,8 @@ class Game{
 
 		if(this.showFps)this.graphics.print("FPS: " + this.fps, 8, 8);
 
-		this.graphics.normal();
+    this.graphics.crt();
+
 	}
 	/**
 	* Main init function.
@@ -578,4 +574,25 @@ class Game{
 	getContext(){
 		return this.ctx;
 	}
+
+  saveData(key, value){
+    if(key == null || value == null){
+      console.error("Key or value can't be null.")
+      return;
+    } 
+    localStorage.setItem(key, value);
+    return this.getData(key);
+  }
+  
+  clearData(){
+    localStorage.clear();
+  }
+
+  getData(key){
+    if(key == null){
+      console.error("Key can't be null.")
+      return;
+    } 
+    return localStorage.getItem(key);
+  }
 }
