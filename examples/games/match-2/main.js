@@ -30,6 +30,7 @@ game.init = function() {
   game.wave = 0;
   game.waveSpeed = 1;
   game.waveMax  = 0.10;
+  game.fillScreenWithRatio = true;
 
   game.actionTimer = new Timer(game, 100, false, null, null, actionCardFinish);
   game.restartTimer = new Timer(game, 200, false, null, null, actionRestartFinish);

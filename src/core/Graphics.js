@@ -191,6 +191,70 @@ class Graphics{
     gl.bindTexture(gl.TEXTURE_2D, null);
   }
 
+  blackAndWhite(){
+    var gl = this.game.gl;
+
+    var shader = this.shaderList.get("blackAndWhite");
+    var program = shader.getProgram();
+    shader.enable();
+
+    shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos"));
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+      0.0,  0.0,
+      1.0,  0.0,
+      0.0,  1.0,
+      0.0,  1.0,
+      1.0,  0.0,
+      1.0,  1.0]), gl.STATIC_DRAW);
+
+    gl.enableVertexAttribArray(shader.getAttribute("a_position"));
+    gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, false, 0, 0);
+
+    if(this.c < Math.PI * 2) this.c += 0.1;
+    else this.c = 0;
+
+    this.updateTexture(this.canvasTexture, this.game.cvs)
+
+    shader.setUniform1i("u_image", this.canvasTexture);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+  }
+
+  sepia(){
+    var gl = this.game.gl;
+
+    var shader = this.shaderList.get("sepia");
+    var program = shader.getProgram();
+    shader.enable();
+
+    shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos"));
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+      0.0,  0.0,
+      1.0,  0.0,
+      0.0,  1.0,
+      0.0,  1.0,
+      1.0,  0.0,
+      1.0,  1.0]), gl.STATIC_DRAW);
+
+    gl.enableVertexAttribArray(shader.getAttribute("a_position"));
+    gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, false, 0, 0);
+
+    if(this.c < Math.PI * 2) this.c += 0.1;
+    else this.c = 0;
+
+    this.updateTexture(this.canvasTexture, this.game.cvs)
+
+    shader.setUniform1i("u_image", this.canvasTexture);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+  }
+
   crt(tint, speed, lineWidth){
     var gl = this.game.gl;
 

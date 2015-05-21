@@ -284,14 +284,19 @@ var _createClass = function() {
             }, this.currentScene = loadingScreen, this.currentCamera = new Camera(this, "Default Camera"), 
             this.loader.onFinish(function() {
                 _this2.currentScene.changeScene(new Scene(_this2, "Default Scene")), _this2.graphics.setClearColor("#000"), 
-                _this2.init(), _this2.originalWidth = _this2.size.x, _this2.onResizeInternal();
+                _this2.init(), _this2.originalWidth = _this2.size.x, _this2.originalHeight = _this2.size.y, 
+                _this2.onResizeInternal();
             });
             var v = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              uniform float offset;\n              uniform float dX;\n              uniform float dY;\n              varying vec2 f_texcoord;\n\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                texcoord.x += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dX;\n                texcoord.y += sin(texcoord.y * (4.0 * 2.0 * 3.14159) + offset) / dY;\n                gl_FragColor = texture2D(u_image, texcoord);\n              }\n            ";
             this.graphics.shaderList.add("wave", new Shader(this.gl, v, f));
             var v2 = " \n              attribute vec2 a_position;\n              varying vec2 f_texcoord;\n               \n              void main(void){\n\n                gl_Position = vec4(a_position * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (a_position + 1.0) / 2.0;\n              }\n            ", f2 = " \n              \n            precision highp float;\n            uniform vec2 u_resolution;\n            uniform float time;\n\n            uniform sampler2D u_image;\n\n            varying vec2 f_texcoord;\n\n            uniform float speed;\n            uniform vec3 tint;\n            uniform float lineWidth;\n            \n            float rand(vec2 co){\n                return fract(sin(dot(co.xy , vec2(12.9898, 78.233))) * 43758.5453);\n            }\n\n            void main(void){\n                vec2 pixel = gl_FragCoord.xy / u_resolution;\n                \n                vec3 col = texture2D(u_image, f_texcoord).xyz;\n                \n                // start with the source texture and misalign the rays it a bit\n                 // col.r = texture2D(u_image, vec2(pixel.x + 0.002, - pixel.y)).r;\n                 // col.g = texture2D(u_image, vec2(pixel.x + 0.001, - pixel.y)).g;\n                 // col.b = texture2D(u_image, vec2(pixel.x - 0.002, - pixel.y)).b;\n\n                // contrast curve\n                col = clamp(col * 0.5 + 0.5 * col * col * 1.2, 0.0, 1.0);\n\n                //vignette\n                col *= 0.6 + 0.4 * 16.0 * pixel.x * pixel.y * (1.0 - pixel.x) * (1.0 - pixel.y);\n\n                //color tint\n                //col *= vec3(0.9, 1.0, 0.8);\n\n                col *= tint;\n\n                //scanline (last 2 constants are crawl speed and size)\n                col *= 0.8 + 0.2 * sin(speed * time + pixel.y * lineWidth);\n\n                //flickering (semi-randomized)\n                col *= 1.0 - 0.07 * rand(vec2(time, tan(time)));\n\n                gl_FragColor = vec4(col, 1.0);\n            }\n            ";
             this.graphics.shaderList.add("crt", new Shader(this.gl, v2, f2));
             var v3 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f3 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                gl_FragColor = texture2D(u_image, texcoord);\n              }\n            ";
-            this.graphics.shaderList.add("normal", new Shader(this.gl, v3, f3)), this.start = new Date().getTime(), 
+            this.graphics.shaderList.add("normal", new Shader(this.gl, v3, f3));
+            var v4 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f4 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float avg = (r + g + b) / 3.0;\n                col = vec3(avg, avg, avg);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
+            this.graphics.shaderList.add("blackAndWhite", new Shader(this.gl, v4, f4));
+            var v5 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ", f5 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float red = (r * 0.393) + (g * 0.769) + (b * 0.189);\n                float green = (r * 0.349) + (g * 0.686) + (b * 0.168);\n                float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);\n\n                col = vec3(red, green, blue);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
+            this.graphics.shaderList.add("sepia", new Shader(this.gl, v5, f5)), this.start = new Date().getTime(), 
             this.lastLoop = new Date(), this.loop();
         }
     }, {
@@ -322,7 +327,7 @@ var _createClass = function() {
             this.ctx.rotate(this.currentCamera.angle * Math.PI / 180), this.currentScene.renderInternal(), 
             this.loader.loaded && this.render(), this.ctx.restore(), this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.getSize().x, this.getSize().y, "rgba(0,0,0,0.4)"), 
             this.graphics.print("- PAUSED - ", this.getSize().x / 2 - 80, this.getSize().y / 2 - 10)), 
-            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8), this.graphics.crt();
+            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8), this.graphics.sepia();
         }
     }, {
         key: "init",
@@ -347,13 +352,12 @@ var _createClass = function() {
         key: "onResizeInternal",
         value: function() {
             if (this.fillScreen) this.setSize(window.innerWidth, window.innerHeight); else if (this.fillScreenWithRatio) {
-                ratio = size.x / size.y;
-                var nWidth = window.innerWidth / ratio, nHeight = nWidth / ratio;
+                var ratio = this.size.x / this.size.y, nWidth = window.innerWidth / ratio, nHeight = nWidth / ratio;
                 nHeight > window.innerHeight && (nHeight = window.innerHeight, nWidth = nHeight * ratio), 
                 nHeight < window.innerHeight && (nHeight = window.innerHeight, nWidth = nHeight * ratio), 
                 nWidth > window.innerWidth && (nWidth = window.innerWidth, nHeight = nWidth / ratio), 
-                this.scale = nWidth / this.originalWidth, this.scale *= gameScale, this.setSize(Math.floor(nWidth), Math.floor(nHeight)), 
-                this.ctx.scale(scale, scale);
+                this.scale = nWidth / this.originalWidth, this.scale *= this.gameScale, this.setSize(Math.floor(nWidth), Math.floor(nHeight)), 
+                this.ctx.scale(this.scale, this.scale), this.gl.viewport(0, 0, nWidth, nHeight);
             }
         }
     }, {
@@ -593,6 +597,34 @@ var _createClass = function() {
             gl.bindTexture(gl.TEXTURE_2D, null);
         }
     }, {
+        key: "blackAndWhite",
+        value: function() {
+            {
+                var gl = this.game.gl, shader = this.shaderList.get("blackAndWhite");
+                shader.getProgram();
+            }
+            shader.enable(), shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y), 
+            gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1 ]), gl.STATIC_DRAW), 
+            gl.enableVertexAttribArray(shader.getAttribute("a_position")), gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, !1, 0, 0), 
+            this.c < 2 * Math.PI ? this.c += .1 : this.c = 0, this.updateTexture(this.canvasTexture, this.game.cvs), 
+            shader.setUniform1i("u_image", this.canvasTexture), gl.drawArrays(gl.TRIANGLES, 0, 6), 
+            gl.bindTexture(gl.TEXTURE_2D, null);
+        }
+    }, {
+        key: "sepia",
+        value: function() {
+            {
+                var gl = this.game.gl, shader = this.shaderList.get("sepia");
+                shader.getProgram();
+            }
+            shader.enable(), shader.setUniform2f("u_resolution", this.game.getSize().x, this.game.getSize().y), 
+            gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos")), gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1 ]), gl.STATIC_DRAW), 
+            gl.enableVertexAttribArray(shader.getAttribute("a_position")), gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, !1, 0, 0), 
+            this.c < 2 * Math.PI ? this.c += .1 : this.c = 0, this.updateTexture(this.canvasTexture, this.game.cvs), 
+            shader.setUniform1i("u_image", this.canvasTexture), gl.drawArrays(gl.TRIANGLES, 0, 6), 
+            gl.bindTexture(gl.TEXTURE_2D, null);
+        }
+    }, {
         key: "crt",
         value: function(tint, speed, lineWidth) {
             {
@@ -744,10 +776,9 @@ var _createClass = function() {
 }, Input = function() {
     function Input(game) {
         var _this = this;
-        _classCallCheck(this, Input), this.game = game, this.cvs = game.glcvs, console.log(this.cvs), 
-        this.keyC = {}, this.keyP = {}, this.keyR = {}, this.m = new Math.Vector2(0, 0), 
-        this.mp = [ !1, !1, !1 ], this.mr = [ !1, !1, !1 ], this.mc = [ !1, !1, !1 ], this.mouseWheel = 0, 
-        this.cvs.onkeydown = function(e) {
+        _classCallCheck(this, Input), this.game = game, this.cvs = game.glcvs, this.keyC = {}, 
+        this.keyP = {}, this.keyR = {}, this.m = new Math.Vector2(0, 0), this.mp = [ !1, !1, !1 ], 
+        this.mr = [ !1, !1, !1 ], this.mc = [ !1, !1, !1 ], this.mouseWheel = 0, this.cvs.onkeydown = function(e) {
             _this.onkeyDown(e);
         }, this.cvs.onkeyup = function(e) {
             _this.onKeyUp(e);

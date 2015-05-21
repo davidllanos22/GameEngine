@@ -37,5 +37,5 @@ game.render = function(){
 }
 
 function start(){
-  rectCount ++;
+    rectCount ++;
 }

@@ -117,6 +117,7 @@ var Game = (function () {
 				_this2.graphics.setClearColor("#000");
 				_this2.init();
 				_this2.originalWidth = _this2.size.x;
+				_this2.originalHeight = _this2.size.y;
 
 				_this2.onResizeInternal();
 			});
@@ -138,6 +139,18 @@ var Game = (function () {
 			var f3 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                gl_FragColor = texture2D(u_image, texcoord);\n              }\n            ";
 
 			this.graphics.shaderList.add("normal", new Shader(this.gl, v3, f3));
+
+			var v4 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ";
+
+			var f4 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float avg = (r + g + b) / 3.0;\n                col = vec3(avg, avg, avg);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
+
+			this.graphics.shaderList.add("blackAndWhite", new Shader(this.gl, v4, f4));
+
+			var v5 = " \n              attribute vec2 a_position;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              uniform vec2 u_resolution;\n               \n              void main(void){\n                vec2 zeroToOne = a_position;\n                vec2 zeroToTwo = zeroToOne * 2.0;\n                vec2 clipSpace = zeroToTwo - 1.0;\n\n                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);\n                f_texcoord = (clipSpace + 1.0) / 2.0;\n              }\n            ";
+
+			var f5 = " \n              precision mediump float;\n              uniform sampler2D u_image;\n              varying vec2 f_texcoord;\n\n              void main(void){\n                vec2 texcoord = f_texcoord;\n                vec3 col = texture2D(u_image, f_texcoord).rgb;\n                float r = col.r;\n                float g = col.g;\n                float b = col.b;\n\n                float red = (r * 0.393) + (g * 0.769) + (b * 0.189);\n                float green = (r * 0.349) + (g * 0.686) + (b * 0.168);\n                float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);\n\n                col = vec3(red, green, blue);\n\n                gl_FragColor = vec4(col, 1.0);\n              }\n            ";
+
+			this.graphics.shaderList.add("sepia", new Shader(this.gl, v5, f5));
 
 			this.start = new Date().getTime();
 			this.lastLoop = new Date();
@@ -237,7 +250,7 @@ var Game = (function () {
 
 			if (this.showFps) this.graphics.print("FPS: " + this.fps, 8, 8);
 
-			this.graphics.crt();
+			this.graphics.sepia();
 		}
 	}, {
 		key: "init",
@@ -289,7 +302,7 @@ var Game = (function () {
 		value: function onResizeInternal() {
 			if (this.fillScreen) this.setSize(window.innerWidth, window.innerHeight); // Fill screen if fillScreen = true.
 			else if (this.fillScreenWithRatio) {
-				ratio = size.x / size.y;
+				var ratio = this.size.x / this.size.y;
 				var nWidth = window.innerWidth / ratio;
 				var nHeight = nWidth / ratio;
 				if (nHeight > window.innerHeight) {
@@ -305,9 +318,10 @@ var Game = (function () {
 					nHeight = nWidth / ratio;
 				}
 				this.scale = nWidth / this.originalWidth;
-				this.scale *= gameScale;
+				this.scale *= this.gameScale;
 				this.setSize(Math.floor(nWidth), Math.floor(nHeight));
-				this.ctx.scale(scale, scale);
+				this.ctx.scale(this.scale, this.scale);
+				this.gl.viewport(0, 0, nWidth, nHeight);
 			}
 		}
 	}, {

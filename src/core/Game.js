@@ -94,6 +94,7 @@ class Game{
 			this.graphics.setClearColor("#000");
 			this.init();
 			this.originalWidth = this.size.x;
+      this.originalHeight = this.size.y;
 
 			this.onResizeInternal();
 		});
@@ -227,6 +228,85 @@ class Game{
 
     this.graphics.shaderList.add("normal", new Shader(this.gl, v3, f3));
 
+    var v4 = ` 
+              attribute vec2 a_position;
+              uniform sampler2D u_image;
+              varying vec2 f_texcoord;
+
+              uniform vec2 u_resolution;
+               
+              void main(void){
+                vec2 zeroToOne = a_position;
+                vec2 zeroToTwo = zeroToOne * 2.0;
+                vec2 clipSpace = zeroToTwo - 1.0;
+
+                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
+                f_texcoord = (clipSpace + 1.0) / 2.0;
+              }
+            `;
+
+    var f4 = ` 
+              precision mediump float;
+              uniform sampler2D u_image;
+              varying vec2 f_texcoord;
+
+              void main(void){
+                vec2 texcoord = f_texcoord;
+                vec3 col = texture2D(u_image, f_texcoord).rgb;
+                float r = col.r;
+                float g = col.g;
+                float b = col.b;
+
+                float avg = (r + g + b) / 3.0;
+                col = vec3(avg, avg, avg);
+
+                gl_FragColor = vec4(col, 1.0);
+              }
+            `;
+
+    this.graphics.shaderList.add("blackAndWhite", new Shader(this.gl, v4, f4));
+
+    var v5 = ` 
+              attribute vec2 a_position;
+              uniform sampler2D u_image;
+              varying vec2 f_texcoord;
+
+              uniform vec2 u_resolution;
+               
+              void main(void){
+                vec2 zeroToOne = a_position;
+                vec2 zeroToTwo = zeroToOne * 2.0;
+                vec2 clipSpace = zeroToTwo - 1.0;
+
+                gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
+                f_texcoord = (clipSpace + 1.0) / 2.0;
+              }
+            `;
+
+    var f5 = ` 
+              precision mediump float;
+              uniform sampler2D u_image;
+              varying vec2 f_texcoord;
+
+              void main(void){
+                vec2 texcoord = f_texcoord;
+                vec3 col = texture2D(u_image, f_texcoord).rgb;
+                float r = col.r;
+                float g = col.g;
+                float b = col.b;
+
+                float red = (r * 0.393) + (g * 0.769) + (b * 0.189);
+                float green = (r * 0.349) + (g * 0.686) + (b * 0.168);
+                float blue = (r * 0.272) + (g * 0.534) + (b * 0.131);
+
+                col = vec3(red, green, blue);
+
+                gl_FragColor = vec4(col, 1.0);
+              }
+            `;
+
+    this.graphics.shaderList.add("sepia", new Shader(this.gl, v5, f5));
+
 		this.start = new Date().getTime();
 		this.lastLoop = new Date();
 		
@@ -312,7 +392,7 @@ class Game{
 
 		if(this.showFps)this.graphics.print("FPS: " + this.fps, 8, 8);
 
-		this.graphics.crt();
+		this.graphics.sepia();
 	}
 	/**
 	* Main init function.
@@ -349,7 +429,7 @@ class Game{
 	onResizeInternal(){
 		if(this.fillScreen)this.setSize(window.innerWidth, window.innerHeight); // Fill screen if fillScreen = true.
 		else if(this.fillScreenWithRatio){
-			ratio = size.x / size.y;
+			var ratio = this.size.x / this.size.y;
 			var nWidth = window.innerWidth / ratio;
 			var nHeight = nWidth / ratio;
 			if(nHeight > window.innerHeight){
@@ -365,9 +445,10 @@ class Game{
 				nHeight = nWidth / ratio;
 			}
 			this.scale = nWidth / this.originalWidth;
-			this.scale *= gameScale;
+			this.scale *= this.gameScale;
 			this.setSize(Math.floor(nWidth), Math.floor(nHeight));
-			this.ctx.scale(scale,scale);
+			this.ctx.scale(this.scale, this.scale);
+      this.gl.viewport(0, 0, nWidth, nHeight);
 		}
 	}
 	/**
