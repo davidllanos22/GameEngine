@@ -7,5 +7,5 @@ game.init = function(){
 }
 
 game.render = function(){
-	game.graphics.image(image, game.getSize().x/2-image.width/2, game.getSize().y/2-image.height/2); // Draw an image.
+  game.graphics.image(image, game.getSize().x / 2 - image.width / 2, game.getSize().y / 2 - image.height / 2); // Draw an image.
 }

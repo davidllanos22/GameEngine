@@ -9,14 +9,13 @@ class Game{
 	constructor(width, height, element){
 		this.cvs = document.createElement("canvas");
 		this.ctx = this.cvs.getContext("2d");
+    this.glcvs = document.createElement("canvas");
+    this.gl = this.glcvs.getContext("webgl");
+
 		this.cvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
 		this.cvs.style.outline = "none";
-		
-		this.glcvs = document.createElement("canvas");
-		this.gl = this.glcvs.getContext("webgl");
-		
-		this.cvs.style.display = "none";
-		this.glcvs.style.display = "inline";
+    this.glcvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
+    this.glcvs.style.outline = "none";
 		
 		this.gl.viewport(0, 0, width, height);
 		this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -24,22 +23,22 @@ class Game{
     this.gl.depthFunc(this.gl.LEQUAL);
 
 		if(element != undefined){
-			element.appendChild(this.cvs);
+			//element.appendChild(this.cvs);
 			element.appendChild(this.glcvs);
 		}else{
-			document.body.appendChild(this.cvs);
+			//document.body.appendChild(this.cvs);
 			document.body.appendChild(this.glcvs);
 		}
 
 		// Focus
-
 		this.focused = true;
 		this.showPauseWhenNotFocused = false;
-		if(this.focused) this.cvs.focus();
-
+		if(this.focused){
+      this.cvs.focus();
+      this.glcvs.focus();
+    } 
 
 		// FPS
-
 		this.showFps = false;
 		this.desiredFps = 60;
 		this.fps = 0;
@@ -58,11 +57,9 @@ class Game{
 		this.pixelart = true;
 
 		// Size
-
 		this.setSize(width, height);
 
 		// Events
-
 		this.glcvs.onfocus = ()=>{this.onFocusInternal()} 
 		this.glcvs.onblur = ()=>{this.onBlurInternal()} 
 		window.onresize = ()=>{this.onResizeInternal()}
@@ -315,16 +312,7 @@ class Game{
 
 		if(this.showFps)this.graphics.print("FPS: " + this.fps, 8, 8);
 
-		if(this.graphics.effect == "NORMAL"){
-			this.graphics.normal();
-		}
-		if(this.graphics.effect == "WAVE"){
-			this.graphics.wave(50,100);
-		}
-		if(this.graphics.effect == "CRT"){
-			this.graphics.crt();
-		}
-
+		this.graphics.crt();
 	}
 	/**
 	* Main init function.

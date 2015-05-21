@@ -11,7 +11,7 @@ class Animation{
     this.w = w;
     this.h = h;
     this.actualFrame = 0;
-    this.timer = new Timer(time, true, null, null, ()=>{
+    this.timer = new Timer(game, time, true, null, null, ()=>{
       if(this.actualFrame == this.frames.length - 1)this.actualFrame = 0;
       else this.actualFrame ++;
     });

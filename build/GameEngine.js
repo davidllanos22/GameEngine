@@ -252,14 +252,13 @@ var _createClass = function() {
     function Game(width, height, element) {
         var _this = this;
         _classCallCheck(this, Game), this.cvs = document.createElement("canvas"), this.ctx = this.cvs.getContext("2d"), 
-        this.cvs.tabIndex = 1, this.cvs.style.outline = "none", this.glcvs = document.createElement("canvas"), 
-        this.gl = this.glcvs.getContext("webgl"), this.cvs.style.display = "none", this.glcvs.style.display = "inline", 
-        this.gl.viewport(0, 0, width, height), this.gl.clearColor(0, 0, 0, 1), this.gl.enable(this.gl.DEPTH_TEST), 
-        this.gl.depthFunc(this.gl.LEQUAL), void 0 != element ? (element.appendChild(this.cvs), 
-        element.appendChild(this.glcvs)) : (document.body.appendChild(this.cvs), document.body.appendChild(this.glcvs)), 
-        this.focused = !0, this.showPauseWhenNotFocused = !1, this.focused && this.cvs.focus(), 
-        this.showFps = !1, this.desiredFps = 60, this.fps = 0, this.dt = 0, this.start = 0, 
-        this.step = 10 / this.desiredFps, this.lastLoop = 0, this.size = new Math.Vector2(width, height), 
+        this.glcvs = document.createElement("canvas"), this.gl = this.glcvs.getContext("webgl"), 
+        this.cvs.tabIndex = 1, this.cvs.style.outline = "none", this.glcvs.tabIndex = 1, 
+        this.glcvs.style.outline = "none", this.gl.viewport(0, 0, width, height), this.gl.clearColor(0, 0, 0, 1), 
+        this.gl.enable(this.gl.DEPTH_TEST), this.gl.depthFunc(this.gl.LEQUAL), void 0 != element ? element.appendChild(this.glcvs) : document.body.appendChild(this.glcvs), 
+        this.focused = !0, this.showPauseWhenNotFocused = !1, this.focused && (this.cvs.focus(), 
+        this.glcvs.focus()), this.showFps = !1, this.desiredFps = 60, this.fps = 0, this.dt = 0, 
+        this.start = 0, this.step = 10 / this.desiredFps, this.lastLoop = 0, this.size = new Math.Vector2(width, height), 
         this.fillScreen = !1, this.gameScale = 1, this.scale = 1, this.fillScreenWithRatio = !1, 
         this.ratio = 0, this.pixelart = !0, this.setSize(width, height), this.glcvs.onfocus = function() {
             _this.onFocusInternal();
@@ -323,8 +322,7 @@ var _createClass = function() {
             this.ctx.rotate(this.currentCamera.angle * Math.PI / 180), this.currentScene.renderInternal(), 
             this.loader.loaded && this.render(), this.ctx.restore(), this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.getSize().x, this.getSize().y, "rgba(0,0,0,0.4)"), 
             this.graphics.print("- PAUSED - ", this.getSize().x / 2 - 80, this.getSize().y / 2 - 10)), 
-            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8), "NORMAL" == this.graphics.effect && this.graphics.normal(), 
-            "WAVE" == this.graphics.effect && this.graphics.wave(50, 100), "CRT" == this.graphics.effect && this.graphics.crt();
+            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8), this.graphics.crt();
         }
     }, {
         key: "init",
@@ -746,9 +744,10 @@ var _createClass = function() {
 }, Input = function() {
     function Input(game) {
         var _this = this;
-        _classCallCheck(this, Input), this.game = game, this.cvs = game.glcvs, this.keyC = {}, 
-        this.keyP = {}, this.keyR = {}, this.m = new Math.Vector2(0, 0), this.mp = [ !1, !1, !1 ], 
-        this.mr = [ !1, !1, !1 ], this.mc = [ !1, !1, !1 ], this.mouseWheel = 0, this.cvs.onkeydown = function(e) {
+        _classCallCheck(this, Input), this.game = game, this.cvs = game.glcvs, console.log(this.cvs), 
+        this.keyC = {}, this.keyP = {}, this.keyR = {}, this.m = new Math.Vector2(0, 0), 
+        this.mp = [ !1, !1, !1 ], this.mr = [ !1, !1, !1 ], this.mc = [ !1, !1, !1 ], this.mouseWheel = 0, 
+        this.cvs.onkeydown = function(e) {
             _this.onkeyDown(e);
         }, this.cvs.onkeyup = function(e) {
             _this.onKeyUp(e);
@@ -1028,7 +1027,7 @@ var _createClass = function() {
     function Animation(game, time, w, h, frames) {
         var _this = this;
         _classCallCheck(this, Animation), this.game = game, this.frames = frames, this.w = w, 
-        this.h = h, this.actualFrame = 0, this.timer = new Timer(time, !0, null, null, function() {
+        this.h = h, this.actualFrame = 0, this.timer = new Timer(game, time, !0, null, null, function() {
             _this.actualFrame == _this.frames.length - 1 ? _this.actualFrame = 0 : _this.actualFrame++;
         }), this.timer.start();
     }

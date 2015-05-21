@@ -123,6 +123,7 @@ var Input = (function () {
 
     this.game = game;
     this.cvs = game.glcvs;
+    console.log(this.cvs);
     this.keyC = {};
     this.keyP = {};
     this.keyR = {};

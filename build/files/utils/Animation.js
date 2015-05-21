@@ -21,7 +21,7 @@ var Animation = (function () {
     this.w = w;
     this.h = h;
     this.actualFrame = 0;
-    this.timer = new Timer(time, true, null, null, function () {
+    this.timer = new Timer(game, time, true, null, null, function () {
       if (_this.actualFrame == _this.frames.length - 1) _this.actualFrame = 0;else _this.actualFrame++;
     });
     this.timer.start();

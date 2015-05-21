@@ -27,11 +27,10 @@ game.render = function(){
     var g = row * 10 + color;
     var b = 200 + color;
 
-    game.graphics.rect(col * 20,(row * 20), 20, 20, "rgb("+r+","+g+","+b+")");
+    game.graphics.rect(col * 20,(row * 20), 20, 20, "rgb(" + r + "," + g + "," + b + ")");
 
-    if (col == (max - 1)) {
-      row++;
-    }
+    if (col == (max - 1))
+      row ++;
   }
 
   game.graphics.print("Number of times looped: " + timer.count, 4, 4); // Draw a string.
