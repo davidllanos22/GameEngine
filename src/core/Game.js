@@ -399,7 +399,7 @@ class Game{
 
 		if(this.showFps)this.graphics.print("FPS: " + this.fps, 8, 8);
 
-    this.graphics.crt();
+    this.graphics.normal();
 
 	}
 	/**
@@ -583,7 +583,7 @@ class Game{
     localStorage.setItem(key, value);
     return this.getData(key);
   }
-  
+
   clearData(){
     localStorage.clear();
   }

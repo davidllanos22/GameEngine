@@ -18,7 +18,7 @@ class Loader{
 		this.numResources++;
 
 		img.onload = ()=>{
-			console.log("Image loaded " + url);
+			console.log("Image loaded: " + url);
 			this.numResourcesLoaded++;
 			this.check();
 		}	
@@ -32,19 +32,18 @@ class Loader{
 		this.numResources++;
 
 		audio.addEventListener('loadeddata', ()=>{
-    	console.log("Audio loaded " + url);
+    	console.log("Audio loaded: " + url);
 			this.numResourcesLoaded++;
 			this.check();
 		}, false);
-
 		return audio;
 	}
 	
-	loadData(url,callback){
+	loadRaw(url, callback){
 		var req = new XMLHttpRequest();
 		req.onreadystatechange = ()=>{
 			if (req.readyState == 4) {
-				console.log("Data loaded " + url);
+				console.log("Raw file loaded: " + url);
 		    callback(req.responseText);
 		  }
 		};

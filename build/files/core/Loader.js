@@ -30,7 +30,7 @@ var Loader = (function () {
 			this.numResources++;
 
 			img.onload = function () {
-				console.log("Image loaded " + url);
+				console.log("Image loaded: " + url);
 				_this.numResourcesLoaded++;
 				_this.check();
 			};
@@ -47,20 +47,19 @@ var Loader = (function () {
 			this.numResources++;
 
 			audio.addEventListener("loadeddata", function () {
-				console.log("Audio loaded " + url);
+				console.log("Audio loaded: " + url);
 				_this2.numResourcesLoaded++;
 				_this2.check();
 			}, false);
-
 			return audio;
 		}
 	}, {
-		key: "loadData",
-		value: function loadData(url, callback) {
+		key: "loadRaw",
+		value: function loadRaw(url, callback) {
 			var req = new XMLHttpRequest();
 			req.onreadystatechange = function () {
 				if (req.readyState == 4) {
-					console.log("Data loaded " + url);
+					console.log("Raw file loaded: " + url);
 					callback(req.responseText);
 				}
 			};

@@ -246,7 +246,7 @@ var Game = (function () {
 
 						if (this.showFps) this.graphics.print("FPS: " + this.fps, 8, 8);
 
-						this.graphics.crt();
+						this.graphics.normal();
 				}
 		}, {
 				key: "init",

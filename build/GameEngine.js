@@ -327,7 +327,7 @@ var _createClass = function() {
             this.ctx.rotate(this.currentCamera.angle * Math.PI / 180), this.currentScene.renderInternal(), 
             this.loader.loaded && this.render(), this.ctx.restore(), this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.getSize().x, this.getSize().y, "rgba(0,0,0,0.4)"), 
             this.graphics.print("- PAUSED - ", this.getSize().x / 2 - 80, this.getSize().y / 2 - 10)), 
-            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8), this.graphics.crt();
+            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8), this.graphics.normal();
         }
     }, {
         key: "init",
@@ -951,7 +951,7 @@ var _createClass = function() {
         value: function(url) {
             var _this = this, img = new Image();
             return img.src = url + "?" + new Date().getTime(), this.numResources++, img.onload = function() {
-                console.log("Image loaded " + url), _this.numResourcesLoaded++, _this.check();
+                console.log("Image loaded: " + url), _this.numResourcesLoaded++, _this.check();
             }, img;
         }
     }, {
@@ -959,15 +959,15 @@ var _createClass = function() {
         value: function(url) {
             var _this2 = this, audio = new Audio();
             return audio.src = url + "?" + new Date().getTime(), this.numResources++, audio.addEventListener("loadeddata", function() {
-                console.log("Audio loaded " + url), _this2.numResourcesLoaded++, _this2.check();
+                console.log("Audio loaded: " + url), _this2.numResourcesLoaded++, _this2.check();
             }, !1), audio;
         }
     }, {
-        key: "loadData",
+        key: "loadRaw",
         value: function(url, callback) {
             var req = new XMLHttpRequest();
             req.onreadystatechange = function() {
-                4 == req.readyState && (console.log("Data loaded " + url), callback(req.responseText));
+                4 == req.readyState && (console.log("Raw file loaded: " + url), callback(req.responseText));
             }, req.open("GET", url, !0), req.send();
         }
     }, {
