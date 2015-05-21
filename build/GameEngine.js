@@ -327,7 +327,7 @@ var _createClass = function() {
             this.ctx.rotate(this.currentCamera.angle * Math.PI / 180), this.currentScene.renderInternal(), 
             this.loader.loaded && this.render(), this.ctx.restore(), this.showPauseWhenNotFocused && !this.focused && (this.graphics.rect(0, 0, this.getSize().x, this.getSize().y, "rgba(0,0,0,0.4)"), 
             this.graphics.print("- PAUSED - ", this.getSize().x / 2 - 80, this.getSize().y / 2 - 10)), 
-            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8);
+            this.showFps && this.graphics.print("FPS: " + this.fps, 8, 8), this.graphics.normal();
         }
     }, {
         key: "init",

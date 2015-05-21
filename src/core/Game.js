@@ -404,7 +404,7 @@ class Game{
 
 		if(this.showFps)this.graphics.print("FPS: " + this.fps, 8, 8);
 
-		//this.graphics.crt();
+		this.graphics.normal();
 	}
 	/**
 	* Main init function.
