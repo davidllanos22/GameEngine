@@ -19,6 +19,7 @@ var loop = game.loader.loadSound("media/sounds/loop.mp3");
 
 // Starting point of the game.
 game.init = function() {
+  console.log(Utils.imageToArray(playmat).toString());
   game.graphics.setClearColor("#c9003d");
   game.cardSize = 70;
   game.currentScene.changeScene(menuScene);
@@ -34,7 +35,6 @@ game.init = function() {
   game.waveTimer = new Timer(game, 200, true, null, function(){
     if(Math.abs(game.wave) >= game.waveMax){
       game.waveSpeed *= -1;
-
     }
     game.wave += Math.lerp(game.wave, (game.waveMax + 0.1) * game.waveSpeed, 0.003) * 0.2;
   }, null);

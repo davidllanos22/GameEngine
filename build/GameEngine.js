@@ -1372,6 +1372,25 @@ var _createClass = function() {
         _classCallCheck(this, Utils);
     }
     return _createClass(Utils, null, [ {
+        key: "imageToArray",
+        value: function(img) {
+            var array = [], ctx = document.createElement("canvas").getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            for (var y = 0; y < img.height; y++) {
+                array[y] = [];
+                for (var x = 0; x < img.height; x++) {
+                    var data = ctx.getImageData(x, y, 1, 1).data, dd = data[0] << 16 | data[1] << 8 | data[2];
+                    array[y][x] = Utils.hexToString(dd);
+                }
+            }
+            return array;
+        }
+    }, {
+        key: "hexToString",
+        value: function(n) {
+            return "#" + n.toString(16);
+        }
+    }, {
         key: "getScreenShoot",
         value: function(game) {
             var data = game.getCanvas().toDataURL();

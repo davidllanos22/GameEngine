@@ -1,6 +1,25 @@
 //Utils is a collection of static helper functions.
 
 class Utils{
+  static imageToArray(img){
+    var array = [];
+    var ctx = document.createElement("canvas").getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    for(var y = 0; y < img.height; y++){
+      array[y] = [];
+      for(var x = 0; x < img.height; x++){
+        var data = ctx.getImageData(x, y, 1, 1).data;
+        var dd = data[0] << 16 | data[1] << 8 | data[2];
+        array[y][x] = Utils.hexToString(dd);
+      }
+    }
+    return array;
+  }
+
+  static hexToString(n){
+    return "#" + n.toString(16);
+  }
+  
   /**
   * Gets an screenshoot of the current canvas. 
   * 
