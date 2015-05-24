@@ -264,10 +264,10 @@ class Graphics{
     var program = shader.getProgram();
     shader.enable();
 
-    shader.setUniform2f("u_resolution", this.game.getSize().x + 1000 , this.game.getSize().y);
+    shader.setUniform2f("u_resolution", this.game.getSize().x + 1000 , this.game.getSize().y + 1000);
     shader.setUniform1f("speed", speed == 0 ? 0 : speed || 10);
     shader.setUniform3f("tint", Graphics.hexToRgb(tint).r / 255 || 1.8, Graphics.hexToRgb(tint).g / 255 || 1.8, Graphics.hexToRgb(tint).b / 255 || 1.8);
-    shader.setUniform1f("lineWidth", lineWidth == 0 ? 0 : lineWidth || 640);
+    shader.setUniform1f("lineWidth", lineWidth == 0 ? 0 : lineWidth || 1024);
     shader.setUniform1f("time", this.c);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, shader.getBuffer("pos"));
@@ -283,7 +283,7 @@ class Graphics{
     gl.vertexAttribPointer(shader.getAttribute("a_position"), 2, gl.FLOAT, false, 0, 0);
 
     if(this.c < Math.PI * 2)
-      this.c += 0.05;
+      this.c += 0.02;
     else this.c = 0;
 
     this.updateTexture(this.canvasTexture, this.game.cvs)

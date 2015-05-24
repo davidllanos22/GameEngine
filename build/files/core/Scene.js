@@ -66,16 +66,22 @@ var Scene = (function (_Entity) {
 	}, {
 		key: "updateInternal",
 		value: function updateInternal() {
-			if (this.ySorting) this.childs.sort(function (a, b) {
-				var ay = Math.ceil(a.position.y);
-				var by = Math.ceil(b.position.y);
-
-				return ay - by;
-			});
+			if (this.ySorting) {
+				this.childs.sort(function (a, b) {
+					var aa = Math.floor(a.position.y);
+					var bb = Math.floor(b.position.y);
+					if (aa == bb) {
+						aa = Math.floor(a.position.x);
+						bb = Math.floor(b.position.x);
+					}
+					return aa - bb;
+				});
+			}
 
 			for (var i = 0; i < this.childs.length; i++) {
 				this.childs[i].update();
 			}
+
 			this.update();
 		}
 	}]);

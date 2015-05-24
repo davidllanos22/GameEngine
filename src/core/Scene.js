@@ -19,7 +19,7 @@ class Scene extends Entity{
 	}
 
 	remove(child){
-		this.childs.splice(this.childs.indexOf(child),1);
+		this.childs.splice(this.childs.indexOf(child), 1);
 	}
 
 	removeAll(){
@@ -45,16 +45,22 @@ class Scene extends Entity{
 	}
 
 	updateInternal(){
-		if(this.ySorting) this.childs.sort(function(a,b){
-			var ay = Math.ceil(a.position.y);
-			var by = Math.ceil(b.position.y);
+		if(this.ySorting){
+			this.childs.sort(function(a, b){
+				var aa = Math.floor(a.position.y);
+				var bb = Math.floor(b.position.y);
+				if(aa == bb){
+					aa = Math.floor(a.position.x);
+					bb = Math.floor(b.position.x);
+				}
+				return aa - bb;
+			});
+		}
 
-			return ay - by;
-		});
-
-		for(var i = 0; i<this.childs.length; i++){
+		for(var i = 0; i < this.childs.length; i++){
 			this.childs[i].update();
 		}
+
 		this.update();
 	}
 }
@@ -89,8 +95,10 @@ class TransitionScene extends Scene{
 
 	render(){
 		this.visible.renderInternal();
-		if(this.fadeIn.isRunning)this.game.graphics.rect(0,0,this.game.getSize().x,this.game.getSize().y,"rgba(255,255,255,"+this.fadeIn.time/this.time+")");
-		else this.game.graphics.rect(0,0,this.game.getSize().x,this.game.getSize().y,"rgba(255,255,255,"+(this.time-this.fadeOut.time)/this.time+")");
+		if(this.fadeIn.isRunning)
+			this.game.graphics.rect(0, 0, this.game.getSize().x, this.game.getSize().y, "rgba(255,255,255," + this.fadeIn.time / this.time + ")");
+		else 
+			this.game.graphics.rect(0, 0, this.game.getSize().x, this.game.getSize().y, "rgba(255,255,255," + (this.time - this.fadeOut.time) / this.time + ")");
 	}
 
 	

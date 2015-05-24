@@ -27,7 +27,7 @@ module.exports = function(grunt) {
       }
     },
     uglify: {
-      build: {
+      /*build: {
         options: {
           beautify: true,
           mangle: false
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         		'build/files/vendor/*.js'
         ],
         dest: 'build/GameEngine.js'
-      },
+      },*/
       buildMin: {
         options: {
           beautify: false,

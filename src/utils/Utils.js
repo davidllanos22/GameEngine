@@ -1,5 +1,4 @@
 //Utils is a collection of static helper functions.
-
 class Utils{
   static imageToArray(img){
     var array = [];
@@ -19,7 +18,7 @@ class Utils{
   static hexToString(n){
     return "#" + n.toString(16);
   }
-  
+
   /**
   * Gets an screenshoot of the current canvas. 
   * 
