@@ -51,9 +51,12 @@ class Utils{
   * 
   * @param {Sound} sound - The sound file to play.
   */
-  static playSound (sound){
-    sound = sound.cloneNode()
-    sound.play();
+  static playSound(game, sound){
+    if(!sound) return;
+    var source = game.actx.createBufferSource();
+    source.buffer = sound;
+    source.connect(game.actx.destination);
+    source.start(0);
   }
   /**
   * Stops a sound.
@@ -68,9 +71,13 @@ class Utils{
   * 
   * @param {Sound} sound - The sound file to play.
   */
-  static loopSound(sound){
-    sound.loop = true;
-    sound = sound.cloneNode()
-    sound.play();
+  static loopSound(game, sound){
+    if(!sound) return;
+    var source = game.actx.createBufferSource();
+    source.buffer = sound;
+    source.loop = true;
+    
+    source.connect(game.actx.destination);
+    source.start(0);
   }
 }

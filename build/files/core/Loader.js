@@ -9,9 +9,10 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Loader = (function () {
-	function Loader() {
+	function Loader(game) {
 		_classCallCheck(this, Loader);
 
+		this.actx = game.actx;
 		this.resources = [];
 		this.numResources = 0;
 		this.numResourcesLoaded = 0;
@@ -38,28 +39,34 @@ var Loader = (function () {
 		}
 	}, {
 		key: "loadSound",
-		value: function loadSound(url) {
+		value: function loadSound(url, callback) {
 			var _this2 = this;
 
-			var audio = new Audio();
-			audio.src = url + "?" + new Date().getTime();
+			var req = new XMLHttpRequest();
+			req.open("GET", url, true);
+			req.responseType = "arraybuffer";
 
-			this.numResources++;
-
-			audio.addEventListener("loadeddata", function () {
-				console.log("Audio loaded: " + url);
-				_this2.numResourcesLoaded++;
-				_this2.check();
-			}, false);
-			return audio;
+			req.onload = function () {
+				_this2.actx.decodeAudioData(req.response, function (buffer) {
+					console.log("Audio file loaded: " + url);
+					_this2.numResourcesLoaded++;
+					_this2.check();
+					callback(buffer);
+				}, null);
+			};
+			req.send();
 		}
 	}, {
 		key: "loadRaw",
 		value: function loadRaw(url, callback) {
+			var _this3 = this;
+
 			var req = new XMLHttpRequest();
 			req.onreadystatechange = function () {
 				if (req.readyState == 4) {
 					console.log("Raw file loaded: " + url);
+					_this3.numResourcesLoaded++;
+					_this3.check();
 					callback(req.responseText);
 				}
 			};

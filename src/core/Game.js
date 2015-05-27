@@ -9,18 +9,18 @@ class Game{
 	constructor(width, height, element){
 		this.cvs = document.createElement("canvas");
 		this.ctx = this.cvs.getContext("2d");
-    this.glcvs = document.createElement("canvas");
-    this.gl = this.glcvs.getContext("webgl");
+	    this.glcvs = document.createElement("canvas");
+	    this.gl = this.glcvs.getContext("webgl");
 
 		this.cvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
 		this.cvs.style.outline = "none";
-    this.glcvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
-    this.glcvs.style.outline = "none";
+	    this.glcvs.tabIndex = 1; // Set canvas tabIndex to 1. Used for focus and blur.
+	    this.glcvs.style.outline = "none";
 		
 		this.gl.viewport(0, 0, width, height);
 		this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    this.gl.enable(this.gl.DEPTH_TEST);
-    this.gl.depthFunc(this.gl.LEQUAL);
+	    this.gl.enable(this.gl.DEPTH_TEST);
+	    this.gl.depthFunc(this.gl.LEQUAL);
 
 		if(element != undefined){
 			//element.appendChild(this.cvs);
@@ -30,13 +30,16 @@ class Game{
 			document.body.appendChild(this.glcvs);
 		}
 
+		// Audio
+		this.actx = new AudioContext();
+
 		// Focus
 		this.focused = true;
 		this.showPauseWhenNotFocused = false;
 		if(this.focused){
-      this.cvs.focus();
-      this.glcvs.focus();
-    } 
+	      this.cvs.focus();
+	      this.glcvs.focus();
+    	} 
 
 		// FPS
 		this.showFps = false;
@@ -73,7 +76,7 @@ class Game{
  	*/
 	initInternal(){
 
-		this.loader = new Loader();
+		this.loader = new Loader(this);
 		this.graphics = new Graphics(this);
 		this.input = new Input(this); 
 		this.timerManager = new TimerManager(this);

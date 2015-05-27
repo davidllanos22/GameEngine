@@ -1,7 +1,15 @@
 var game = new Game(640, 480); // Create a new instance of the game.
 
-var sound01 = game.loader.loadSound("sound01.wav"); // Load a sound.
-var	sound02 = game.loader.loadSound("sound02.wav"); // Load a sound.
+var sound01 = null; // Load a sound.
+var	sound02 = null;
+
+game.loader.loadSound("sound01.wav", function(b){
+	sound01 = b;
+});
+
+game.loader.loadSound("sound02.wav", function(b){
+	sound02 = b;
+});
 
 game.init = function(){
   game.graphics.setClearColor("#6f6169"); // Set the background color.
@@ -16,5 +24,5 @@ game.render = function(){
 }
 game.update = function(){
 	if(game.input.keyPressed(Keys.ENTER))
-		Utils.playSound(Math.randomTo(4) < 2 ? sound01 : sound02); // Play a random sound.
+		Utils.playSound(game, Math.randomTo(4) < 2 ? sound01 : sound02); // Play a random sound.
 }

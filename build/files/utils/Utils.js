@@ -72,9 +72,12 @@ var Utils = (function () {
     * 
     * @param {Sound} sound - The sound file to play.
     */
-    value: function playSound(sound) {
-      sound = sound.cloneNode();
-      sound.play();
+    value: function playSound(game, sound) {
+      if (!sound) return;
+      var source = game.actx.createBufferSource();
+      source.buffer = sound;
+      source.connect(game.actx.destination);
+      source.start(0);
     }
   }, {
     key: "stopSound",
@@ -93,10 +96,14 @@ var Utils = (function () {
     * 
     * @param {Sound} sound - The sound file to play.
     */
-    value: function loopSound(sound) {
-      sound.loop = true;
-      sound = sound.cloneNode();
-      sound.play();
+    value: function loopSound(game, sound) {
+      if (!sound) return;
+      var source = game.actx.createBufferSource();
+      source.buffer = sound;
+      source.loop = true;
+
+      source.connect(game.actx.destination);
+      source.start(0);
     }
   }]);
 

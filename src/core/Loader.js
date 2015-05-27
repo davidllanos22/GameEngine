@@ -3,7 +3,8 @@
 * @constructor
 */
 class Loader{
-	constructor(){
+	constructor(game){
+		this.actx = game.actx;
 		this.resources = [];
 		this.numResources = 0;
 		this.numResourcesLoaded = 0;
@@ -25,26 +26,30 @@ class Loader{
 		return img;
 	}
 
-	loadSound(url){
-		var audio = new Audio();
-		audio.src = url + "?" + new Date().getTime();
+	loadSound(url, callback){
+		var req = new XMLHttpRequest();
+		req.open("GET", url, true);
+		req.responseType = 'arraybuffer';
 
-		this.numResources++;
-
-		audio.addEventListener('loadeddata', ()=>{
-    	console.log("Audio loaded: " + url);
-			this.numResourcesLoaded++;
-			this.check();
-		}, false);
-		return audio;
+		req.onload = ()=>{
+		    this.actx.decodeAudioData(req.response, (buffer)=>{
+		    	console.log("Audio file loaded: " + url);
+				this.numResourcesLoaded++;
+				this.check();
+				callback(buffer);		    	
+		    }, null);
+	  	}
+		req.send();
 	}
-	
+
 	loadRaw(url, callback){
 		var req = new XMLHttpRequest();
 		req.onreadystatechange = ()=>{
 			if (req.readyState == 4) {
 				console.log("Raw file loaded: " + url);
-		    callback(req.responseText);
+				this.numResourcesLoaded++;
+				this.check();
+		    	callback(req.responseText);
 		  }
 		};
 		req.open("GET", url, true);
