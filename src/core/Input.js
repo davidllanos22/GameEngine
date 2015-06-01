@@ -121,12 +121,12 @@ class Input{
     this.mc = [false, false, false];
     this.mouseWheel = 0;
     
-    this.cvs.onkeydown = (e) => {this.onkeyDown(e);}
-    this.cvs.onkeyup = (e) => {this.onKeyUp(e);}
-    this.cvs.onmousemove = (e) => {this.onMouseMove(e);}
-    this.cvs.onmousedown = (e) => {this.onMouseDown(e);}
-    this.cvs.onmouseup = (e) => {this.onMouseUp(e);}
-    this.cvs.onmousewheel = (e) => {this.onMouseWheel(e);}
+    window.onkeydown = (e) => {this.onkeyDown(e);}
+    window.onkeyup = (e) => {this.onKeyUp(e);}
+    window.onmousemove = (e) => {this.onMouseMove(e);}
+    window.onmousedown = (e) => {this.onMouseDown(e);}
+    window.onmouseup = (e) => {this.onMouseUp(e);}
+    window.onmousewheel = (e) => {this.onMouseWheel(e);}
   }
 
   onkeyDown(e){
