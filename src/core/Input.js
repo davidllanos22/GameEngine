@@ -146,6 +146,7 @@ class Input{
   }
 
   onMouseMove(e){
+    e.preventDefault();
     var rect = this.cvs.getBoundingClientRect();
     var xx = (e.clientX - rect.left) / (rect.right - rect.left) * this.game.getSize().x;
     var yy = (e.clientY - rect.top) / (rect.bottom - rect.top) * this.game.getSize().y;
@@ -153,11 +154,13 @@ class Input{
   }
 
   onMouseDown(e){
+    e.preventDefault();
     this.mp[e.button] = true;
     this.mc[e.button] = true;
   }
 
   onMouseUp(e){
+    e.preventDefault();
     this.mr[e.button] = true;
     this.mc[e.button] = false;
   }

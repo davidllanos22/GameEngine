@@ -26,10 +26,9 @@ game.loader.loadSound("media/sounds/card-flip2.wav", function(b){
 });
 
 game.loader.loadSound("media/sounds/yay.wav", function(b){
-   console.log(b);
   yay = b;
 });
-  console.log("jjej");
+
 game.loader.loadSound("media/sounds/loop.mp3", function(b){
   loop = b;
   Utils.loopSound(game, loop);
@@ -59,11 +58,9 @@ game.init = function() {
   game.playTimer.start();
   game.waveTimer.start();
   this.colors = [0, 1, 2, 3, 4, 5];
-
-
 }
-// Menu Scene behavior
 
+// Menu Scene behavior
 menuScene.render = function(){
   // Background rendering
   for(var i = 0; i<8; i++){
