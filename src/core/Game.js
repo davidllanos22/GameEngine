@@ -402,8 +402,10 @@ class Game{
 
 		if(this.showFps)this.graphics.print("FPS: " + this.fps, 8, 8);
 
-    this.graphics.normal();
-
+		this.graphics.normal();
+    	//this.graphics.wave(400,400);
+    	//this.graphics.blackAndWhite(0.8);
+    	this.graphics.usingEffect = false;
 	}
 	/**
 	* Main init function.
